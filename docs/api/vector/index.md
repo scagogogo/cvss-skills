@@ -1,419 +1,427 @@
-# vector 包
+# vector Package
 
-`vector` 包定义了 CVSS 各种指标的接口和具体实现，提供了类型安全的指标表示和评分计算。
+The `vector` package provides unified interfaces and concrete implementations for all CVSS metrics. It defines the behavior and properties of all CVSS 3.x metrics, providing the foundational data structures for parsers and calculators.
 
-## 包概述
+## Package Overview
 
 ```go
 import "github.com/scagogogo/cvss-parser/pkg/vector"
 ```
 
-## 核心接口
+## Core Interface
 
-### Vector 接口
+### Vector Interface
+
+All CVSS metrics implement the `Vector` interface:
 
 ```go
 type Vector interface {
-    GetGroupName() string    // 获取指标组名称
-    GetShortName() string    // 获取指标简称
-    GetLongName() string     // 获取指标全称
-    GetShortValue() rune     // 获取指标简写值
-    GetLongValue() string    // 获取指标完整值
-    GetDescription() string  // 获取指标描述
-    GetScore() float64       // 获取指标评分
-    String() string          // 字符串表示
+    GetGroupName() string    // Get metric group name
+    GetShortName() string    // Get metric short name
+    GetLongName() string     // Get metric full name
+    GetShortValue() rune     // Get metric short value
+    GetLongValue() string    // Get metric full value
+    GetDescription() string  // Get metric description
+    GetScore() float64       // Get metric score
+    String() string          // String representation
 }
 ```
 
-## 指标分类
+Detailed documentation: [Vector Interface](/api/vector/interface)
 
-### 基础指标 (Base Metrics)
-必需的8个指标，用于计算基础评分：
+## Metric Categories
 
-| 指标组 | 指标 | 文档链接 |
-|--------|------|----------|
-| 可利用性 | 攻击向量 (AV) | [详细文档](/api/vector/base-metrics#攻击向量) |
-| 可利用性 | 攻击复杂性 (AC) | [详细文档](/api/vector/base-metrics#攻击复杂性) |
-| 可利用性 | 所需权限 (PR) | [详细文档](/api/vector/base-metrics#所需权限) |
-| 可利用性 | 用户交互 (UI) | [详细文档](/api/vector/base-metrics#用户交互) |
-| 影响 | 影响范围 (S) | [详细文档](/api/vector/base-metrics#影响范围) |
-| 影响 | 机密性影响 (C) | [详细文档](/api/vector/base-metrics#机密性影响) |
-| 影响 | 完整性影响 (I) | [详细文档](/api/vector/base-metrics#完整性影响) |
-| 影响 | 可用性影响 (A) | [详细文档](/api/vector/base-metrics#可用性影响) |
+### Base Metrics
 
-### 时间指标 (Temporal Metrics)
-可选的3个指标，反映漏洞随时间变化的特征：
+Base metrics describe the intrinsic characteristics of a vulnerability that do not change over time or environment.
 
-| 指标 | 简写 | 文档链接 |
-|------|------|----------|
-| 漏洞利用代码成熟度 | E | [详细文档](/api/vector/temporal-metrics#漏洞利用代码成熟度) |
-| 修复级别 | RL | [详细文档](/api/vector/temporal-metrics#修复级别) |
-| 报告可信度 | RC | [详细文档](/api/vector/temporal-metrics#报告可信度) |
+#### Exploitability Metrics
 
-### 环境指标 (Environmental Metrics)
-可选的11个指标，允许根据特定环境调整评分：
+| Metric | Short | Implementation Types | Possible Values |
+|--------|-------|---------------------|-----------------|
+| Attack Vector | AV | `AttackVector*` | Network, Adjacent, Local, Physical |
+| Attack Complexity | AC | `AttackComplexity*` | Low, High |
+| Privileges Required | PR | `PrivilegesRequired*` | None, Low, High |
+| User Interaction | UI | `UserInteraction*` | None, Required |
 
-| 指标类型 | 指标 | 简写 | 文档链接 |
-|----------|------|------|----------|
-| 安全需求 | 机密性需求 | CR | [详细文档](/api/vector/environmental-metrics#安全需求) |
-| 安全需求 | 完整性需求 | IR | [详细文档](/api/vector/environmental-metrics#安全需求) |
-| 安全需求 | 可用性需求 | AR | [详细文档](/api/vector/environmental-metrics#安全需求) |
-| 修改的基础指标 | 修改的攻击向量 | MAV | [详细文档](/api/vector/environmental-metrics#修改的基础指标) |
-| 修改的基础指标 | 修改的攻击复杂性 | MAC | [详细文档](/api/vector/environmental-metrics#修改的基础指标) |
-| ... | ... | ... | ... |
+#### Impact Metrics
 
-## 快速示例
+| Metric | Short | Implementation Types | Possible Values |
+|--------|-------|---------------------|-----------------|
+| Scope | S | `Scope*` | Unchanged, Changed |
+| Confidentiality Impact | C | `Confidentiality*` | None, Low, High |
+| Integrity Impact | I | `Integrity*` | None, Low, High |
+| Availability Impact | A | `Availability*` | None, Low, High |
 
-### 创建向量实例
+### Temporal Metrics
+
+Temporal metrics reflect the characteristics of a vulnerability that change over time.
+
+| Metric | Short | Implementation Types | Possible Values |
+|--------|-------|---------------------|-----------------|
+| Exploit Code Maturity | E | `ExploitCodeMaturity*` | Not Defined, Unproven, Proof-of-Concept, Functional, High |
+| Remediation Level | RL | `RemediationLevel*` | Not Defined, Official Fix, Temporary Fix, Workaround, Unavailable |
+| Report Confidence | RC | `ReportConfidence*` | Not Defined, Unknown, Reasonable, Confirmed |
+
+### Environmental Metrics
+
+Environmental metrics allow analysts to customize CVSS scores according to specific environments.
+
+#### Environmental Requirement Metrics
+
+| Metric | Short | Implementation Types | Possible Values |
+|--------|-------|---------------------|-----------------|
+| Confidentiality Requirement | CR | `ConfidentialityRequirement*` | Not Defined, Low, Medium, High |
+| Integrity Requirement | IR | `IntegrityRequirement*` | Not Defined, Low, Medium, High |
+| Availability Requirement | AR | `AvailabilityRequirement*` | Not Defined, Low, Medium, High |
+
+#### Modified Base Metrics
+
+All base metrics have corresponding modified versions, prefixed with `Modified`:
+
+- `ModifiedAttackVector*`
+- `ModifiedAttackComplexity*`
+- `ModifiedPrivilegesRequired*`
+- etc...
+
+## Usage Examples
+
+### Creating Metric Instances
 
 ```go
-package main
+// Create attack vector metric
+attackVector := &vector.AttackVectorNetwork{}
+fmt.Printf("Attack Vector: %s (%s)\n", 
+    attackVector.GetLongValue(), 
+    attackVector.GetDescription())
 
-import (
-    "fmt"
-    "github.com/scagogogo/cvss-parser/pkg/vector"
-)
-
-func main() {
-    // 创建攻击向量实例
-    av := &vector.AttackVectorNetwork{}
-    
-    fmt.Printf("指标组: %s\n", av.GetGroupName())      // "Exploitability"
-    fmt.Printf("指标名: %s\n", av.GetShortName())      // "AV"
-    fmt.Printf("指标值: %c\n", av.GetShortValue())     // 'N'
-    fmt.Printf("评分: %.1f\n", av.GetScore())          // 0.85
-    fmt.Printf("描述: %s\n", av.GetDescription())      // "Network"
-}
+// Create attack complexity metric
+attackComplexity := &vector.AttackComplexityLow{}
+fmt.Printf("Attack Complexity: %s (Score: %.2f)\n", 
+    attackComplexity.GetLongValue(), 
+    attackComplexity.GetScore())
 ```
 
-### 使用工厂函数
+### Using Interface
 
 ```go
-// 通过工厂函数创建向量
-av, err := vector.NewAttackVector('N')
-if err != nil {
-    log.Fatalf("创建攻击向量失败: %v", err)
+func printVectorInfo(v vector.Vector) {
+    fmt.Printf("Metric: %s (%s)\n", v.GetLongName(), v.GetShortName())
+    fmt.Printf("  Group: %s\n", v.GetGroupName())
+    fmt.Printf("  Value: %s (%c)\n", v.GetLongValue(), v.GetShortValue())
+    fmt.Printf("  Score: %.2f\n", v.GetScore())
+    fmt.Printf("  String: %s\n", v.String())
 }
 
-ac, err := vector.NewAttackComplexity('L')
-if err != nil {
-    log.Fatalf("创建攻击复杂性失败: %v", err)
-}
+// Usage example
+av := &vector.AttackVectorNetwork{}
+printVectorInfo(av)
 ```
 
-### 向量比较
+### Vector Factory
 
 ```go
-func compareVectors() {
-    av1 := &vector.AttackVectorNetwork{}
-    av2 := &vector.AttackVectorLocal{}
-    
-    fmt.Printf("网络攻击向量评分: %.2f\n", av1.GetScore())  // 0.85
-    fmt.Printf("本地攻击向量评分: %.2f\n", av2.GetScore())  // 0.55
-    
-    if av1.GetScore() > av2.GetScore() {
-        fmt.Println("网络攻击向量风险更高")
-    }
-}
-```
+type VectorFactory struct{}
 
-## 设计模式
-
-### 1. 策略模式
-每个指标值都是一个独立的策略实现：
-
-```go
-// 攻击向量的不同策略
-type AttackVectorNetwork struct{}    // 网络攻击
-type AttackVectorAdjacent struct{}   // 相邻网络攻击
-type AttackVectorLocal struct{}      // 本地攻击
-type AttackVectorPhysical struct{}   // 物理攻击
-```
-
-### 2. 工厂模式
-提供工厂函数创建向量实例：
-
-```go
-func NewAttackVector(value rune) (Vector, error) {
+func (f *VectorFactory) CreateAttackVector(value rune) (vector.Vector, error) {
     switch value {
     case 'N':
-        return &AttackVectorNetwork{}, nil
+        return &vector.AttackVectorNetwork{}, nil
     case 'A':
-        return &AttackVectorAdjacent{}, nil
+        return &vector.AttackVectorAdjacent{}, nil
     case 'L':
-        return &AttackVectorLocal{}, nil
+        return &vector.AttackVectorLocal{}, nil
     case 'P':
-        return &AttackVectorPhysical{}, nil
+        return &vector.AttackVectorPhysical{}, nil
     default:
         return nil, fmt.Errorf("unknown attack vector value: %c", value)
     }
 }
 ```
 
-### 3. 组合模式
-CVSS 向量通过组合不同的指标构成：
+## Metric Details
+
+### Attack Vector
+
+Describes how an attacker accesses the vulnerable component.
 
 ```go
-type Cvss3xBase struct {
-    AttackVector       Vector
-    AttackComplexity   Vector
-    PrivilegesRequired Vector
-    // ... 其他指标
-}
+// Network attack vector
+type AttackVectorNetwork struct{}
+func (a *AttackVectorNetwork) GetShortValue() rune { return 'N' }
+func (a *AttackVectorNetwork) GetScore() float64 { return 0.85 }
+
+// Adjacent network attack vector
+type AttackVectorAdjacent struct{}
+func (a *AttackVectorAdjacent) GetShortValue() rune { return 'A' }
+func (a *AttackVectorAdjacent) GetScore() float64 { return 0.62 }
+
+// Local attack vector
+type AttackVectorLocal struct{}
+func (a *AttackVectorLocal) GetShortValue() rune { return 'L' }
+func (a *AttackVectorLocal) GetScore() float64 { return 0.55 }
+
+// Physical attack vector
+type AttackVectorPhysical struct{}
+func (a *AttackVectorPhysical) GetShortValue() rune { return 'P' }
+func (a *AttackVectorPhysical) GetScore() float64 { return 0.2 }
 ```
 
-## 指标评分规则
+### Attack Complexity
 
-### 基础指标评分
-
-#### 攻击向量 (AV)
-- Network (N): 0.85
-- Adjacent (A): 0.62
-- Local (L): 0.55
-- Physical (P): 0.20
-
-#### 攻击复杂性 (AC)
-- Low (L): 0.77
-- High (H): 0.44
-
-#### 所需权限 (PR)
-- None (N): 0.85
-- Low (L): 0.62 (范围不变) / 0.68 (范围改变)
-- High (H): 0.27 (范围不变) / 0.50 (范围改变)
-
-#### 用户交互 (UI)
-- None (N): 0.85
-- Required (R): 0.62
-
-#### 影响范围 (S)
-- Unchanged (U): 不直接参与评分计算
-- Changed (C): 影响评分计算公式
-
-#### CIA 影响 (C/I/A)
-- None (N): 0.0
-- Low (L): 0.22
-- High (H): 0.56
-
-### 时间指标评分
-
-#### 漏洞利用代码成熟度 (E)
-- Not Defined (X): 1.0
-- Unproven (U): 0.91
-- Proof-of-Concept (P): 0.94
-- Functional (F): 0.97
-- High (H): 1.0
-
-#### 修复级别 (RL)
-- Not Defined (X): 1.0
-- Official Fix (O): 0.95
-- Temporary Fix (T): 0.96
-- Workaround (W): 0.97
-- Unavailable (U): 1.0
-
-#### 报告可信度 (RC)
-- Not Defined (X): 1.0
-- Unknown (U): 0.92
-- Reasonable (R): 0.96
-- Confirmed (C): 1.0
-
-## 完整示例
-
-### 创建完整的基础指标组
+Describes the conditions required for a successful attack.
 
 ```go
-package main
+// Low complexity
+type AttackComplexityLow struct{}
+func (a *AttackComplexityLow) GetShortValue() rune { return 'L' }
+func (a *AttackComplexityLow) GetScore() float64 { return 0.77 }
 
-import (
-    "fmt"
-    "github.com/scagogogo/cvss-parser/pkg/vector"
-    "github.com/scagogogo/cvss-parser/pkg/cvss"
-)
+// High complexity
+type AttackComplexityHigh struct{}
+func (a *AttackComplexityHigh) GetShortValue() rune { return 'H' }
+func (a *AttackComplexityHigh) GetScore() float64 { return 0.44 }
+```
 
-func main() {
-    // 创建 CVSS 向量
-    cvssVector := cvss.NewCvss3x()
-    cvssVector.MajorVersion = 3
-    cvssVector.MinorVersion = 1
-    
-    // 设置基础指标
-    cvssVector.Cvss3xBase.AttackVector = &vector.AttackVectorNetwork{}
-    cvssVector.Cvss3xBase.AttackComplexity = &vector.AttackComplexityLow{}
-    cvssVector.Cvss3xBase.PrivilegesRequired = &vector.PrivilegesRequiredNone{}
-    cvssVector.Cvss3xBase.UserInteraction = &vector.UserInteractionNone{}
-    cvssVector.Cvss3xBase.Scope = &vector.ScopeUnchanged{}
-    cvssVector.Cvss3xBase.Confidentiality = &vector.ConfidentialityHigh{}
-    cvssVector.Cvss3xBase.Integrity = &vector.IntegrityHigh{}
-    cvssVector.Cvss3xBase.Availability = &vector.AvailabilityHigh{}
-    
-    // 验证向量
-    if err := cvssVector.Check(); err != nil {
-        fmt.Printf("向量验证失败: %v\n", err)
-        return
+### Impact Metrics
+
+Impact metrics describe the degree of impact a successful attack has on the system.
+
+```go
+// Confidentiality impact
+type ConfidentialityHigh struct{}
+func (c *ConfidentialityHigh) GetShortValue() rune { return 'H' }
+func (c *ConfidentialityHigh) GetScore() float64 { return 0.56 }
+
+type ConfidentialityLow struct{}
+func (c *ConfidentialityLow) GetShortValue() rune { return 'L' }
+func (c *ConfidentialityLow) GetScore() float64 { return 0.22 }
+
+type ConfidentialityNone struct{}
+func (c *ConfidentialityNone) GetShortValue() rune { return 'N' }
+func (c *ConfidentialityNone) GetScore() float64 { return 0.0 }
+```
+
+## Vector Validation
+
+### Basic Validation
+
+```go
+func validateVector(v vector.Vector) error {
+    if v.GetShortName() == "" {
+        return fmt.Errorf("metric short name cannot be empty")
     }
     
-    // 输出向量信息
-    fmt.Printf("CVSS 向量: %s\n", cvssVector.String())
+    if v.GetShortValue() == 0 {
+        return fmt.Errorf("metric value cannot be empty")
+    }
     
-    // 输出各指标详情
-    fmt.Println("\n基础指标详情:")
-    printVectorInfo("攻击向量", cvssVector.Cvss3xBase.AttackVector)
-    printVectorInfo("攻击复杂性", cvssVector.Cvss3xBase.AttackComplexity)
-    printVectorInfo("所需权限", cvssVector.Cvss3xBase.PrivilegesRequired)
-    printVectorInfo("用户交互", cvssVector.Cvss3xBase.UserInteraction)
-    printVectorInfo("影响范围", cvssVector.Cvss3xBase.Scope)
-    printVectorInfo("机密性影响", cvssVector.Cvss3xBase.Confidentiality)
-    printVectorInfo("完整性影响", cvssVector.Cvss3xBase.Integrity)
-    printVectorInfo("可用性影响", cvssVector.Cvss3xBase.Availability)
-}
-
-func printVectorInfo(name string, v vector.Vector) {
-    fmt.Printf("  %s (%s): %s (%.2f)\n", 
-        name, v.GetShortName(), v.GetDescription(), v.GetScore())
-}
-```
-
-### 使用工厂函数批量创建
-
-```go
-func createVectorsFromString(vectorStr string) error {
-    // 解析向量字符串中的各个指标
-    metrics := parseMetrics(vectorStr) // 假设的解析函数
-    
-    for key, value := range metrics {
-        var v vector.Vector
-        var err error
-        
-        switch key {
-        case "AV":
-            v, err = vector.NewAttackVector(rune(value[0]))
-        case "AC":
-            v, err = vector.NewAttackComplexity(rune(value[0]))
-        case "PR":
-            v, err = vector.NewPrivilegesRequired(rune(value[0]))
-        // ... 其他指标
-        }
-        
-        if err != nil {
-            return fmt.Errorf("创建指标 %s 失败: %v", key, err)
-        }
-        
-        fmt.Printf("%s: %s\n", key, v.GetDescription())
+    score := v.GetScore()
+    if score < 0 || score > 1 {
+        return fmt.Errorf("metric score must be between 0-1, current value: %.2f", score)
     }
     
     return nil
 }
 ```
 
-## 扩展性
-
-### 自定义指标实现
+### Batch Validation
 
 ```go
-// 实现自定义指标
-type CustomAttackVector struct {
-    value       rune
-    score       float64
-    description string
-}
-
-func (c *CustomAttackVector) GetGroupName() string {
-    return "Exploitability"
-}
-
-func (c *CustomAttackVector) GetShortName() string {
-    return "AV"
-}
-
-func (c *CustomAttackVector) GetLongName() string {
-    return "Attack Vector"
-}
-
-func (c *CustomAttackVector) GetShortValue() rune {
-    return c.value
-}
-
-func (c *CustomAttackVector) GetLongValue() string {
-    return c.description
-}
-
-func (c *CustomAttackVector) GetDescription() string {
-    return c.description
-}
-
-func (c *CustomAttackVector) GetScore() float64 {
-    return c.score
-}
-
-func (c *CustomAttackVector) String() string {
-    return fmt.Sprintf("%s:%c", c.GetShortName(), c.GetShortValue())
+func validateVectors(vectors []vector.Vector) []error {
+    var errors []error
+    
+    for i, v := range vectors {
+        if err := validateVector(v); err != nil {
+            errors = append(errors, fmt.Errorf("vector %d validation failed: %w", i, err))
+        }
+    }
+    
+    return errors
 }
 ```
 
-## 最佳实践
+## Vector Comparison
 
-### 1. 类型安全
+### Basic Comparison
+
 ```go
-// 使用具体类型而不是接口
-var av *vector.AttackVectorNetwork = &vector.AttackVectorNetwork{}
-// 而不是
-// var av vector.Vector = &vector.AttackVectorNetwork{}
-```
-
-### 2. 工厂函数
-```go
-// 推荐使用工厂函数
-av, err := vector.NewAttackVector('N')
-if err != nil {
-    return err
-}
-
-// 而不是直接实例化
-// av := &vector.AttackVectorNetwork{}
-```
-
-### 3. 错误处理
-```go
-func createVector(key string, value rune) (vector.Vector, error) {
-    switch key {
-    case "AV":
-        return vector.NewAttackVector(value)
-    case "AC":
-        return vector.NewAttackComplexity(value)
-    default:
-        return nil, fmt.Errorf("unknown vector key: %s", key)
+func compareVectors(v1, v2 vector.Vector) {
+    fmt.Printf("Comparing %s and %s:\n", v1.String(), v2.String())
+    
+    if v1.GetShortName() != v2.GetShortName() {
+        fmt.Println("  Different metric types, cannot compare")
+        return
+    }
+    
+    score1 := v1.GetScore()
+    score2 := v2.GetScore()
+    
+    if score1 > score2 {
+        fmt.Printf("  %s (%.2f) > %s (%.2f)\n", 
+            v1.GetDescription(), score1, v2.GetDescription(), score2)
+    } else if score1 < score2 {
+        fmt.Printf("  %s (%.2f) < %s (%.2f)\n", 
+            v1.GetDescription(), score1, v2.GetDescription(), score2)
+    } else {
+        fmt.Printf("  %s = %s (%.2f)\n", 
+            v1.GetDescription(), v2.GetDescription(), score1)
     }
 }
 ```
 
-## 包结构
+### Vector Grouping
 
-```
-vector/
-├── vector.go                    # Vector 接口定义
-├── vector_impl.go              # 通用实现
-├── factory.go                  # 工厂函数
-├── attack_vector.go            # 攻击向量实现
-├── attack_complexity.go        # 攻击复杂性实现
-├── privileges_required.go      # 所需权限实现
-├── user_interaction.go         # 用户交互实现
-├── scope.go                    # 影响范围实现
-├── confidentiality.go          # 机密性影响实现
-├── integrity.go                # 完整性影响实现
-├── availability.go             # 可用性影响实现
-├── exploit_code_maturity.go    # 漏洞利用代码成熟度实现
-├── remediation_level.go        # 修复级别实现
-├── report_confidence.go        # 报告可信度实现
-├── confidentiality_requirement.go # 机密性需求实现
-├── integrity_requirement.go    # 完整性需求实现
-├── availability_requirement.go # 可用性需求实现
-└── not_defined_vectors.go      # 未定义向量实现
+```go
+func groupVectorsByType(vectors []vector.Vector) map[string][]vector.Vector {
+    groups := make(map[string][]vector.Vector)
+    
+    for _, v := range vectors {
+        groupName := v.GetGroupName()
+        groups[groupName] = append(groups[groupName], v)
+    }
+    
+    return groups
+}
 ```
 
-## 下一步
+## Extension and Customization
 
-深入了解具体的指标类型：
+### Custom Vector
 
-- 📖 [Vector 接口详解](/api/vector/interface)
-- 🎯 [基础指标详解](/api/vector/base-metrics)
-- ⏱️ [时间指标详解](/api/vector/temporal-metrics)
-- 🌍 [环境指标详解](/api/vector/environmental-metrics)
+```go
+// Custom vector implementation
+type CustomVector struct {
+    groupName   string
+    shortName   string
+    longName    string
+    shortValue  rune
+    longValue   string
+    description string
+    score       float64
+}
+
+func (c *CustomVector) GetGroupName() string { return c.groupName }
+func (c *CustomVector) GetShortName() string { return c.shortName }
+func (c *CustomVector) GetLongName() string { return c.longName }
+func (c *CustomVector) GetShortValue() rune { return c.shortValue }
+func (c *CustomVector) GetLongValue() string { return c.longValue }
+func (c *CustomVector) GetDescription() string { return c.description }
+func (c *CustomVector) GetScore() float64 { return c.score }
+func (c *CustomVector) String() string {
+    return fmt.Sprintf("%s:%c", c.shortName, c.shortValue)
+}
+```
+
+### Vector Registry
+
+```go
+type VectorRegistry struct {
+    vectors map[string]map[rune]vector.Vector
+}
+
+func NewVectorRegistry() *VectorRegistry {
+    return &VectorRegistry{
+        vectors: make(map[string]map[rune]vector.Vector),
+    }
+}
+
+func (r *VectorRegistry) Register(shortName string, value rune, v vector.Vector) {
+    if r.vectors[shortName] == nil {
+        r.vectors[shortName] = make(map[rune]vector.Vector)
+    }
+    r.vectors[shortName][value] = v
+}
+
+func (r *VectorRegistry) Get(shortName string, value rune) (vector.Vector, bool) {
+    if group, exists := r.vectors[shortName]; exists {
+        if v, found := group[value]; found {
+            return v, true
+        }
+    }
+    return nil, false
+}
+```
+
+## Performance Optimization
+
+### Vector Caching
+
+```go
+var vectorCache = make(map[string]vector.Vector)
+var cacheMutex sync.RWMutex
+
+func getCachedVector(key string) (vector.Vector, bool) {
+    cacheMutex.RLock()
+    defer cacheMutex.RUnlock()
+    
+    v, exists := vectorCache[key]
+    return v, exists
+}
+
+func setCachedVector(key string, v vector.Vector) {
+    cacheMutex.Lock()
+    defer cacheMutex.Unlock()
+    
+    vectorCache[key] = v
+}
+```
+
+### Object Pool
+
+```go
+var vectorPool = sync.Pool{
+    New: func() interface{} {
+        return &vector.AttackVectorNetwork{}
+    },
+}
+
+func getVectorFromPool() vector.Vector {
+    return vectorPool.Get().(vector.Vector)
+}
+
+func putVectorToPool(v vector.Vector) {
+    vectorPool.Put(v)
+}
+```
+
+## Best Practices
+
+### 1. Type Safety
+
+```go
+func getAttackVectorScore(v vector.Vector) (float64, error) {
+    if v.GetShortName() != "AV" {
+        return 0, fmt.Errorf("not an attack vector metric")
+    }
+    return v.GetScore(), nil
+}
+```
+
+### 2. Null Value Handling
+
+```go
+func safeGetScore(v vector.Vector) float64 {
+    if v == nil {
+        return 0.0
+    }
+    return v.GetScore()
+}
+```
+
+### 3. Interface Composition
+
+```go
+type CVSSVector interface {
+    vector.Vector
+    IsRequired() bool
+    GetCategory() string
+}
+```
+
+## Related Documentation
+
+- [Vector Interface Details](/api/vector/interface)
+- [Cvss3x Data Structure](/api/cvss/cvss3x)
+- [Parser](/api/parser/cvss3x-parser)
+- [Usage Examples](/examples/basic)
