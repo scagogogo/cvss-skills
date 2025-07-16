@@ -1,8 +1,8 @@
-# 基础用法示例
+# Basic Usage Examples
 
-这个示例演示了 CVSS Parser 的最基本用法：解析 CVSS 向量字符串并计算评分。
+This example demonstrates the most basic usage of CVSS Parser: parsing CVSS vector strings and calculating scores.
 
-## 示例代码
+## Example Code
 
 ```go
 package main
@@ -17,240 +17,311 @@ import (
 
 func main() {
     // =====================================================
-    // CVSS解析器基础用法示例
-    // 演示如何解析CVSS向量字符串并获取其基本信息和评分
+    // CVSS Parser Basic Usage Example
+    // Demonstrates how to parse CVSS vector strings and get basic information and scores
     // =====================================================
 
-    // 示例CVSS向量字符串 - 关键级别(Critical)，评分为9.8
+    // Example CVSS vector string - Critical level, score 9.8
     cvssVector := "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
-    fmt.Println("示例CVSS向量:", cvssVector)
+    fmt.Println("Example CVSS Vector:", cvssVector)
     fmt.Println("=====================================================")
 
-    // 第1步: 创建解析器
+    // Step 1: Create parser
     p := parser.NewCvss3xParser(cvssVector)
+    fmt.Println("✓ Parser created successfully")
 
-    // 第2步: 解析CVSS向量
-    cvss3x, err := p.Parse()
+    // Step 2: Parse CVSS vector
+    parsedVector, err := p.Parse()
     if err != nil {
-        log.Fatalf("解析CVSS向量失败: %v", err)
+        log.Fatalf("Parse failed: %v", err)
     }
+    fmt.Println("✓ Vector parsed successfully")
 
-    // 第3步: 输出解析结果
-    fmt.Println("解析结果:")
-    fmt.Printf("  CVSS版本: %d.%d\n", cvss3x.MajorVersion, cvss3x.MinorVersion)
-    fmt.Println("\n基础指标:")
-    fmt.Printf("  攻击向量(AV): %s\n", cvss3x.Cvss3xBase.AttackVector.GetLongValue())
-    fmt.Printf("  攻击复杂性(AC): %s\n", cvss3x.Cvss3xBase.AttackComplexity.GetLongValue())
-    fmt.Printf("  权限要求(PR): %s\n", cvss3x.Cvss3xBase.PrivilegesRequired.GetLongValue())
-    fmt.Printf("  用户交互(UI): %s\n", cvss3x.Cvss3xBase.UserInteraction.GetLongValue())
-    fmt.Printf("  范围(S): %s\n", cvss3x.Cvss3xBase.Scope.GetLongValue())
-    fmt.Printf("  机密性(C): %s\n", cvss3x.Cvss3xBase.Confidentiality.GetLongValue())
-    fmt.Printf("  完整性(I): %s\n", cvss3x.Cvss3xBase.Integrity.GetLongValue())
-    fmt.Printf("  可用性(A): %s\n", cvss3x.Cvss3xBase.Availability.GetLongValue())
+    // Step 3: Display basic information
+    fmt.Printf("CVSS Version: %d.%d\n", parsedVector.MajorVersion, parsedVector.MinorVersion)
+    fmt.Printf("Vector String: %s\n", parsedVector.String())
 
-    // 第4步: 创建计算器并计算CVSS评分
-    calculator := cvss.NewCalculator(cvss3x)
+    // Step 4: Create calculator
+    calculator := cvss.NewCalculator(parsedVector)
+    fmt.Println("✓ Calculator created successfully")
+
+    // Step 5: Calculate score
     score, err := calculator.Calculate()
     if err != nil {
-        log.Fatalf("计算CVSS评分失败: %v", err)
+        log.Fatalf("Score calculation failed: %v", err)
     }
 
-    // 第5步: 获取严重性等级
+    // Step 6: Get severity rating
     severity := calculator.GetSeverityRating(score)
-    fmt.Printf("\nCVSS评分: %.1f\n", score)
-    fmt.Printf("严重性等级: %s\n", severity)
 
-    // 第6步: 将CVSS对象转换回向量字符串
-    fmt.Printf("\n原始向量: %s\n", cvssVector)
-    fmt.Printf("重构向量: %s\n", cvss3x.String())
+    // Step 7: Display results
+    fmt.Println("=====================================================")
+    fmt.Println("CALCULATION RESULTS:")
+    fmt.Printf("Base Score: %.1f\n", score)
+    fmt.Printf("Severity Level: %s\n", severity)
+    fmt.Println("=====================================================")
 
-    fmt.Println("\n=====================================================")
-    fmt.Println("基础用法示例结束")
-    fmt.Println("运行其他示例以了解更多功能")
+    // Additional information: Display individual metric details
+    fmt.Println("\nMETRIC DETAILS:")
+    fmt.Printf("Attack Vector: %s (%s)\n", 
+        parsedVector.Cvss3xBase.AttackVector.GetLongValue(),
+        parsedVector.Cvss3xBase.AttackVector.GetDescription())
+    
+    fmt.Printf("Attack Complexity: %s (%s)\n", 
+        parsedVector.Cvss3xBase.AttackComplexity.GetLongValue(),
+        parsedVector.Cvss3xBase.AttackComplexity.GetDescription())
+    
+    fmt.Printf("Privileges Required: %s (%s)\n", 
+        parsedVector.Cvss3xBase.PrivilegesRequired.GetLongValue(),
+        parsedVector.Cvss3xBase.PrivilegesRequired.GetDescription())
+    
+    fmt.Printf("User Interaction: %s (%s)\n", 
+        parsedVector.Cvss3xBase.UserInteraction.GetLongValue(),
+        parsedVector.Cvss3xBase.UserInteraction.GetDescription())
+    
+    fmt.Printf("Scope: %s (%s)\n", 
+        parsedVector.Cvss3xBase.Scope.GetLongValue(),
+        parsedVector.Cvss3xBase.Scope.GetDescription())
+    
+    fmt.Printf("Confidentiality Impact: %s (%s)\n", 
+        parsedVector.Cvss3xBase.ConfidentialityImpact.GetLongValue(),
+        parsedVector.Cvss3xBase.ConfidentialityImpact.GetDescription())
+    
+    fmt.Printf("Integrity Impact: %s (%s)\n", 
+        parsedVector.Cvss3xBase.IntegrityImpact.GetLongValue(),
+        parsedVector.Cvss3xBase.IntegrityImpact.GetDescription())
+    
+    fmt.Printf("Availability Impact: %s (%s)\n", 
+        parsedVector.Cvss3xBase.AvailabilityImpact.GetLongValue(),
+        parsedVector.Cvss3xBase.AvailabilityImpact.GetDescription())
 }
 ```
 
-## 运行示例
+## Expected Output
 
-```bash
-# 进入项目目录
-cd cvss
-
-# 运行基础示例
-go run examples/01_basic/main.go
-```
-
-## 预期输出
+When you run this example, you should see output similar to:
 
 ```
-示例CVSS向量: CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H
+Example CVSS Vector: CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H
 =====================================================
-解析结果:
-  CVSS版本: 3.1
-
-基础指标:
-  攻击向量(AV): Network
-  攻击复杂性(AC): Low
-  权限要求(PR): None
-  用户交互(UI): None
-  范围(S): Unchanged
-  机密性(C): High
-  完整性(I): High
-  可用性(A): High
-
-CVSS评分: 9.8
-严重性等级: Critical
-
-原始向量: CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H
-重构向量: CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H
-
+✓ Parser created successfully
+✓ Vector parsed successfully
+CVSS Version: 3.1
+Vector String: CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H
+✓ Calculator created successfully
 =====================================================
-基础用法示例结束
-运行其他示例以了解更多功能
+CALCULATION RESULTS:
+Base Score: 9.8
+Severity Level: Critical
+=====================================================
+
+METRIC DETAILS:
+Attack Vector: Network (The vulnerable component is bound to the network stack...)
+Attack Complexity: Low (Specialized access conditions or extenuating circumstances...)
+Privileges Required: None (The attacker is unauthorized prior to attack...)
+User Interaction: None (The vulnerable system can be exploited without interaction...)
+Scope: Unchanged (An exploited vulnerability can only affect resources...)
+Confidentiality Impact: High (There is a total loss of confidentiality...)
+Integrity Impact: High (There is a total loss of integrity...)
+Availability Impact: High (There is a total loss of availability...)
 ```
 
-## 代码解析
+## Step-by-Step Explanation
 
-### 1. 创建解析器
+### Step 1: Import Required Packages
+
+```go
+import (
+    "fmt"
+    "log"
+
+    "github.com/scagogogo/cvss-parser/pkg/cvss"
+    "github.com/scagogogo/cvss-parser/pkg/parser"
+)
+```
+
+- `cvss` package: Contains the calculator and data structures
+- `parser` package: Contains the CVSS vector string parser
+
+### Step 2: Create Parser
 
 ```go
 p := parser.NewCvss3xParser(cvssVector)
 ```
 
-创建一个新的 CVSS 3.x 解析器实例，传入要解析的向量字符串。
+The parser is responsible for converting CVSS vector strings into structured data objects.
 
-### 2. 解析向量
+### Step 3: Parse Vector
 
 ```go
-cvss3x, err := p.Parse()
+parsedVector, err := p.Parse()
 ```
 
-调用 `Parse()` 方法解析向量字符串，返回结构化的 CVSS 对象和可能的错误。
+This converts the string into a `Cvss3x` object containing all metric information.
 
-### 3. 访问解析结果
+### Step 4: Create Calculator
 
 ```go
-fmt.Printf("CVSS版本: %d.%d\n", cvss3x.MajorVersion, cvss3x.MinorVersion)
-fmt.Printf("攻击向量(AV): %s\n", cvss3x.Cvss3xBase.AttackVector.GetLongValue())
+calculator := cvss.NewCalculator(parsedVector)
 ```
 
-通过 CVSS 对象的字段和方法访问各种信息：
-- `MajorVersion`, `MinorVersion`: 版本信息
-- `Cvss3xBase.*`: 基础指标
-- `GetLongValue()`: 获取指标的完整描述
+The calculator uses the parsed vector to compute CVSS scores.
 
-### 4. 计算评分
+### Step 5: Calculate Score
 
 ```go
-calculator := cvss.NewCalculator(cvss3x)
 score, err := calculator.Calculate()
 ```
 
-创建计算器并计算 CVSS 评分。计算器会根据向量中的指标自动选择合适的计算方法。
+This computes the final CVSS score based on the metrics.
 
-### 5. 获取严重性等级
+### Step 6: Get Severity Rating
 
 ```go
 severity := calculator.GetSeverityRating(score)
 ```
 
-根据评分获取对应的严重性等级（None、Low、Medium、High、Critical）。
+Converts the numerical score to a human-readable severity level.
 
-### 6. 向量字符串转换
+## Common Variations
 
-```go
-fmt.Printf("重构向量: %s\n", cvss3x.String())
-```
-
-将 CVSS 对象转换回标准的向量字符串格式。
-
-## 关键概念
-
-### CVSS 向量格式
-
-```
-CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H
-```
-
-- `CVSS:3.1`: 版本标识
-- `AV:N`: 攻击向量为网络 (Network)
-- `AC:L`: 攻击复杂性为低 (Low)
-- `PR:N`: 所需权限为无 (None)
-- `UI:N`: 用户交互为无 (None)
-- `S:U`: 影响范围不变 (Unchanged)
-- `C:H`: 机密性影响为高 (High)
-- `I:H`: 完整性影响为高 (High)
-- `A:H`: 可用性影响为高 (High)
-
-### 严重性等级
-
-| 评分范围 | 严重性等级 | 描述 |
-|----------|------------|------|
-| 0.0 | None | 无影响 |
-| 0.1-3.9 | Low | 低危 |
-| 4.0-6.9 | Medium | 中危 |
-| 7.0-8.9 | High | 高危 |
-| 9.0-10.0 | Critical | 严重 |
-
-## 错误处理
-
-示例中包含了基本的错误处理：
+### Different Vector Examples
 
 ```go
+// Low severity example
+lowVector := "CVSS:3.1/AV:L/AC:H/PR:H/UI:R/S:U/C:L/I:L/A:L"
+
+// Medium severity example
+mediumVector := "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:L"
+
+// High severity example
+highVector := "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+
+// Critical severity example
+criticalVector := "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+```
+
+### Batch Processing
+
+```go
+func processMultipleVectors() {
+    vectors := []string{
+        "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+        "CVSS:3.1/AV:L/AC:H/PR:H/UI:R/S:U/C:L/I:L/A:L",
+        "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:L",
+    }
+
+    for i, vectorStr := range vectors {
+        fmt.Printf("\n--- Processing Vector %d ---\n", i+1)
+        
+        parser := parser.NewCvss3xParser(vectorStr)
+        vector, err := parser.Parse()
+        if err != nil {
+            fmt.Printf("Error: %v\n", err)
+            continue
+        }
+
+        calculator := cvss.NewCalculator(vector)
+        score, err := calculator.Calculate()
+        if err != nil {
+            fmt.Printf("Error: %v\n", err)
+            continue
+        }
+
+        severity := calculator.GetSeverityRating(score)
+        fmt.Printf("Vector: %s\n", vectorStr)
+        fmt.Printf("Score: %.1f (%s)\n", score, severity)
+    }
+}
+```
+
+### Error Handling
+
+```go
+func safeParseAndCalculate(vectorStr string) {
+    // Input validation
+    if vectorStr == "" {
+        fmt.Println("Error: Vector string cannot be empty")
+        return
+    }
+
+    // Parse with error handling
+    parser := parser.NewCvss3xParser(vectorStr)
+    vector, err := parser.Parse()
+    if err != nil {
+        fmt.Printf("Parse error: %v\n", err)
+        return
+    }
+
+    // Validate parsed vector
+    if !vector.IsValid() {
+        fmt.Println("Error: Parsed vector is invalid")
+        return
+    }
+
+    // Calculate with error handling
+    calculator := cvss.NewCalculator(vector)
+    score, err := calculator.Calculate()
+    if err != nil {
+        fmt.Printf("Calculation error: %v\n", err)
+        return
+    }
+
+    // Success
+    severity := calculator.GetSeverityRating(score)
+    fmt.Printf("Success: %s -> %.1f (%s)\n", vectorStr, score, severity)
+}
+```
+
+## Running the Example
+
+1. **Save the code** to a file named `basic_example.go`
+
+2. **Initialize Go module** (if not already done):
+   ```bash
+   go mod init cvss-example
+   go get github.com/scagogogo/cvss
+   ```
+
+3. **Run the example**:
+   ```bash
+   go run basic_example.go
+   ```
+
+## Next Steps
+
+After understanding this basic example, you can explore:
+
+- [Vector Parsing Examples](/examples/parsing) - Different vector formats
+- [JSON Output Examples](/examples/json) - Data serialization
+- [Distance Calculation Examples](/examples/distance) - Vector comparison
+- [Advanced Examples](/examples/edge-cases) - Error handling and edge cases
+
+## Common Issues
+
+### Import Path Errors
+
+Make sure you're using the correct import path:
+```go
+"github.com/scagogogo/cvss-parser/pkg/cvss"
+"github.com/scagogogo/cvss-parser/pkg/parser"
+```
+
+### Invalid Vector Strings
+
+Ensure your CVSS vector strings follow the correct format:
+- Start with `CVSS:3.0/` or `CVSS:3.1/`
+- Include all required base metrics
+- Use valid metric values
+
+### Nil Pointer Errors
+
+Always check for errors after parsing:
+```go
+vector, err := parser.Parse()
 if err != nil {
-    log.Fatalf("解析CVSS向量失败: %v", err)
+    // Handle error
+    return
 }
+// Now safe to use vector
 ```
-
-常见的错误包括：
-- 向量格式不正确
-- 版本号不支持
-- 指标值无效
-- 缺少必需的指标
-
-## 扩展练习
-
-尝试修改示例代码：
-
-1. **更换向量**: 使用不同的 CVSS 向量字符串
-2. **添加验证**: 在解析后验证向量的完整性
-3. **批量处理**: 解析多个向量并比较评分
-4. **错误处理**: 添加更详细的错误处理逻辑
-
-### 练习1: 不同严重性的向量
-
-```go
-vectors := []string{
-    "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",  // Critical
-    "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",  // High
-    "CVSS:3.1/AV:L/AC:H/PR:H/UI:R/S:U/C:L/I:L/A:L",  // Low
-}
-
-for _, vector := range vectors {
-    // 解析和计算每个向量
-}
-```
-
-### 练习2: 详细的指标分析
-
-```go
-// 输出每个指标的评分
-fmt.Printf("攻击向量评分: %.2f\n", cvss3x.Cvss3xBase.AttackVector.GetScore())
-fmt.Printf("攻击复杂性评分: %.2f\n", cvss3x.Cvss3xBase.AttackComplexity.GetScore())
-// ... 其他指标
-```
-
-## 下一步
-
-完成基础示例后，可以继续学习：
-
-- [解析向量](/examples/parsing) - 学习解析不同格式的向量
-- [JSON 输出](/examples/json) - 了解数据序列化
-- [时间指标](/examples/temporal) - 探索时间指标的使用
-- [距离计算](/examples/distance) - 学习向量分析功能
-
-## 相关文档
-
-- [Cvss3xParser API](/api/parser/cvss3x-parser)
-- [Calculator API](/api/cvss/calculator)
-- [Cvss3x 数据结构](/api/cvss/cvss3x)
