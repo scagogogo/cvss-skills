@@ -1,23 +1,23 @@
-# parser 包
+# parser Package
 
-`parser` 包负责将 CVSS 向量字符串解析为结构化的数据对象，支持 CVSS 3.0 和 3.1 格式。
+The `parser` package is responsible for parsing CVSS vector strings into structured data objects, supporting CVSS 3.0 and 3.1 formats.
 
-## 包概述
+## Package Overview
 
 ```go
 import "github.com/scagogogo/cvss-parser/pkg/parser"
 ```
 
-## 主要类型
+## Main Types
 
-| 类型 | 描述 | 文档链接 |
-|------|------|----------|
-| `Cvss3xParser` | CVSS 3.x 向量字符串解析器 | [详细文档](/api/parser/cvss3x-parser) |
-| `VectorParser` | 通用向量解析器接口 | [详细文档](/api/parser/vector-parser) |
+| Type | Description | Documentation Link |
+|------|-------------|-------------------|
+| `Cvss3xParser` | CVSS 3.x vector string parser | [Detailed Documentation](/api/parser/cvss3x-parser) |
+| `VectorParser` | Generic vector parser interface | [Detailed Documentation](/api/parser/vector-parser) |
 
-## 快速示例
+## Quick Examples
 
-### 基本解析
+### Basic Parsing
 
 ```go
 package main
@@ -30,16 +30,16 @@ import (
 )
 
 func main() {
-    // 创建解析器
+    // Create parser
     p := parser.NewCvss3xParser("CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H")
-    
-    // 解析向量
+
+    // Parse vector
     cvssVector, err := p.Parse()
     if err != nil {
-        log.Fatalf("解析失败: %v", err)
+        log.Fatalf("Parse failed: %v", err)
     }
-    
-    fmt.Printf("解析成功: %s\n", cvssVector.String())
+
+    fmt.Printf("Parse successful: %s\n", cvssVector.String())
 }
 ```
 

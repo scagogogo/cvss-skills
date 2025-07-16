@@ -1,99 +1,206 @@
-# API 参考
+# API Reference
 
-CVSS Parser 提供了一套完整的 Go 语言 API，用于解析、计算和处理 CVSS (通用漏洞评分系统) 向量。
+CVSS Parser provides a complete set of Go language APIs for parsing, calculating, and processing CVSS (Common Vulnerability Scoring System) vectors.
 
-## 包结构
+## Package Structure
 
-CVSS Parser 包含三个主要的包：
+CVSS Parser contains three main packages:
 
 ### 📦 [cvss](/api/cvss/)
-核心包，包含 CVSS 数据结构、评分计算器和距离计算功能。
+Core package containing CVSS data structures, score calculators, and distance calculation functionality.
 
-**主要类型：**
-- `Cvss3x` - CVSS 3.x 向量表示
-- `Calculator` - CVSS 评分计算器
-- `DistanceCalculator` - 向量距离计算器
+**Main Types:**
+- `Cvss3x` - CVSS 3.x vector representation
+- `Calculator` - CVSS score calculator
+- `DistanceCalculator` - Vector distance calculator
 
 ### 📦 [parser](/api/parser/)
-解析包，负责将 CVSS 向量字符串解析为结构化数据。
+Parsing package responsible for parsing CVSS vector strings into structured data.
 
-**主要类型：**
-- `Cvss3xParser` - CVSS 3.x 向量解析器
-- `VectorParser` - 通用向量解析器
+**Main Types:**
+- `Cvss3xParser` - CVSS 3.x vector string parser
+- `VectorParser` - Generic vector parser interface
 
 ### 📦 [vector](/api/vector/)
-向量包，定义了 CVSS 各种指标的接口和实现。
+Vector package providing unified interfaces and implementations for all CVSS metrics.
 
-**主要类型：**
-- `Vector` - 向量接口
-- 各种指标实现（攻击向量、攻击复杂性等）
+**Main Types:**
+- `Vector` - Unified interface for all metrics
+- Specific implementations for base, temporal, and environmental metrics
 
-## 快速导航
+## Quick Navigation
 
-### 🚀 新手入门
-- [快速开始](/api/getting-started) - 5分钟上手指南
-- [基础示例](/examples/basic) - 最简单的使用示例
+### 🚀 Getting Started
+- [5-Minute Quick Start](/api/getting-started) - Fastest way to get started
+- [Basic Examples](/examples/basic) - Simple usage examples
 
-### 🔧 核心功能
-- [解析CVSS向量](/api/parser/cvss3x-parser) - 字符串解析
-- [计算CVSS评分](/api/cvss/calculator) - 评分计算
-- [向量距离计算](/api/cvss/distance) - 相似度分析
+### 📚 Core Packages
+- [CVSS Package Guide](/api/cvss/) - Core functionality introduction
+- [Parser Usage](/api/parser/) - String parsing
+- [Vector Analysis](/api/vector/) - Metric interfaces
 
-### 📊 高级功能
-- [JSON支持](/api/cvss/json) - 序列化和反序列化
-- [时间指标](/api/vector/temporal-metrics) - 时间评分
-- [环境指标](/api/vector/environmental-metrics) - 环境评分
+### 💡 Practical Examples
+- [JSON Processing](/examples/json) - Data serialization
+- [Batch Processing](/examples/parsing) - Batch vector parsing
+- [Similarity Analysis](/examples/distance) - Vector comparison
 
-## 设计原则
+## Quick Start
 
-### 类型安全
-所有 API 都使用强类型设计，在编译时捕获错误：
+### Basic Usage
 
 ```go
-// 类型安全的向量创建
-vector := &cvss.Cvss3x{
-    MajorVersion: 3,
-    MinorVersion: 1,
-    Cvss3xBase: &cvss.Cvss3xBase{
-        AttackVector: &vector.AttackVectorNetwork{},
-        // ...
+package main
+
+import (
+    "fmt"
+    "log"
+
+    "github.com/scagogogo/cvss-parser/pkg/cvss"
+    "github.com/scagogogo/cvss-parser/pkg/parser"
+)
+
+func main() {
+    // Parse CVSS vector
+    p := parser.NewCvss3xParser("CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H")
+    vector, err := p.Parse()
+    if err != nil {
+        log.Fatalf("Parse failed: %v", err)
+    }
+
+    // Calculate score
+    calculator := cvss.NewCalculator(vector)
+    score, err := calculator.Calculate()
+    if err != nil {
+        log.Fatalf("Calculation failed: %v", err)
+    }
+
+    fmt.Printf("CVSS Score: %.1f\n", score)
+    fmt.Printf("Severity: %s\n", calculator.GetSeverityRating(score))
+}
+```
+
+### Advanced Features
+
+```go
+// Vector comparison
+distCalc := cvss.NewDistanceCalculator(vector1, vector2)
+distance := distCalc.EuclideanDistance()
+
+// JSON serialization
+jsonData, err := json.Marshal(vector)
+```
+
+## API Design Principles
+
+### 🎯 Type Safety
+
+All APIs use strong typing to catch errors at compile time:
+
+```go
+type Calculator interface {
+    Calculate() (float64, error)
+    GetSeverityRating(score float64) string
+}
+```
+
+### 🔧 Flexible Configuration
+
+Support multiple configuration options to adapt to different needs:
+
+```go
+// Strict mode parsing
+parser := parser.NewCvss3xParser(vectorStr)
+parser.SetStrictMode(true)
+
+// Tolerant mode parsing
+parser.SetStrictMode(false)
+```
+
+### 📊 Rich Error Information
+
+Provide detailed error information to help with debugging:
+
+```go
+if err != nil {
+    switch e := err.(type) {
+    case *parser.ParseError:
+        fmt.Printf("Parse error: %s (position: %d)", e.Message, e.Position)
+    case *cvss.CalculationError:
+        fmt.Printf("Calculation error: %s", e.Message)
+    }
+}
+```
+
+## Performance Characteristics
+
+### ⚡ High Performance
+
+- Zero-allocation parser design
+- Optimized calculation algorithms
+- Memory-friendly data structures
+
+### 📈 Scalability
+
+- Support for batch processing
+- Concurrent-safe design
+- Pluggable component architecture
+
+## Version Compatibility
+
+| CVSS Parser Version | CVSS Specification Support | Go Version Requirement |
+|---------------------|----------------------------|------------------------|
+| v1.x | CVSS 3.0, 3.1 | Go 1.19+ |
+| v2.x | CVSS 3.0, 3.1, 4.0 | Go 1.21+ |
+
+## Best Practices
+
+### 🛡️ Error Handling
+
+Always check errors and provide appropriate handling:
+
+```go
+vector, err := parser.Parse()
+if err != nil {
+    log.Printf("Parse failed: %v", err)
+    return
+}
+```
+
+### 🔄 Resource Management
+
+For large data processing, consider using object pools:
+
+```go
+var parserPool = sync.Pool{
+    New: func() interface{} {
+        return parser.NewCvss3xParser("")
     },
 }
 ```
 
-### 错误处理
-遵循 Go 语言惯例，明确的错误处理：
+### 📊 Performance Monitoring
+
+Use built-in performance metrics:
 
 ```go
+start := time.Now()
 score, err := calculator.Calculate()
-if err != nil {
-    return fmt.Errorf("计算评分失败: %w", err)
-}
+duration := time.Since(start)
+log.Printf("Calculation took: %v", duration)
 ```
 
-### 零依赖
-纯 Go 实现，无外部依赖，易于集成：
+## Next Steps
 
-```go
-import "github.com/scagogogo/cvss-parser/pkg/cvss"
-```
+- **[Getting Started](/api/getting-started)** - 5-minute quick start guide
+- **[CVSS Package Deep Dive](/api/cvss/)** - Core functionality overview
+- **[Example Code](/examples/)** - Practical usage examples
+- **[Best Practices](/api/best-practices)** - Production environment recommendations
 
-## 版本兼容性
+## Getting Help
 
-| CVSS Parser 版本 | Go 版本要求 | CVSS 规范支持 |
-|-----------------|------------|--------------|
-| v1.x.x          | Go 1.19+   | CVSS 3.0, 3.1 |
+If you encounter issues while using the API:
 
-## 性能特性
-
-- **高性能解析**: 优化的字符串解析算法
-- **内存效率**: 最小化内存分配
-- **并发安全**: 所有计算器都是并发安全的
-
-## 下一步
-
-选择你感兴趣的主题：
-
-- 📖 [快速开始指南](/api/getting-started)
-- 🔍 [浏览完整示例](/examples/)
-- 🛠️ [查看具体包文档](/api/cvss/)
+1. Check the [FAQ](/api/faq)
+2. Browse [Example Code](/examples/)
+3. Submit issues on [GitHub](https://github.com/scagogogo/cvss/issues)
+4. Join [Community Discussions](https://github.com/scagogogo/cvss/discussions)

@@ -1,44 +1,18 @@
-# 快速开始
+# Getting Started
 
-本指南将帮助你在 5 分钟内开始使用 CVSS Parser。
+This guide will help you get started with CVSS Parser in 5 minutes.
 
-## 安装
+## Installation
 
-使用 Go modules 安装 CVSS Parser：
+Install CVSS Parser using Go modules:
 
 ```bash
 go get github.com/scagogogo/cvss
 ```
 
-## 基础用法
+## Your First Program
 
-### 1. 解析 CVSS 向量
-
-```go
-package main
-
-import (
-    "fmt"
-    "log"
-    
-    "github.com/scagogogo/cvss-parser/pkg/parser"
-)
-
-func main() {
-    // 创建解析器
-    p := parser.NewCvss3xParser("CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H")
-    
-    // 解析向量
-    cvssVector, err := p.Parse()
-    if err != nil {
-        log.Fatalf("解析失败: %v", err)
-    }
-    
-    fmt.Printf("解析成功: %s\n", cvssVector.String())
-}
-```
-
-### 2. 计算 CVSS 评分
+Create a new Go file `main.go`:
 
 ```go
 package main
@@ -46,175 +20,265 @@ package main
 import (
     "fmt"
     "log"
-    
-    "github.com/scagogogo/cvss-parser/pkg/parser"
+
     "github.com/scagogogo/cvss-parser/pkg/cvss"
+    "github.com/scagogogo/cvss-parser/pkg/parser"
 )
 
 func main() {
-    // 解析向量
-    p := parser.NewCvss3xParser("CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H")
+    // 1. Create parser
+    vectorStr := "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+    p := parser.NewCvss3xParser(vectorStr)
+
+    // 2. Parse CVSS vector
     cvssVector, err := p.Parse()
     if err != nil {
-        log.Fatalf("解析失败: %v", err)
+        log.Fatalf("Parse failed: %v", err)
     }
-    
-    // 创建计算器
+
+    // 3. Create calculator
     calculator := cvss.NewCalculator(cvssVector)
-    
-    // 计算评分
+
+    // 4. Calculate score
     score, err := calculator.Calculate()
     if err != nil {
-        log.Fatalf("计算失败: %v", err)
+        log.Fatalf("Calculation failed: %v", err)
     }
-    
-    fmt.Printf("CVSS 评分: %.1f\n", score)
-    fmt.Printf("严重性级别: %s\n", calculator.GetSeverityRating(score))
+
+    // 5. Get severity rating
+    severity := calculator.GetSeverityRating(score)
+
+    // 6. Output results
+    fmt.Printf("CVSS Vector: %s\n", vectorStr)
+    fmt.Printf("Base Score: %.1f\n", score)
+    fmt.Printf("Severity: %s\n", severity)
 }
 ```
 
-### 3. JSON 输出
+Run the program:
+
+```bash
+go run main.go
+```
+
+Output:
+```
+CVSS Vector: CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H
+Base Score: 9.8
+Severity: Critical
+```
+
+## Core Concepts
+
+### 1. CVSS Vector
+
+A CVSS vector is a string describing vulnerability characteristics:
+
+```
+CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H
+```
+
+- `CVSS:3.1` - Version identifier
+- `AV:N` - Attack Vector: Network
+- `AC:L` - Attack Complexity: Low
+- `PR:N` - Privileges Required: None
+- `UI:N` - User Interaction: None
+- `S:U` - Scope: Unchanged
+- `C:H` - Confidentiality Impact: High
+- `I:H` - Integrity Impact: High
+- `A:H` - Availability Impact: High
+
+### 2. Parser
+
+The parser converts CVSS vector strings into structured objects:
 
 ```go
-package main
+// Create parser
+parser := parser.NewCvss3xParser(vectorString)
 
-import (
-    "encoding/json"
-    "fmt"
-    "log"
-    
-    "github.com/scagogogo/cvss-parser/pkg/parser"
-)
+// Parse vector
+cvssVector, err := parser.Parse()
+```
 
-func main() {
-    // 解析向量
-    p := parser.NewCvss3xParser("CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H")
-    cvssVector, err := p.Parse()
+### 3. Calculator
+
+The calculator computes CVSS scores based on parsed vectors:
+
+```go
+// Create calculator
+calculator := cvss.NewCalculator(cvssVector)
+
+// Calculate score
+score, err := calculator.Calculate()
+```
+
+## Common Features
+
+### Parse Different Vector Types
+
+```go
+// Base vector
+basic := "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+
+// Vector with temporal metrics
+temporal := "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H/E:F/RL:O/RC:C"
+
+// Vector with environmental metrics
+environmental := "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H/CR:H/IR:H/AR:H"
+
+vectors := []string{basic, temporal, environmental}
+
+for _, vectorStr := range vectors {
+    p := parser.NewCvss3xParser(vectorStr)
+    vector, err := p.Parse()
     if err != nil {
-        log.Fatalf("解析失败: %v", err)
+        log.Printf("Parse failed %s: %v", vectorStr, err)
+        continue
     }
     
-    // 转换为 JSON
-    jsonData, err := json.MarshalIndent(cvssVector, "", "  ")
-    if err != nil {
-        log.Fatalf("JSON 序列化失败: %v", err)
-    }
+    calculator := cvss.NewCalculator(vector)
+    score, _ := calculator.Calculate()
     
-    fmt.Println(string(jsonData))
+    fmt.Printf("Vector: %s\n", vectorStr)
+    fmt.Printf("Score: %.1f\n", score)
+    fmt.Printf("Severity: %s\n\n", calculator.GetSeverityRating(score))
 }
 ```
 
-## 常见用例
-
-### 批量处理向量
+### Get Detailed Information
 
 ```go
-func processVectors(vectors []string) {
-    for _, vectorStr := range vectors {
+// Get vector details
+fmt.Printf("CVSS Version: %d.%d\n", cvssVector.MajorVersion, cvssVector.MinorVersion)
+fmt.Printf("Attack Vector: %s\n", cvssVector.Cvss3xBase.AttackVector.GetLongValue())
+fmt.Printf("Attack Complexity: %s\n", cvssVector.Cvss3xBase.AttackComplexity.GetLongValue())
+```
+
+### Vector Comparison
+
+```go
+// Parse two vectors
+vector1, _ := parser.NewCvss3xParser("CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H").Parse()
+vector2, _ := parser.NewCvss3xParser("CVSS:3.1/AV:L/AC:H/PR:H/UI:R/S:U/C:L/I:L/A:L").Parse()
+
+// Calculate distance
+distCalc := cvss.NewDistanceCalculator(vector1, vector2)
+distance := distCalc.EuclideanDistance()
+
+fmt.Printf("Vector distance: %.3f\n", distance)
+```
+
+### JSON Serialization
+
+```go
+import "encoding/json"
+
+// Serialize to JSON
+jsonData, err := json.MarshalIndent(cvssVector, "", "  ")
+if err != nil {
+    log.Fatal(err)
+}
+fmt.Println(string(jsonData))
+
+// Deserialize from JSON
+var newVector cvss.Cvss3x
+err = json.Unmarshal(jsonData, &newVector)
+if err != nil {
+    log.Fatal(err)
+}
+```
+
+## Error Handling
+
+CVSS Parser provides detailed error information:
+
+```go
+vector, err := parser.Parse()
+if err != nil {
+    switch e := err.(type) {
+    case *parser.ParseError:
+        fmt.Printf("Parse error: %s\n", e.Error())
+        fmt.Printf("Error position: %d\n", e.Position)
+    case *parser.ValidationError:
+        fmt.Printf("Validation error: %s\n", e.Error())
+        fmt.Printf("Invalid metric: %s\n", e.Metric)
+    default:
+        fmt.Printf("Unknown error: %v\n", err)
+    }
+}
+```
+
+## Severity Levels
+
+CVSS scores correspond to severity levels:
+
+| Score Range | Severity Level | Description |
+|-------------|----------------|-------------|
+| 0.0 | None | No impact |
+| 0.1-3.9 | Low | Low risk |
+| 4.0-6.9 | Medium | Medium risk |
+| 7.0-8.9 | High | High risk |
+| 9.0-10.0 | Critical | Critical risk |
+
+```go
+score := 7.5
+severity := calculator.GetSeverityRating(score)
+fmt.Printf("Score %.1f corresponds to severity: %s\n", score, severity) // High
+```
+
+## Performance Tips
+
+### 1. Reuse Parsers
+
+```go
+// Good practice: reuse parser
+parser := parser.NewCvss3xParser("")
+for _, vectorStr := range vectors {
+    parser.SetVector(vectorStr)
+    vector, err := parser.Parse()
+    // Process vector...
+}
+```
+
+### 2. Batch Processing
+
+```go
+func processBatch(vectors []string) []float64 {
+    results := make([]float64, len(vectors))
+    
+    for i, vectorStr := range vectors {
         p := parser.NewCvss3xParser(vectorStr)
-        cvssVector, err := p.Parse()
+        vector, err := p.Parse()
         if err != nil {
-            fmt.Printf("解析失败 %s: %v\n", vectorStr, err)
             continue
         }
         
-        calculator := cvss.NewCalculator(cvssVector)
+        calculator := cvss.NewCalculator(vector)
         score, err := calculator.Calculate()
         if err != nil {
-            fmt.Printf("计算失败 %s: %v\n", vectorStr, err)
             continue
         }
         
-        fmt.Printf("%s -> %.1f (%s)\n", 
-            vectorStr, score, calculator.GetSeverityRating(score))
-    }
-}
-```
-
-### 向量比较
-
-```go
-func compareVectors(vector1Str, vector2Str string) {
-    // 解析两个向量
-    p1 := parser.NewCvss3xParser(vector1Str)
-    v1, err := p1.Parse()
-    if err != nil {
-        log.Fatalf("解析向量1失败: %v", err)
+        results[i] = score
     }
     
-    p2 := parser.NewCvss3xParser(vector2Str)
-    v2, err := p2.Parse()
-    if err != nil {
-        log.Fatalf("解析向量2失败: %v", err)
-    }
-    
-    // 计算距离
-    distCalc := cvss.NewDistanceCalculator(v1, v2)
-    distance := distCalc.EuclideanDistance()
-    
-    fmt.Printf("向量距离: %.3f\n", distance)
+    return results
 }
 ```
 
-## 错误处理
+## Next Steps
 
-CVSS Parser 提供详细的错误信息：
+Now that you've mastered the basics, you can continue learning:
 
-```go
-p := parser.NewCvss3xParser("INVALID:VECTOR")
-_, err := p.Parse()
-if err != nil {
-    // 错误信息会包含具体的解析位置和原因
-    fmt.Printf("解析错误: %v\n", err)
-}
-```
+1. **[Detailed API Documentation](/api/)** - Learn about all available APIs
+2. **[Example Code](/examples/)** - See more practical usage examples
+3. **[CVSS Package Deep Dive](/api/cvss/)** - Understand core functionality
+4. **[Best Practices](/api/best-practices)** - Production environment recommendations
 
-常见错误类型：
-- **语法错误**: 向量字符串格式不正确
-- **版本错误**: 不支持的 CVSS 版本
-- **指标错误**: 无效的指标值
-- **计算错误**: 缺少必需的指标
+## Getting Help
 
-## 最佳实践
+If you encounter issues:
 
-### 1. 错误处理
-始终检查错误返回值：
-
-```go
-if err != nil {
-    return fmt.Errorf("操作失败: %w", err)
-}
-```
-
-### 2. 资源管理
-解析器和计算器都是轻量级的，可以按需创建：
-
-```go
-// 每次解析创建新的解析器
-p := parser.NewCvss3xParser(vectorString)
-```
-
-### 3. 并发使用
-计算器是并发安全的，可以在多个 goroutine 中使用：
-
-```go
-go func() {
-    calculator := cvss.NewCalculator(cvssVector)
-    score, _ := calculator.Calculate()
-    // 处理结果
-}()
-```
-
-## 下一步
-
-现在你已经掌握了基础用法，可以：
-
-- 📖 [查看完整 API 文档](/api/cvss/)
-- 🔍 [浏览更多示例](/examples/)
-- 🛠️ [了解高级功能](/api/cvss/distance)
-
-## 需要帮助？
-
-- 查看 [示例代码](/examples/)
-- 阅读 [API 文档](/api/)
-- 访问 [GitHub 仓库](https://github.com/scagogogo/cvss)
+- Check the [FAQ](/api/faq)
+- Browse [GitHub Issues](https://github.com/scagogogo/cvss/issues)
+- Join [Community Discussions](https://github.com/scagogogo/cvss/discussions)
