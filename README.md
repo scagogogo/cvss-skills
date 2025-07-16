@@ -1,30 +1,32 @@
-# CVSS 解析器
+# CVSS Parser
 
 [![Go Tests and Examples](https://github.com/scagogogo/cvss/actions/workflows/go-test.yml/badge.svg)](https://github.com/scagogogo/cvss/actions/workflows/go-test.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/scagogogo/cvss)](https://goreportcard.com/report/github.com/scagogogo/cvss)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-CVSS 解析器是一个 Go 语言库，用于解析、计算和处理 CVSS (通用漏洞评分系统) 向量。支持 CVSS 3.0 和 3.1 版本，提供了全面的功能以满足漏洞管理和安全评估的需求。
+**Languages**: [English](README.md) | [简体中文](README_zh.md)
 
-## 特性
+CVSS Parser is a Go library for parsing, calculating, and processing CVSS (Common Vulnerability Scoring System) vectors. It supports CVSS 3.0 and 3.1 versions, providing comprehensive functionality for vulnerability management and security assessment.
 
-- 支持 CVSS 3.0 和 3.1 向量的解析和计算
-- 计算基础、时间和环境评分
-- 提供 JSON 输出和格式化功能
-- 向量比较和相似度计算
-- 严格模式和容错模式解析
-- 完整的文档和示例
-- 高测试覆盖率
+## Features
 
-## 安装
+- Support for CVSS 3.0 and 3.1 vector parsing and calculation
+- Calculate base, temporal, and environmental scores
+- JSON output and formatting capabilities
+- Vector comparison and similarity calculation
+- Strict and tolerant parsing modes
+- Complete documentation and examples
+- High test coverage
+
+## Installation
 
 ```bash
 go get github.com/scagogogo/cvss
 ```
 
-## 快速开始
+## Quick Start
 
-解析和计算 CVSS 评分：
+Parse and calculate CVSS scores:
 
 ```go
 package main
@@ -32,92 +34,72 @@ package main
 import (
     "fmt"
     "log"
-    
+
+    "github.com/scagogogo/cvss-parser/pkg/cvss"
     "github.com/scagogogo/cvss-parser/pkg/parser"
 )
 
 func main() {
-    vectorString := "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
-    
-    // 解析 CVSS 向量
-    cvssVector, err := parser.ParseVector(vectorString)
+    // Parse CVSS vector
+    p := parser.NewCvss3xParser("CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H")
+    cvssVector, err := p.Parse()
     if err != nil {
-        log.Fatalf("解析向量失败: %v", err)
+        log.Fatalf("Parse failed: %v", err)
     }
-    
-    // 计算 CVSS 评分
-    score := cvssVector.Calculate()
-    
-    fmt.Printf("CVSS 评分: %.1f\n", score.BaseScore)
-    fmt.Printf("严重性: %s\n", score.Severity)
+
+    // Calculate score
+    calculator := cvss.NewCalculator(cvssVector)
+    score, err := calculator.Calculate()
+    if err != nil {
+        log.Fatalf("Calculation failed: %v", err)
+    }
+
+    fmt.Printf("CVSS Score: %.1f\n", score)
+    fmt.Printf("Severity: %s\n", calculator.GetSeverityRating(score))
 }
 ```
 
-更多示例请查看 [examples](./examples) 目录。
+For more examples, see the [examples](./examples) directory.
 
-## 📖 文档
+## 📖 Documentation
 
-- **[在线文档](https://scagogogo.github.io/cvss/)** - 完整的 API 文档和使用指南
-- **[API 参考](https://scagogogo.github.io/cvss/api/)** - 详细的 API 文档
-- **[示例集合](https://scagogogo.github.io/cvss/examples/)** - 丰富的使用示例
-- **[pkg.go.dev](https://pkg.go.dev/github.com/scagogogo/cvss)** - Go 官方文档
+- **[Online Documentation](https://scagogogo.github.io/cvss/)** - Complete API documentation and usage guide
+- **[API Reference](https://scagogogo.github.io/cvss/api/)** - Detailed API documentation
+- **[Examples Collection](https://scagogogo.github.io/cvss/examples/)** - Rich usage examples
+- **[pkg.go.dev](https://pkg.go.dev/github.com/scagogogo/cvss)** - Official Go documentation
 
-## 示例
+## 📚 Learning Resources
 
-库包含一系列详细的示例，展示了不同的功能：
+### Quick Start
+- [5-Minute Quick Start](https://scagogogo.github.io/cvss/api/getting-started) - Fastest way to get started
+- [Basic Examples](https://scagogogo.github.io/cvss/examples/basic) - Simple usage examples
 
-1. [基础用法](./examples/01_basic) - 基本的 CVSS 解析和评分计算
-2. [解析不同类型的向量](./examples/02_parsing) - 展示如何解析各种 CVSS 向量字符串
-3. [JSON 输出](./examples/03_json) - 将 CVSS 对象转换为 JSON 格式
-4. [时间度量指标](./examples/04_temporal) - 使用时间度量指标及其评分影响
-5. [环境度量指标](./examples/05_environmental) - 使用环境度量指标及其评分影响
-6. [向量距离计算](./examples/06_distance) - 计算两个 CVSS 向量之间的距离
-7. [向量比较](./examples/07_vector_comparison) - 比较 CVSS 向量的方法
-8. [严重性级别](./examples/08_severity_levels) - 处理 CVSS 严重性级别
-9. [边缘案例](./examples/09_edge_cases) - 管理各种边缘情况
+### Deep Dive
+- [CVSS Package Guide](https://scagogogo.github.io/cvss/api/cvss/) - Core functionality introduction
+- [Parser Usage](https://scagogogo.github.io/cvss/api/parser/) - String parsing
+- [Vector Analysis](https://scagogogo.github.io/cvss/api/cvss/distance) - Advanced analysis features
 
-## 持续集成
+### Practical Examples
+- [JSON Processing](https://scagogogo.github.io/cvss/examples/json) - Data serialization
+- [Batch Processing](https://scagogogo.github.io/cvss/examples/parsing) - Batch vector parsing
+- [Similarity Analysis](https://scagogogo.github.io/cvss/examples/distance) - Vector comparison
 
-本项目使用 GitHub Actions 自动运行测试和验证示例代码。CI 流程包括：
+## Contributing
 
-- 在多个 Go 版本 (1.19, 1.20, 1.21) 上运行测试
-- 捕获和上传测试覆盖率报告
-- 编译所有示例代码以确保它们能正确构建
-- 运行基本示例以验证功能
+We welcome code contributions, issue reports, and improvement suggestions! Please check our:
 
-您可以在本地运行相同的测试：
+- [GitHub Issues](https://github.com/scagogogo/cvss/issues) - Report issues or suggestions
+- [Contributing Guide](https://scagogogo.github.io/cvss/contributing) - Learn how to contribute code
+- [Development Documentation](https://scagogogo.github.io/cvss/development) - Development environment setup
 
-```bash
-make test-ci
-```
+## License
 
-## 📚 学习资源
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-### 快速开始
-- [5分钟快速上手](https://scagogogo.github.io/cvss/api/getting-started) - 最快的入门方式
-- [基础示例](https://scagogogo.github.io/cvss/examples/basic) - 简单的使用示例
+## Acknowledgments
 
-### 深入学习
-- [CVSS 包详解](https://scagogogo.github.io/cvss/api/cvss/) - 核心功能介绍
-- [解析器使用](https://scagogogo.github.io/cvss/api/parser/) - 字符串解析
-- [向量分析](https://scagogogo.github.io/cvss/api/cvss/distance) - 高级分析功能
-
-### 实用示例
-- [JSON 处理](https://scagogogo.github.io/cvss/examples/json) - 数据序列化
-- [批量处理](https://scagogogo.github.io/cvss/examples/parsing) - 批量解析向量
-- [相似度分析](https://scagogogo.github.io/cvss/examples/distance) - 向量比较
-
-## 贡献
-
-欢迎贡献代码、报告问题和提出改进建议！请查看我们的：
-
-- [GitHub Issues](https://github.com/scagogogo/cvss/issues) - 报告问题或建议
-- [贡献指南](https://scagogogo.github.io/cvss/contributing) - 了解如何贡献代码
-- [开发文档](https://scagogogo.github.io/cvss/development) - 开发环境设置
-
-## 许可证
-
-本项目基于 MIT 许可证 - 详情请参见 [LICENSE](LICENSE) 文件。
+- [CVSS v3.1 Specification](https://www.first.org/cvss/v3.1/specification-document)
+- [CVSS v3.0 Specification](https://www.first.org/cvss/v3.0/specification-document)
 
 
 
