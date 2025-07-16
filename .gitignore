@@ -17,7 +17,8 @@ go.work
 
 # 依赖目录
 vendor/
-pkg/
+# 注意：pkg/ 是项目源码目录，不应该忽略
+# pkg/
 
 # IDE和编辑器配置
 .idea/
@@ -32,7 +33,6 @@ pkg/
 .settings/
 *.sublime-workspace
 *.sublime-project
-.DS_Store
 .atom/
 .buildlog/
 .history
@@ -41,15 +41,18 @@ pkg/
 .editorconfig
 
 # 操作系统文件
+# macOS
 .DS_Store
 .DS_Store?
 ._*
 .Spotlight-V100
 .Trashes
+# Windows
 ehthumbs.db
 Thumbs.db
-.directory
 desktop.ini
+# Linux
+.directory
 
 # 构建文件
 build/
@@ -62,6 +65,19 @@ coverage.txt
 # CVSS项目编译结果
 cmd/cvss-cli/cvss-cli
 cvss-cli
+cvss-parser
+cvss-calculator
+
+# 示例程序编译结果
+examples/*/main
+examples/*/example
+examples/*/*.exe
+
+# 测试数据文件
+testdata/generated/
+testdata/temp/
+test-vectors.json
+test-results.json
 
 # 临时文件
 tmp/
@@ -82,3 +98,135 @@ temp/
 # 调试文件
 debug
 __debug_bin
+
+# 文档相关
+# VitePress 构建输出
+docs/.vitepress/dist/
+docs/.vitepress/cache/
+docs/node_modules/
+docs/package-lock.json
+docs/yarn.lock
+docs/pnpm-lock.yaml
+
+# 文档临时文件
+docs/.temp/
+docs/.cache/
+
+# 性能分析文件
+*.pprof
+cpu.prof
+mem.prof
+block.prof
+mutex.prof
+goroutine.prof
+
+# 测试相关
+# 测试覆盖率文件
+coverage.html
+coverage.xml
+c.out
+profile.out
+
+# 基准测试结果
+*.bench
+benchmarks/
+
+# 模糊测试
+testdata/fuzz/
+
+# 安全扫描结果
+gosec-report.json
+*.sarif
+
+# 部署相关
+# Docker 相关
+Dockerfile.local
+docker-compose.override.yml
+.dockerignore.local
+
+# Kubernetes 相关
+k8s-local/
+*.kubeconfig
+
+# CI/CD 相关
+# GitHub Actions 本地测试
+.github/workflows/.act/
+
+# 本地配置文件
+config.local.yaml
+config.local.json
+config.local.toml
+
+# 证书和密钥文件
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+secrets/
+
+# 数据库文件
+*.db
+*.sqlite
+*.sqlite3
+
+# 缓存目录
+.cache/
+cache/
+
+# 日志文件
+logs/
+*.log.*
+*.log.gz
+
+# 备份文件
+*.backup
+*.bak.*
+
+# 编辑器临时文件 (additional)
+.#*
+\#*#
+
+# 系统特定文件
+# Windows
+*.lnk
+*.url
+
+# Linux
+.fuse_hidden*
+.nfs*
+
+# macOS (additional)
+.AppleDouble
+.LSOverride
+Icon?
+.DocumentRevisions-V100
+.fseventsd
+.TemporaryItems
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# 开发工具
+# Air (Go 热重载工具)
+.air.toml
+tmp/
+
+# Delve 调试器
+dlv
+
+# 性能监控
+pprof/
+
+# 本地开发脚本
+scripts/local/
+dev-scripts/
+
+# 示例输出文件
+examples/*/output/
+examples/*/*.json
+examples/*/*.xml
+examples/*/*.csv
+
+# 测试输出
+test-results/
+test-reports/

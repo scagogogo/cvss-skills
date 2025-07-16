@@ -53,7 +53,14 @@ func main() {
 }
 ```
 
-更多示例请查看 [examples](./examples) 目录。详细的 API 文档请参考 [pkg.go.dev](https://pkg.go.dev/github.com/scagogogo/cvss).
+更多示例请查看 [examples](./examples) 目录。
+
+## 📖 文档
+
+- **[在线文档](https://scagogogo.github.io/cvss/)** - 完整的 API 文档和使用指南
+- **[API 参考](https://scagogogo.github.io/cvss/api/)** - 详细的 API 文档
+- **[示例集合](https://scagogogo.github.io/cvss/examples/)** - 丰富的使用示例
+- **[pkg.go.dev](https://pkg.go.dev/github.com/scagogogo/cvss)** - Go 官方文档
 
 ## 示例
 
@@ -84,9 +91,29 @@ func main() {
 make test-ci
 ```
 
+## 📚 学习资源
+
+### 快速开始
+- [5分钟快速上手](https://scagogogo.github.io/cvss/api/getting-started) - 最快的入门方式
+- [基础示例](https://scagogogo.github.io/cvss/examples/basic) - 简单的使用示例
+
+### 深入学习
+- [CVSS 包详解](https://scagogogo.github.io/cvss/api/cvss/) - 核心功能介绍
+- [解析器使用](https://scagogogo.github.io/cvss/api/parser/) - 字符串解析
+- [向量分析](https://scagogogo.github.io/cvss/api/cvss/distance) - 高级分析功能
+
+### 实用示例
+- [JSON 处理](https://scagogogo.github.io/cvss/examples/json) - 数据序列化
+- [批量处理](https://scagogogo.github.io/cvss/examples/parsing) - 批量解析向量
+- [相似度分析](https://scagogogo.github.io/cvss/examples/distance) - 向量比较
+
 ## 贡献
 
-欢迎贡献代码、报告问题和提出改进建议！请查看 [贡献指南](./docs/CONTRIBUTING.md) 了解更多信息。
+欢迎贡献代码、报告问题和提出改进建议！请查看我们的：
+
+- [GitHub Issues](https://github.com/scagogogo/cvss/issues) - 报告问题或建议
+- [贡献指南](https://scagogogo.github.io/cvss/contributing) - 了解如何贡献代码
+- [开发文档](https://scagogogo.github.io/cvss/development) - 开发环境设置
 
 ## 许可证
 

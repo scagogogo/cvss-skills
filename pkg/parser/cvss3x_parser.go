@@ -52,7 +52,10 @@ func (x *Cvss3xParser) Parse() (*cvss.Cvss3x, error) {
 	}
 
 	// 向量以 / 开头，确保当前位置是 /
-	if x.isNotEnd() && x.cvss3xRunes[x.i] != '/' {
+	if !x.isNotEnd() {
+		return nil, fmt.Errorf("cvss3x %s syntax error: incomplete vector string, expected vectors after version", x.cvss3xStr)
+	}
+	if x.cvss3xRunes[x.i] != '/' {
 		return nil, fmt.Errorf("cvss3x %s syntax error at %d, expected '/' but got '%c'", x.cvss3xStr, x.i, x.cvss3xRunes[x.i])
 	}
 
@@ -120,9 +123,11 @@ func (x *Cvss3xParser) readVersion() error {
 // 读取主版本
 func (x *Cvss3xParser) readMajorVersion() (int, error) {
 	slice := make([]rune, 0)
+	foundDot := false
 	for x.isNotEnd() {
 		c := x.read()
 		if c == '.' {
+			foundDot = true
 			break
 		}
 		slice = append(slice, c)
@@ -130,6 +135,10 @@ func (x *Cvss3xParser) readMajorVersion() (int, error) {
 
 	if len(slice) == 0 {
 		return 0, fmt.Errorf("empty major version")
+	}
+
+	if !foundDot {
+		return 0, fmt.Errorf("major version must be followed by '.'")
 	}
 
 	majorVersion, err := strconv.ParseInt(string(slice), 10, 64)
