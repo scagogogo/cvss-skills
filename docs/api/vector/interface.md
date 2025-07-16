@@ -1,23 +1,23 @@
-# Vector 接口
+# Vector Interface
 
-`Vector` 接口是 CVSS Parser 中所有指标的统一抽象，定义了指标的基本行为和属性。
+The `Vector` interface is the unified abstraction for all metrics in CVSS Parser, defining the basic behavior and properties of metrics.
 
-## 接口定义
+## Interface Definition
 
 ```go
 type Vector interface {
-    GetGroupName() string    // 获取指标组名称
-    GetShortName() string    // 获取指标简称
-    GetLongName() string     // 获取指标全称
-    GetShortValue() rune     // 获取指标简写值
-    GetLongValue() string    // 获取指标完整值
-    GetDescription() string  // 获取指标描述
-    GetScore() float64       // 获取指标评分
-    String() string          // 字符串表示
+    GetGroupName() string    // Get metric group name
+    GetShortName() string    // Get metric short name
+    GetLongName() string     // Get metric full name
+    GetShortValue() rune     // Get metric short value
+    GetLongValue() string    // Get metric full value
+    GetDescription() string  // Get metric description
+    GetScore() float64       // Get metric score
+    String() string          // String representation
 }
 ```
 
-## 方法详解
+## Method Details
 
 ### GetGroupName
 
@@ -25,21 +25,21 @@ type Vector interface {
 GetGroupName() string
 ```
 
-返回指标所属的组名称。
+Returns the group name that the metric belongs to.
 
-**返回值：**
-- `"Exploitability"` - 可利用性指标组
-- `"Impact"` - 影响指标组
-- `"Temporal"` - 时间指标组
-- `"Environmental"` - 环境指标组
+**Returns:**
+- `string`: Metric group name
 
-**示例：**
+**Possible Values:**
+- `"Base"` - Base metrics group
+- `"Temporal"` - Temporal metrics group
+- `"Environmental"` - Environmental metrics group
+
+**Example:**
 ```go
 av := &vector.AttackVectorNetwork{}
-fmt.Println(av.GetGroupName()) // "Exploitability"
-
-c := &vector.ConfidentialityHigh{}
-fmt.Println(c.GetGroupName()) // "Impact"
+groupName := av.GetGroupName()
+fmt.Printf("Group: %s\n", groupName) // "Base"
 ```
 
 ### GetShortName
@@ -48,15 +48,16 @@ fmt.Println(c.GetGroupName()) // "Impact"
 GetShortName() string
 ```
 
-返回指标的简称，通常用于 CVSS 向量字符串中。
+Returns the short name (abbreviation) of the metric.
 
-**示例：**
+**Returns:**
+- `string`: Metric short name
+
+**Example:**
 ```go
 av := &vector.AttackVectorNetwork{}
-fmt.Println(av.GetShortName()) // "AV"
-
-ac := &vector.AttackComplexityLow{}
-fmt.Println(ac.GetShortName()) // "AC"
+shortName := av.GetShortName()
+fmt.Printf("Short name: %s\n", shortName) // "AV"
 ```
 
 ### GetLongName
@@ -65,15 +66,16 @@ fmt.Println(ac.GetShortName()) // "AC"
 GetLongName() string
 ```
 
-返回指标的完整名称。
+Returns the full name of the metric.
 
-**示例：**
+**Returns:**
+- `string`: Metric full name
+
+**Example:**
 ```go
 av := &vector.AttackVectorNetwork{}
-fmt.Println(av.GetLongName()) // "Attack Vector"
-
-pr := &vector.PrivilegesRequiredNone{}
-fmt.Println(pr.GetLongName()) // "Privileges Required"
+longName := av.GetLongName()
+fmt.Printf("Long name: %s\n", longName) // "Attack Vector"
 ```
 
 ### GetShortValue
@@ -82,15 +84,16 @@ fmt.Println(pr.GetLongName()) // "Privileges Required"
 GetShortValue() rune
 ```
 
-返回指标值的简写字符，用于 CVSS 向量字符串中。
+Returns the short value (single character) of the metric.
 
-**示例：**
+**Returns:**
+- `rune`: Metric short value
+
+**Example:**
 ```go
 av := &vector.AttackVectorNetwork{}
-fmt.Printf("%c\n", av.GetShortValue()) // 'N'
-
-ac := &vector.AttackComplexityHigh{}
-fmt.Printf("%c\n", ac.GetShortValue()) // 'H'
+shortValue := av.GetShortValue()
+fmt.Printf("Short value: %c\n", shortValue) // 'N'
 ```
 
 ### GetLongValue
@@ -99,15 +102,16 @@ fmt.Printf("%c\n", ac.GetShortValue()) // 'H'
 GetLongValue() string
 ```
 
-返回指标值的完整描述。
+Returns the full value description of the metric.
 
-**示例：**
+**Returns:**
+- `string`: Metric full value
+
+**Example:**
 ```go
 av := &vector.AttackVectorNetwork{}
-fmt.Println(av.GetLongValue()) // "Network"
-
-ui := &vector.UserInteractionRequired{}
-fmt.Println(ui.GetLongValue()) // "Required"
+longValue := av.GetLongValue()
+fmt.Printf("Long value: %s\n", longValue) // "Network"
 ```
 
 ### GetDescription
@@ -116,12 +120,17 @@ fmt.Println(ui.GetLongValue()) // "Required"
 GetDescription() string
 ```
 
-返回指标的详细描述，通常与 `GetLongValue()` 相同。
+Returns a detailed description of the metric.
 
-**示例：**
+**Returns:**
+- `string`: Metric description
+
+**Example:**
 ```go
-s := &vector.ScopeChanged{}
-fmt.Println(s.GetDescription()) // "Changed"
+av := &vector.AttackVectorNetwork{}
+description := av.GetDescription()
+fmt.Printf("Description: %s\n", description)
+// "The vulnerable component is bound to the network stack..."
 ```
 
 ### GetScore
@@ -130,15 +139,16 @@ fmt.Println(s.GetDescription()) // "Changed"
 GetScore() float64
 ```
 
-返回指标在 CVSS 评分计算中的数值。
+Returns the numerical score value of the metric used in CVSS calculations.
 
-**示例：**
+**Returns:**
+- `float64`: Metric score (typically between 0.0 and 1.0)
+
+**Example:**
 ```go
 av := &vector.AttackVectorNetwork{}
-fmt.Printf("%.2f\n", av.GetScore()) // 0.85
-
-c := &vector.ConfidentialityHigh{}
-fmt.Printf("%.2f\n", c.GetScore()) // 0.56
+score := av.GetScore()
+fmt.Printf("Score: %.2f\n", score) // 0.85
 ```
 
 ### String
@@ -147,27 +157,28 @@ fmt.Printf("%.2f\n", c.GetScore()) // 0.56
 String() string
 ```
 
-返回指标的字符串表示，格式为 "简称:简写值"。
+Returns the string representation of the metric in CVSS vector format.
 
-**示例：**
+**Returns:**
+- `string`: String representation
+
+**Example:**
 ```go
 av := &vector.AttackVectorNetwork{}
-fmt.Println(av.String()) // "AV:N"
-
-ac := &vector.AttackComplexityLow{}
-fmt.Println(ac.String()) // "AC:L"
+str := av.String()
+fmt.Printf("String: %s\n", str) // "AV:N"
 ```
 
-## 实现示例
+## Implementation Examples
 
-### 基本实现
+### Base Metric Implementation
 
 ```go
-// 攻击向量 - 网络实现
+// Attack Vector Network implementation
 type AttackVectorNetwork struct{}
 
 func (a *AttackVectorNetwork) GetGroupName() string {
-    return "Exploitability"
+    return "Base"
 }
 
 func (a *AttackVectorNetwork) GetShortName() string {
@@ -187,7 +198,7 @@ func (a *AttackVectorNetwork) GetLongValue() string {
 }
 
 func (a *AttackVectorNetwork) GetDescription() string {
-    return "Network"
+    return "The vulnerable component is bound to the network stack and the set of possible attackers extends beyond the other options listed below, up to and including the entire Internet."
 }
 
 func (a *AttackVectorNetwork) GetScore() float64 {
@@ -199,11 +210,180 @@ func (a *AttackVectorNetwork) String() string {
 }
 ```
 
-### 通用实现基类
+### Temporal Metric Implementation
 
 ```go
-// VectorImpl 提供 Vector 接口的通用实现
-type VectorImpl struct {
+// Exploit Code Maturity Functional implementation
+type ExploitCodeMaturityFunctional struct{}
+
+func (e *ExploitCodeMaturityFunctional) GetGroupName() string {
+    return "Temporal"
+}
+
+func (e *ExploitCodeMaturityFunctional) GetShortName() string {
+    return "E"
+}
+
+func (e *ExploitCodeMaturityFunctional) GetLongName() string {
+    return "Exploit Code Maturity"
+}
+
+func (e *ExploitCodeMaturityFunctional) GetShortValue() rune {
+    return 'F'
+}
+
+func (e *ExploitCodeMaturityFunctional) GetLongValue() string {
+    return "Functional"
+}
+
+func (e *ExploitCodeMaturityFunctional) GetDescription() string {
+    return "Functional exploit code is available. The code works in most situations where the vulnerability exists."
+}
+
+func (e *ExploitCodeMaturityFunctional) GetScore() float64 {
+    return 0.97
+}
+
+func (e *ExploitCodeMaturityFunctional) String() string {
+    return fmt.Sprintf("%s:%c", e.GetShortName(), e.GetShortValue())
+}
+```
+
+## Interface Usage Patterns
+
+### Generic Vector Processing
+
+```go
+func processVector(v vector.Vector) {
+    fmt.Printf("Processing %s metric\n", v.GetLongName())
+    fmt.Printf("  Group: %s\n", v.GetGroupName())
+    fmt.Printf("  Value: %s (%c)\n", v.GetLongValue(), v.GetShortValue())
+    fmt.Printf("  Score: %.3f\n", v.GetScore())
+    fmt.Printf("  Vector: %s\n", v.String())
+}
+
+// Usage
+av := &vector.AttackVectorNetwork{}
+processVector(av)
+```
+
+### Vector Collection Processing
+
+```go
+func processVectorCollection(vectors []vector.Vector) {
+    for i, v := range vectors {
+        fmt.Printf("Vector %d:\n", i+1)
+        processVector(v)
+        fmt.Println()
+    }
+}
+
+// Usage
+vectors := []vector.Vector{
+    &vector.AttackVectorNetwork{},
+    &vector.AttackComplexityLow{},
+    &vector.ConfidentialityHigh{},
+}
+processVectorCollection(vectors)
+```
+
+### Vector Validation
+
+```go
+func validateVector(v vector.Vector) error {
+    if v.GetShortName() == "" {
+        return fmt.Errorf("metric short name cannot be empty")
+    }
+    
+    if v.GetShortValue() == 0 {
+        return fmt.Errorf("metric short value cannot be empty")
+    }
+    
+    if v.GetLongValue() == "" {
+        return fmt.Errorf("metric long value cannot be empty")
+    }
+    
+    score := v.GetScore()
+    if score < 0 {
+        return fmt.Errorf("metric score cannot be negative: %.3f", score)
+    }
+    
+    return nil
+}
+
+// Usage
+av := &vector.AttackVectorNetwork{}
+if err := validateVector(av); err != nil {
+    log.Printf("Validation failed: %v", err)
+}
+```
+
+### Vector Comparison
+
+```go
+func compareVectors(v1, v2 vector.Vector) int {
+    score1 := v1.GetScore()
+    score2 := v2.GetScore()
+    
+    if score1 < score2 {
+        return -1
+    } else if score1 > score2 {
+        return 1
+    }
+    return 0
+}
+
+// Usage
+av1 := &vector.AttackVectorNetwork{}
+av2 := &vector.AttackVectorLocal{}
+
+result := compareVectors(av1, av2)
+switch result {
+case -1:
+    fmt.Printf("%s has lower score than %s\n", av1.GetLongValue(), av2.GetLongValue())
+case 1:
+    fmt.Printf("%s has higher score than %s\n", av1.GetLongValue(), av2.GetLongValue())
+case 0:
+    fmt.Printf("%s has same score as %s\n", av1.GetLongValue(), av2.GetLongValue())
+}
+```
+
+## Best Practices
+
+### 1. Interface Segregation
+
+```go
+// Separate interfaces for different concerns
+type Scorer interface {
+    GetScore() float64
+}
+
+type Descriptor interface {
+    GetDescription() string
+    GetLongValue() string
+}
+
+type Identifier interface {
+    GetShortName() string
+    GetShortValue() rune
+}
+
+// Vector interface composes all concerns
+type Vector interface {
+    Scorer
+    Descriptor
+    Identifier
+    GetGroupName() string
+    GetLongName() string
+    String() string
+}
+```
+
+### 2. Immutability
+
+```go
+// Vectors should be immutable
+type ImmutableVector struct {
     groupName   string
     shortName   string
     longName    string
@@ -213,293 +393,40 @@ type VectorImpl struct {
     score       float64
 }
 
-func (v *VectorImpl) GetGroupName() string {
-    return v.groupName
-}
-
-func (v *VectorImpl) GetShortName() string {
-    return v.shortName
-}
-
-func (v *VectorImpl) GetLongName() string {
-    return v.longName
-}
-
-func (v *VectorImpl) GetShortValue() rune {
-    return v.shortValue
-}
-
-func (v *VectorImpl) GetLongValue() string {
-    return v.longValue
-}
-
-func (v *VectorImpl) GetDescription() string {
-    return v.description
-}
-
-func (v *VectorImpl) GetScore() float64 {
-    return v.score
-}
-
-func (v *VectorImpl) String() string {
-    return fmt.Sprintf("%s:%c", v.shortName, v.shortValue)
-}
-```
-
-## 使用示例
-
-### 基本使用
-
-```go
-package main
-
-import (
-    "fmt"
-    "github.com/scagogogo/cvss-parser/pkg/vector"
-)
-
-func main() {
-    // 创建向量实例
-    vectors := []vector.Vector{
-        &vector.AttackVectorNetwork{},
-        &vector.AttackComplexityLow{},
-        &vector.PrivilegesRequiredNone{},
-        &vector.UserInteractionNone{},
-        &vector.ScopeUnchanged{},
-        &vector.ConfidentialityHigh{},
-        &vector.IntegrityHigh{},
-        &vector.AvailabilityHigh{},
-    }
-    
-    // 输出向量信息
-    for _, v := range vectors {
-        printVectorInfo(v)
-    }
-}
-
-func printVectorInfo(v vector.Vector) {
-    fmt.Printf("指标: %s (%s)\n", v.GetLongName(), v.GetShortName())
-    fmt.Printf("  组: %s\n", v.GetGroupName())
-    fmt.Printf("  值: %s (%c)\n", v.GetLongValue(), v.GetShortValue())
-    fmt.Printf("  评分: %.2f\n", v.GetScore())
-    fmt.Printf("  字符串: %s\n", v.String())
-    fmt.Println()
-}
-```
-
-### 向量分组
-
-```go
-func groupVectorsByType(vectors []vector.Vector) map[string][]vector.Vector {
-    groups := make(map[string][]vector.Vector)
-    
-    for _, v := range vectors {
-        groupName := v.GetGroupName()
-        groups[groupName] = append(groups[groupName], v)
-    }
-    
-    return groups
-}
-
-func printGroupedVectors(vectors []vector.Vector) {
-    groups := groupVectorsByType(vectors)
-    
-    for groupName, groupVectors := range groups {
-        fmt.Printf("%s 指标组:\n", groupName)
-        for _, v := range groupVectors {
-            fmt.Printf("  %s: %s (%.2f)\n", 
-                v.GetShortName(), v.GetDescription(), v.GetScore())
-        }
-        fmt.Println()
+// Constructor ensures immutability
+func NewImmutableVector(groupName, shortName, longName string, shortValue rune, longValue, description string, score float64) *ImmutableVector {
+    return &ImmutableVector{
+        groupName:   groupName,
+        shortName:   shortName,
+        longName:    longName,
+        shortValue:  shortValue,
+        longValue:   longValue,
+        description: description,
+        score:       score,
     }
 }
 ```
 
-### 向量比较
+### 3. Error Handling
 
 ```go
-func compareVectors(v1, v2 vector.Vector) {
-    fmt.Printf("比较 %s 和 %s:\n", v1.String(), v2.String())
-    
-    if v1.GetShortName() != v2.GetShortName() {
-        fmt.Println("  不同类型的指标，无法比较")
-        return
-    }
-    
-    score1 := v1.GetScore()
-    score2 := v2.GetScore()
-    
-    if score1 > score2 {
-        fmt.Printf("  %s (%.2f) > %s (%.2f)\n", 
-            v1.GetDescription(), score1, v2.GetDescription(), score2)
-    } else if score1 < score2 {
-        fmt.Printf("  %s (%.2f) < %s (%.2f)\n", 
-            v1.GetDescription(), score1, v2.GetDescription(), score2)
-    } else {
-        fmt.Printf("  %s = %s (%.2f)\n", 
-            v1.GetDescription(), v2.GetDescription(), score1)
-    }
-}
-```
-
-### 向量验证
-
-```go
-func validateVector(v vector.Vector) error {
-    // 检查基本属性
-    if v.GetShortName() == "" {
-        return fmt.Errorf("指标简称不能为空")
-    }
-    
-    if v.GetLongName() == "" {
-        return fmt.Errorf("指标全称不能为空")
-    }
-    
-    if v.GetShortValue() == 0 {
-        return fmt.Errorf("指标简写值不能为空")
-    }
-    
-    if v.GetScore() < 0 || v.GetScore() > 1 {
-        return fmt.Errorf("指标评分必须在 0-1 之间，当前值: %.2f", v.GetScore())
-    }
-    
-    return nil
-}
-
-func validateVectors(vectors []vector.Vector) []error {
-    var errors []error
-    
-    for i, v := range vectors {
-        if err := validateVector(v); err != nil {
-            errors = append(errors, fmt.Errorf("向量 %d 验证失败: %w", i, err))
-        }
-    }
-    
-    return errors
-}
-```
-
-## 工厂模式
-
-### 向量工厂
-
-```go
-type VectorFactory struct{}
-
-func (f *VectorFactory) CreateAttackVector(value rune) (vector.Vector, error) {
-    switch value {
-    case 'N':
-        return &vector.AttackVectorNetwork{}, nil
-    case 'A':
-        return &vector.AttackVectorAdjacent{}, nil
-    case 'L':
-        return &vector.AttackVectorLocal{}, nil
-    case 'P':
-        return &vector.AttackVectorPhysical{}, nil
-    default:
-        return nil, fmt.Errorf("未知的攻击向量值: %c", value)
-    }
-}
-
-func (f *VectorFactory) CreateVector(shortName string, value rune) (vector.Vector, error) {
-    switch shortName {
-    case "AV":
-        return f.CreateAttackVector(value)
-    case "AC":
-        return f.CreateAttackComplexity(value)
-    // ... 其他指标
-    default:
-        return nil, fmt.Errorf("未知的指标类型: %s", shortName)
-    }
-}
-```
-
-### 批量创建
-
-```go
-func createVectorsFromMap(vectorMap map[string]rune) ([]vector.Vector, error) {
-    factory := &VectorFactory{}
-    var vectors []vector.Vector
-    
-    for shortName, value := range vectorMap {
-        v, err := factory.CreateVector(shortName, value)
-        if err != nil {
-            return nil, fmt.Errorf("创建向量 %s:%c 失败: %w", shortName, value, err)
-        }
-        vectors = append(vectors, v)
-    }
-    
-    return vectors, nil
-}
-```
-
-## 扩展接口
-
-### 可序列化向量
-
-```go
-type SerializableVector interface {
-    Vector
-    MarshalJSON() ([]byte, error)
-    UnmarshalJSON([]byte) error
-}
-```
-
-### 可验证向量
-
-```go
-type ValidatableVector interface {
-    Vector
-    Validate() error
-}
-```
-
-### 可比较向量
-
-```go
-type ComparableVector interface {
-    Vector
-    Compare(Vector) int  // -1: 小于, 0: 等于, 1: 大于
-}
-```
-
-## 最佳实践
-
-### 1. 类型断言
-
-```go
-func getAttackVectorScore(v vector.Vector) (float64, error) {
-    if v.GetShortName() != "AV" {
-        return 0, fmt.Errorf("不是攻击向量指标")
-    }
-    return v.GetScore(), nil
-}
-```
-
-### 2. 接口组合
-
-```go
-type CVSSVector interface {
-    vector.Vector
-    IsRequired() bool
-    GetCategory() string
-}
-```
-
-### 3. 空值处理
-
-```go
-func safeGetScore(v vector.Vector) float64 {
+func safeGetScore(v vector.Vector) (float64, error) {
     if v == nil {
-        return 0.0
+        return 0, fmt.Errorf("vector is nil")
     }
-    return v.GetScore()
+    
+    score := v.GetScore()
+    if score < 0 {
+        return 0, fmt.Errorf("invalid negative score: %.3f", score)
+    }
+    
+    return score, nil
 }
 ```
 
-## 相关文档
+## Related Documentation
 
-- [基础指标](/api/vector/base-metrics)
-- [时间指标](/api/vector/temporal-metrics)
-- [环境指标](/api/vector/environmental-metrics)
-- [vector 包概述](/api/vector/)
+- [vector Package Overview](/api/vector/)
+- [Cvss3x Data Structure](/api/cvss/cvss3x)
+- [Parser Implementation](/api/parser/cvss3x-parser)
+- [Usage Examples](/examples/basic)
