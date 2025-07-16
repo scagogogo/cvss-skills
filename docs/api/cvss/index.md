@@ -1,77 +1,77 @@
-# cvss 包
+# cvss Package
 
-`cvss` 包是 CVSS Parser 的核心包，提供了 CVSS 3.x 向量的数据结构、评分计算和分析功能。
+The `cvss` package is the core package of CVSS Parser, providing data structures, score calculation, and analysis functions for CVSS 3.x vectors.
 
-## 包概述
+## Package Overview
 
 ```go
 import "github.com/scagogogo/cvss-parser/pkg/cvss"
 ```
 
-## 主要类型
+## Main Types
 
-### 核心结构
+### Core Structures
 
-| 类型 | 描述 | 文档链接 |
-|------|------|----------|
-| `Cvss3x` | CVSS 3.x 向量的主要数据结构 | [详细文档](/api/cvss/cvss3x) |
-| `Cvss3xBase` | 基础指标组 | [详细文档](/api/cvss/cvss3x) |
-| `Cvss3xTemporal` | 时间指标组 | [详细文档](/api/cvss/cvss3x) |
-| `Cvss3xEnvironmental` | 环境指标组 | [详细文档](/api/cvss/cvss3x) |
+| Type | Description | Documentation Link |
+|------|-------------|-------------------|
+| `Cvss3x` | Main data structure for CVSS 3.x vectors | [Detailed Documentation](/api/cvss/cvss3x) |
+| `Cvss3xBase` | Base metrics group | [Detailed Documentation](/api/cvss/cvss3x) |
+| `Cvss3xTemporal` | Temporal metrics group | [Detailed Documentation](/api/cvss/cvss3x) |
+| `Cvss3xEnvironmental` | Environmental metrics group | [Detailed Documentation](/api/cvss/cvss3x) |
 
-### 计算器
+### Calculators
 
-| 类型 | 描述 | 文档链接 |
-|------|------|----------|
-| `Calculator` | CVSS 评分计算器 | [详细文档](/api/cvss/calculator) |
-| `DistanceCalculator` | 向量距离计算器 | [详细文档](/api/cvss/distance) |
+| Type | Description | Documentation Link |
+|------|-------------|-------------------|
+| `Calculator` | CVSS score calculator | [Detailed Documentation](/api/cvss/calculator) |
+| `DistanceCalculator` | Vector distance calculator | [Detailed Documentation](/api/cvss/distance) |
 
-## 快速示例
+## Quick Examples
 
-### 创建 CVSS 向量
+### Creating CVSS Vectors
 
 ```go
-// 手动创建向量
+// Manually create vector
 cvssVector := cvss.NewCvss3x()
 cvssVector.MajorVersion = 3
 cvssVector.MinorVersion = 1
 
-// 设置基础指标
+// Set base metrics
 cvssVector.Cvss3xBase.AttackVector = &vector.AttackVectorNetwork{}
 cvssVector.Cvss3xBase.AttackComplexity = &vector.AttackComplexityLow{}
-// ... 设置其他指标
+// ... set other metrics
 ```
 
-### 计算评分
+### Score Calculation
 
 ```go
-// 创建计算器
+// Create calculator
 calculator := cvss.NewCalculator(cvssVector)
 
-// 计算基础评分
+// Calculate base score
 score, err := calculator.Calculate()
 if err != nil {
-    log.Fatalf("计算失败: %v", err)
+    log.Fatalf("Calculation failed: %v", err)
 }
 
-fmt.Printf("CVSS 评分: %.1f\n", score)
-fmt.Printf("严重性: %s\n", calculator.GetSeverityRating(score))
+fmt.Printf("CVSS Score: %.1f\n", score)
+fmt.Printf("Severity: %s\n", calculator.GetSeverityRating(score))
 ```
 
-### 向量距离计算
+### Vector Distance Calculation
 
 ```go
-// 计算两个向量的距离
+// Calculate distance between two vectors
 distCalc := cvss.NewDistanceCalculator(vector1, vector2)
 
-// 欧几里得距离
+// Euclidean distance
 euclidean := distCalc.EuclideanDistance()
 
-// 曼哈顿距离
+// Manhattan distance
 manhattan := distCalc.ManhattanDistance()
 
-fmt.Printf("欧几里得距离: %.3f\n", euclidean)
-fmt.Printf("曼哈顿距离: %.3f\n", manhattan)
+fmt.Printf("Euclidean distance: %.3f\n", euclidean)
+fmt.Printf("Manhattan distance: %.3f\n", manhattan)
 ```
 
 ## 功能特性
