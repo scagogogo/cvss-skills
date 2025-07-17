@@ -8,6 +8,16 @@
 
 CVSS 解析器是一个 Go 语言库，用于解析、计算和处理 CVSS (通用漏洞评分系统) 向量。支持 CVSS 3.0 和 3.1 版本，提供了全面的功能以满足漏洞管理和安全评估的需求。
 
+## 📖 文档
+
+**🌐 [完整文档网站](https://scagogogo.github.io/cvss/)**
+
+访问我们的综合文档网站获取：
+- 📚 **[API 参考](https://scagogogo.github.io/cvss/api/)** - 完整的 API 文档
+- 💡 **[示例和教程](https://scagogogo.github.io/cvss/examples/)** - 实用的使用示例
+- 🚀 **[快速开始指南](https://scagogogo.github.io/cvss/api/getting-started)** - 5分钟快速上手
+- 🌍 **[中文文档](https://scagogogo.github.io/cvss/zh/)** - 完整的中文文档
+
 ## 特性
 
 - 支持 CVSS 3.0 和 3.1 向量的解析和计算
@@ -60,13 +70,6 @@ func main() {
 ```
 
 更多示例请查看 [examples](./examples) 目录。
-
-## 📖 文档
-
-- **[在线文档](https://scagogogo.github.io/cvss/)** - 完整的 API 文档和使用指南
-- **[API 参考](https://scagogogo.github.io/cvss/api/)** - 详细的 API 文档
-- **[示例集合](https://scagogogo.github.io/cvss/examples/)** - 丰富的使用示例
-- **[pkg.go.dev](https://pkg.go.dev/github.com/scagogogo/cvss)** - Go 官方文档
 
 ## 📚 学习资源
 

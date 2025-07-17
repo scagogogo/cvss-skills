@@ -8,6 +8,16 @@
 
 CVSS Parser is a Go library for parsing, calculating, and processing CVSS (Common Vulnerability Scoring System) vectors. It supports CVSS 3.0 and 3.1 versions, providing comprehensive functionality for vulnerability management and security assessment.
 
+## 📖 Documentation
+
+**🌐 [Complete Documentation Website](https://scagogogo.github.io/cvss/)**
+
+Visit our comprehensive documentation website for:
+- 📚 **[API Reference](https://scagogogo.github.io/cvss/api/)** - Complete API documentation
+- 💡 **[Examples & Tutorials](https://scagogogo.github.io/cvss/examples/)** - Practical usage examples
+- 🚀 **[Quick Start Guide](https://scagogogo.github.io/cvss/api/getting-started)** - Get started in 5 minutes
+- 🌍 **[中文文档](https://scagogogo.github.io/cvss/zh/)** - Chinese documentation
+
 ## Features
 
 - Support for CVSS 3.0 and 3.1 vector parsing and calculation
@@ -60,13 +70,6 @@ func main() {
 ```
 
 For more examples, see the [examples](./examples) directory.
-
-## 📖 Documentation
-
-- **[Online Documentation](https://scagogogo.github.io/cvss/)** - Complete API documentation and usage guide
-- **[API Reference](https://scagogogo.github.io/cvss/api/)** - Detailed API documentation
-- **[Examples Collection](https://scagogogo.github.io/cvss/examples/)** - Rich usage examples
-- **[pkg.go.dev](https://pkg.go.dev/github.com/scagogogo/cvss)** - Official Go documentation
 
 ## 📚 Learning Resources
 
