@@ -64,16 +64,19 @@ type JSONEnvironmentalMetrics struct {
 }
 
 // ToJSON 将CVSS对象转换为JSON格式
+// BaseScore 始终为基础评分，TemporalScore 和 EnvironmentalScore 分别对应时间评分和环境评分
 func (x *Cvss3x) ToJSON(calculator *Calculator) ([]byte, error) {
 	if calculator == nil {
 		calculator = NewCalculator(x)
 	}
 
-	// 计算各级评分
-	baseScore, err := calculator.Calculate()
-	if err != nil {
+	// 校验CVSS数据
+	if err := calculator.cvss.Check(); err != nil {
 		return nil, err
 	}
+
+	// 分别计算各级评分，确保 BaseScore 是真正的基础评分
+	baseScore := calculator.calculateBaseScore()
 
 	// 构建JSON输出
 	output := &JSONOutput{

@@ -2,6 +2,8 @@ package cvss
 
 import (
 	"math"
+
+	"github.com/scagogogo/cvss-parser/pkg/vector"
 )
 
 // Calculator CVSS 3.x 评分计算器
@@ -97,32 +99,32 @@ func (c *Calculator) calculateExploitabilitySubScore() float64 {
 
 // 获取调整后的特权要求评分（考虑范围变化）
 func (c *Calculator) getAdjustedPrivilegesRequiredScore() float64 {
-	prScore := c.cvss.Cvss3xBase.PrivilegesRequired.GetScore()
-
-	// 如果PR=H且范围已改变，使用0.5而不是0.27
-	if c.cvss.Cvss3xBase.PrivilegesRequired.GetShortValue() == 'H' && c.isChangedScope() {
-		return 0.5
-	}
-
-	// 如果PR=L且范围已改变，使用0.68而不是0.62
-	if c.cvss.Cvss3xBase.PrivilegesRequired.GetShortValue() == 'L' && c.isChangedScope() {
-		return 0.68
-	}
-
-	return prScore
+	return vector.GetPrivilegesRequiredScore(c.cvss.Cvss3xBase.PrivilegesRequired, c.isChangedScope())
 }
 
 // 判断范围是否改变
 func (c *Calculator) isChangedScope() bool {
-	return c.cvss.Cvss3xBase.Scope.GetShortValue() == 'C'
+	return vector.IsScopeChanged(c.cvss.Cvss3xBase.Scope)
 }
 
 // 计算时间评分
+// 未设置的 Temporal 指标使用默认分数 1.0（即 "Not Defined"）
 func (c *Calculator) calculateTemporalScore(baseScore float64) float64 {
-	// 获取时间因素评分
-	exploitCodeMaturityScore := c.cvss.Cvss3xTemporal.ExploitCodeMaturity.GetScore()
-	remediationLevelScore := c.cvss.Cvss3xTemporal.RemediationLevel.GetScore()
-	reportConfidenceScore := c.cvss.Cvss3xTemporal.ReportConfidence.GetScore()
+	// 获取时间因素评分，未设置的使用 1.0
+	exploitCodeMaturityScore := 1.0
+	if c.cvss.Cvss3xTemporal.ExploitCodeMaturity != nil {
+		exploitCodeMaturityScore = c.cvss.Cvss3xTemporal.ExploitCodeMaturity.GetScore()
+	}
+
+	remediationLevelScore := 1.0
+	if c.cvss.Cvss3xTemporal.RemediationLevel != nil {
+		remediationLevelScore = c.cvss.Cvss3xTemporal.RemediationLevel.GetScore()
+	}
+
+	reportConfidenceScore := 1.0
+	if c.cvss.Cvss3xTemporal.ReportConfidence != nil {
+		reportConfidenceScore = c.cvss.Cvss3xTemporal.ReportConfidence.GetScore()
+	}
 
 	// 计算时间评分
 	return roundUp(baseScore * exploitCodeMaturityScore * remediationLevelScore * reportConfidenceScore)
@@ -241,34 +243,16 @@ func (c *Calculator) getModifiedAttackComplexityScore() float64 {
 
 // 获取修改后的特权要求评分
 func (c *Calculator) getModifiedPrivilegesRequiredScore() float64 {
-	var prScore float64
-
+	var pr vector.Vector
 	if c.cvss.Cvss3xEnvironmental.ModifiedPrivilegesRequired != nil &&
 		c.cvss.Cvss3xEnvironmental.ModifiedPrivilegesRequired.GetShortValue() != 'X' {
-		prScore = c.cvss.Cvss3xEnvironmental.ModifiedPrivilegesRequired.GetScore()
+		pr = c.cvss.Cvss3xEnvironmental.ModifiedPrivilegesRequired
 	} else {
-		prScore = c.cvss.Cvss3xBase.PrivilegesRequired.GetScore()
+		pr = c.cvss.Cvss3xBase.PrivilegesRequired
 	}
 
-	// 如果PR=H且范围已改变，使用0.5而不是0.27
-	var shortValue rune
-	if c.cvss.Cvss3xEnvironmental.ModifiedPrivilegesRequired != nil &&
-		c.cvss.Cvss3xEnvironmental.ModifiedPrivilegesRequired.GetShortValue() != 'X' {
-		shortValue = c.cvss.Cvss3xEnvironmental.ModifiedPrivilegesRequired.GetShortValue()
-	} else {
-		shortValue = c.cvss.Cvss3xBase.PrivilegesRequired.GetShortValue()
-	}
-
-	if shortValue == 'H' && c.isModifiedChangedScope() {
-		return 0.5
-	}
-
-	// 如果PR=L且范围已改变，使用0.68而不是0.62
-	if shortValue == 'L' && c.isModifiedChangedScope() {
-		return 0.68
-	}
-
-	return prScore
+	scopeChanged := c.isModifiedChangedScope()
+	return vector.GetPrivilegesRequiredScore(pr, scopeChanged)
 }
 
 // 获取修改后的用户交互评分
@@ -282,11 +266,7 @@ func (c *Calculator) getModifiedUserInteractionScore() float64 {
 
 // 判断修改后的范围是否改变
 func (c *Calculator) isModifiedChangedScope() bool {
-	if c.cvss.Cvss3xEnvironmental.ModifiedScope != nil &&
-		c.cvss.Cvss3xEnvironmental.ModifiedScope.GetShortValue() != 'X' {
-		return c.cvss.Cvss3xEnvironmental.ModifiedScope.GetShortValue() == 'C'
-	}
-	return c.isChangedScope()
+	return vector.IsModifiedScopeChanged(c.cvss.Cvss3xEnvironmental.ModifiedScope, c.cvss.Cvss3xBase.Scope)
 }
 
 // 获取机密性需求调整因子
@@ -335,11 +315,13 @@ func (c *Calculator) getAvailabilityRequirementFactor() float64 {
 }
 
 // 判断是否设置了时间指标
+// 只要有任一 Temporal 指标被设置，就认为需要计算 Temporal 评分
+// 未设置的指标在计算时会使用默认值 1.0（即 "Not Defined" 的分数）
 func (c *Calculator) hasTemporalMetrics() bool {
 	return c.cvss.Cvss3xTemporal != nil &&
-		c.cvss.Cvss3xTemporal.ExploitCodeMaturity != nil &&
-		c.cvss.Cvss3xTemporal.RemediationLevel != nil &&
-		c.cvss.Cvss3xTemporal.ReportConfidence != nil
+		(c.cvss.Cvss3xTemporal.ExploitCodeMaturity != nil ||
+			c.cvss.Cvss3xTemporal.RemediationLevel != nil ||
+			c.cvss.Cvss3xTemporal.ReportConfidence != nil)
 }
 
 // 判断是否设置了环境指标

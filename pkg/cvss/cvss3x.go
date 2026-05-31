@@ -27,12 +27,39 @@ func NewCvss3x() *Cvss3x {
 	}
 }
 
-// Check TODO 2023-5-19 01:44:22 检查CVSS编号是否合法
+// Check 检查CVSS编号是否合法，包括版本号、基础指标、时间指标和环境指标
 func (x *Cvss3x) Check() error {
+	// 校验版本号
+	if x.MajorVersion != 3 {
+		return fmt.Errorf("unsupported CVSS major version: %d, only version 3 is supported", x.MajorVersion)
+	}
+	if x.MinorVersion != 0 && x.MinorVersion != 1 {
+		return fmt.Errorf("unsupported CVSS minor version: %d, only 3.0 and 3.1 are supported", x.MinorVersion)
+	}
+
+	// 校验基础指标（必须存在且完整）
 	if x.Cvss3xBase == nil {
 		return fmt.Errorf("cvss3x base is nil")
 	}
-	return x.Cvss3xBase.Check()
+	if err := x.Cvss3xBase.Check(); err != nil {
+		return err
+	}
+
+	// 校验时间指标（可选，但如果存在则已设置的字段必须合法）
+	if x.Cvss3xTemporal != nil {
+		if err := x.Cvss3xTemporal.Check(); err != nil {
+			return err
+		}
+	}
+
+	// 校验环境指标（可选，但如果存在则已设置的字段必须合法）
+	if x.Cvss3xEnvironmental != nil {
+		if err := x.Cvss3xEnvironmental.Check(); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func (x *Cvss3x) String() string {

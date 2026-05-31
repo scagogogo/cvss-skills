@@ -46,7 +46,7 @@ func TestEuclideanDistance(t *testing.T) {
 			name:     "Multiple Differences",
 			vector1:  createTestVector(3, 1, "Network", "Low", "None", "None", "Unchanged", "High", "High", "High"),
 			vector2:  createTestVector(3, 1, "Adjacent", "High", "Low", "Required", "Changed", "Low", "Low", "None"),
-			expected: 1.56, // 多个差异的近似值
+			expected: 1.34, // √(0.23²+0.33²+0.17²+0.23²+1.0²+0.34²+0.34²+0.56²) ≈ 1.34
 		},
 		{
 			name:     "One nil Base",
@@ -62,7 +62,7 @@ func TestEuclideanDistance(t *testing.T) {
 			vector2: createTestVectorWithTemporal(3, 1,
 				"Network", "Low", "None", "None", "Unchanged", "High", "High", "High",
 				"Proof of Concept", "Workaround", "Reasonable"),
-			expected: 0.05, // 时间指标的差异比较小
+			expected: 0.07, // √(0.03²+0.05²+0.04²) ≈ 0.071
 		},
 	}
 
@@ -99,7 +99,7 @@ func TestManhattanDistance(t *testing.T) {
 			name:     "Multiple Differences",
 			vector1:  createTestVector(3, 1, "Network", "Low", "None", "None", "Unchanged", "High", "High", "High"),
 			vector2:  createTestVector(3, 1, "Adjacent", "High", "Low", "Required", "Changed", "Low", "Low", "None"),
-			expected: 3.35, // 多个差异总和的近似值
+			expected: 3.20, // 0.23+0.33+0.17+0.23+1.0+0.34+0.34+0.56 ≈ 3.20
 		},
 		{
 			name:     "One nil Base",

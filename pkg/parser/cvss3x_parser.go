@@ -12,7 +12,7 @@ import (
 
 var (
 	// ErrParserMagicHead 解析的时候魔术头不合法
-	ErrParserMagicHead = errors.New("cvss 3.x parser error, magic head valid, it must equals 'CVSS' ")
+	ErrParserMagicHead = errors.New("cvss 3.x parser error: invalid magic head, it must equal 'CVSS'")
 )
 
 const (
@@ -191,7 +191,7 @@ func (x *Cvss3xParser) readValue() (string, error) {
 
 	// 首先必须是一个 :
 	if x.read() != ':' {
-		return "", fmt.Errorf("cvss3x %s synctax error at %d", x.cvss3xStr, x.i)
+		return "", fmt.Errorf("cvss3x %s syntax error at position %d: expected ':' before value", x.cvss3xStr, x.i)
 	}
 
 	// 然后再是读到一个 / 或者是结束

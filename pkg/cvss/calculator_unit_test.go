@@ -410,7 +410,7 @@ func TestHasTemporalMetrics(t *testing.T) {
 					ExploitCodeMaturity: vector.ExploitCodeMaturityFunctional,
 				},
 			},
-			expected: false,
+			expected: true, // 只要有任一 Temporal 指标，就认为需要计算 Temporal 评分
 		},
 		{
 			name: "Complete Temporal Metrics",
