@@ -92,3 +92,30 @@ func (x *Cvss3x) String() string {
 
 	return buff.String()
 }
+
+// MarshalJSON 实现 json.Marshaler 接口
+// 将 Cvss3x 序列化为向量字符串格式
+func (x *Cvss3x) MarshalJSON() ([]byte, error) {
+	if x == nil {
+		return []byte("null"), nil
+	}
+	// 使用向量字符串作为 JSON 表示
+	return []byte(`"` + x.String() + `"`), nil
+}
+
+// UnmarshalJSON 实现 json.Unmarshaler 接口
+// 从向量字符串反序列化为 Cvss3x
+func (x *Cvss3x) UnmarshalJSON(data []byte) error {
+	s := string(data)
+	if s == "null" || s == `""` {
+		return nil
+	}
+	// 去掉引号
+	s = strings.Trim(s, `"`)
+	parsed, err := fromVectorString(s)
+	if err != nil {
+		return fmt.Errorf("failed to unmarshal Cvss3x: %w", err)
+	}
+	*x = *parsed
+	return nil
+}

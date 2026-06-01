@@ -59,3 +59,28 @@ func ParseSeverity(s string) (Severity, error) {
 func (s Severity) String() string {
 	return string(s)
 }
+
+// IsNone 判断是否为 None 等级
+func (s Severity) IsNone() bool {
+	return s == SeverityNone
+}
+
+// IsLow 判断是否为 Low 等级
+func (s Severity) IsLow() bool {
+	return s == SeverityLow
+}
+
+// IsMedium 判断是否为 Medium 等级
+func (s Severity) IsMedium() bool {
+	return s == SeverityMedium
+}
+
+// IsHigh 判断是否为 High 等级
+func (s Severity) IsHigh() bool {
+	return s == SeverityHigh
+}
+
+// IsCritical 判断是否为 Critical 等级
+func (s Severity) IsCritical() bool {
+	return s == SeverityCritical
+}

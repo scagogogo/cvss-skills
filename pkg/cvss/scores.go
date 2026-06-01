@@ -1,5 +1,9 @@
 package cvss
 
+import (
+	"fmt"
+)
+
 // GetBaseScore 计算并返回基础评分
 // 基础评分仅依赖于基础指标（AV, AC, PR, UI, S, C, I, A）
 func (c *Calculator) GetBaseScore() (float64, error) {
@@ -133,4 +137,19 @@ func (c *Calculator) GetAllScores() (*AllScores, error) {
 // 公开此函数以便外部使用者对分数进行同样的取整处理
 func RoundUp(x float64) float64 {
 	return roundUp(x)
+}
+
+// String 返回 AllScores 的可读摘要
+func (s *AllScores) String() string {
+	if s == nil {
+		return "<nil>"
+	}
+	result := fmt.Sprintf("Base: %.1f (%s)", s.BaseScore, s.BaseSeverity)
+	if s.HasTemporal {
+		result += fmt.Sprintf(", Temporal: %.1f (%s)", s.TemporalScore, s.TemporalSeverity)
+	}
+	if s.HasEnvironmental {
+		result += fmt.Sprintf(", Environmental: %.1f (%s)", s.EnvironmentalScore, s.EnvironmentalSeverity)
+	}
+	return result
 }
