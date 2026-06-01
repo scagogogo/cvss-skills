@@ -84,9 +84,9 @@ type AllScores struct {
 	BaseScore              float64
 	TemporalScore          float64
 	EnvironmentalScore     float64
-	BaseSeverity           string
-	TemporalSeverity       string
-	EnvironmentalSeverity  string
+	BaseSeverity           Severity
+	TemporalSeverity       Severity
+	EnvironmentalSeverity  Severity
 	ImpactSubScore         float64
 	ExploitabilitySubScore float64
 	HasTemporal            bool

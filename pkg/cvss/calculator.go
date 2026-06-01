@@ -363,16 +363,7 @@ func roundUp(x float64) float64 {
 }
 
 // GetSeverityRating 获取严重性等级
-func (c *Calculator) GetSeverityRating(score float64) string {
-	if score == 0 {
-		return "None"
-	} else if score < 4.0 {
-		return "Low"
-	} else if score < 7.0 {
-		return "Medium"
-	} else if score < 9.0 {
-		return "High"
-	} else {
-		return "Critical"
-	}
+// 返回 Severity 类型，可通过 .String() 转为字符串
+func (c *Calculator) GetSeverityRating(score float64) Severity {
+	return GetSeverity(score)
 }

@@ -58,10 +58,10 @@ func (x *Cvss3x) Equal(other *Cvss3x) bool {
 	if !x.Cvss3xBase.Equal(other.Cvss3xBase) {
 		return false
 	}
-	if !x.Cvss3xTemporal.equal(other.Cvss3xTemporal) {
+	if !x.Cvss3xTemporal.Equal(other.Cvss3xTemporal) {
 		return false
 	}
-	if !x.Cvss3xEnvironmental.equal(other.Cvss3xEnvironmental) {
+	if !x.Cvss3xEnvironmental.Equal(other.Cvss3xEnvironmental) {
 		return false
 	}
 	return true
@@ -158,8 +158,8 @@ func (x *Cvss3xBase) Equal(other *Cvss3xBase) bool {
 		vectorsEqual(x.Availability, other.Availability)
 }
 
-// equal 判断两个 Cvss3xTemporal 是否相等（小写表示内部方法）
-func (x *Cvss3xTemporal) equal(other *Cvss3xTemporal) bool {
+// Equal 判断两个 Cvss3xTemporal 是否相等
+func (x *Cvss3xTemporal) Equal(other *Cvss3xTemporal) bool {
 	if x == nil || other == nil {
 		return x == other
 	}
@@ -168,8 +168,8 @@ func (x *Cvss3xTemporal) equal(other *Cvss3xTemporal) bool {
 		vectorsEqual(x.ReportConfidence, other.ReportConfidence)
 }
 
-// equal 判断两个 Cvss3xEnvironmental 是否相等（小写表示内部方法）
-func (x *Cvss3xEnvironmental) equal(other *Cvss3xEnvironmental) bool {
+// Equal 判断两个 Cvss3xEnvironmental 是否相等
+func (x *Cvss3xEnvironmental) Equal(other *Cvss3xEnvironmental) bool {
 	if x == nil || other == nil {
 		return x == other
 	}

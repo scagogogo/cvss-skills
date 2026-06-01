@@ -285,30 +285,6 @@ func TestScoreDifference_CalculationError(t *testing.T) {
 	assert.Equal(t, 0.0, dc2.ScoreDifference())
 }
 
-// TestGetScoreDiff_WithNilVectors 测试getScoreDiff方法处理nil向量的情况
-func TestGetScoreDiff_WithNilVectors(t *testing.T) {
-	v1 := vector.AttackVectorNetwork
-	v2 := vector.AttackVectorLocal
-
-	dc := &DistanceCalculator{}
-
-	// 两个向量都为nil
-	diff1 := dc.getScoreDiff(nil, nil)
-	assert.Equal(t, 0.0, diff1)
-
-	// 一个向量为nil
-	diff2 := dc.getScoreDiff(v1, nil)
-	assert.Equal(t, 0.0, diff2)
-
-	diff3 := dc.getScoreDiff(nil, v2)
-	assert.Equal(t, 0.0, diff3)
-
-	// 两个有效向量
-	diff4 := dc.getScoreDiff(v1, v2)
-	expectedDiff := v1.GetScore() - v2.GetScore()
-	assert.Equal(t, expectedDiff, diff4)
-}
-
 // TestEuclideanDistance_WithZeroDistance 测试欧几里得距离为零的情况
 func TestEuclideanDistance_WithZeroDistance(t *testing.T) {
 	// 创建两个除了某些汉明距离指标外完全相同的向量，但这些指标的分数相同

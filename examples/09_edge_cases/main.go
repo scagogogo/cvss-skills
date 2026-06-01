@@ -375,10 +375,10 @@ func safeParseVector(vectorStr string) (*cvss.Cvss3x, error) {
 }
 
 // safeCalculateScore 安全地计算CVSS评分，处理潜在错误
-func safeCalculateScore(cvss3x *cvss.Cvss3x) (float64, string) {
+func safeCalculateScore(cvss3x *cvss.Cvss3x) (float64, cvss.Severity) {
 	// 检查输入
 	if cvss3x == nil {
-		return 0.0, "None"
+		return 0.0, cvss.SeverityNone
 	}
 
 	// 创建计算器
@@ -387,7 +387,7 @@ func safeCalculateScore(cvss3x *cvss.Cvss3x) (float64, string) {
 	// 尝试计算评分
 	score, err := calculator.Calculate()
 	if err != nil {
-		return 0.0, "None"
+		return 0.0, cvss.SeverityNone
 	}
 
 	// 获取严重性级别

@@ -24,32 +24,32 @@ func main() {
 	severityVectors := []struct {
 		name     string
 		vector   string
-		expected string
+		expected cvss.Severity
 	}{
 		{
 			name:     "关键(Critical)",
 			vector:   "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H",
-			expected: "Critical",
+			expected: cvss.SeverityCritical,
 		},
 		{
 			name:     "高(High)",
 			vector:   "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
-			expected: "High",
+			expected: cvss.SeverityHigh,
 		},
 		{
 			name:     "中(Medium)",
 			vector:   "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:N/A:N",
-			expected: "Medium",
+			expected: cvss.SeverityMedium,
 		},
 		{
 			name:     "低(Low)",
 			vector:   "CVSS:3.1/AV:L/AC:H/PR:H/UI:R/S:U/C:L/I:N/A:N",
-			expected: "Low",
+			expected: cvss.SeverityLow,
 		},
 		{
 			name:     "无(None)",
 			vector:   "CVSS:3.1/AV:L/AC:H/PR:H/UI:R/S:U/C:N/I:N/A:N",
-			expected: "None",
+			expected: cvss.SeverityNone,
 		},
 	}
 
@@ -86,32 +86,32 @@ func main() {
 	boundaryVectors := []struct {
 		name   string
 		score  float64
-		lower  string
-		higher string
+		lower  cvss.Severity
+		higher cvss.Severity
 	}{
 		{
 			name:   "无/低边界(0.1/0.0)",
 			score:  0.1,
-			lower:  "None",
-			higher: "Low",
+			lower:  cvss.SeverityNone,
+			higher: cvss.SeverityLow,
 		},
 		{
 			name:   "低/中边界(4.0/3.9)",
 			score:  4.0,
-			lower:  "Low",
-			higher: "Medium",
+			lower:  cvss.SeverityLow,
+			higher: cvss.SeverityMedium,
 		},
 		{
 			name:   "中/高边界(7.0/6.9)",
 			score:  7.0,
-			lower:  "Medium",
-			higher: "High",
+			lower:  cvss.SeverityMedium,
+			higher: cvss.SeverityHigh,
 		},
 		{
 			name:   "高/关键边界(9.0/8.9)",
 			score:  9.0,
-			lower:  "High",
-			higher: "Critical",
+			lower:  cvss.SeverityHigh,
+			higher: cvss.SeverityCritical,
 		},
 	}
 

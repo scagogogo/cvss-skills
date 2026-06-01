@@ -12,9 +12,9 @@ type JSONOutput struct {
 	BaseScore             float64      `json:"baseScore"`
 	TemporalScore         float64      `json:"temporalScore,omitempty"`
 	EnvironmentalScore    float64      `json:"environmentalScore,omitempty"`
-	BaseSeverity          string       `json:"baseSeverity"`
-	TemporalSeverity      string       `json:"temporalSeverity,omitempty"`
-	EnvironmentalSeverity string       `json:"environmentalSeverity,omitempty"`
+	BaseSeverity          Severity     `json:"baseSeverity"`
+	TemporalSeverity      Severity     `json:"temporalSeverity,omitempty"`
+	EnvironmentalSeverity Severity     `json:"environmentalSeverity,omitempty"`
 	Metrics               *JSONMetrics `json:"metrics"`
 }
 

@@ -281,11 +281,3 @@ func (dc *DistanceCalculator) ScoreDifference() float64 {
 
 	return math.Abs(score1 - score2)
 }
-
-// 获取两个向量元素的分数差异
-func (dc *DistanceCalculator) getScoreDiff(v1, v2 vector.Vector) float64 {
-	if v1 == nil || v2 == nil {
-		return 0
-	}
-	return v1.GetScore() - v2.GetScore()
-}

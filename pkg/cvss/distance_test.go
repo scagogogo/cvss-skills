@@ -277,10 +277,8 @@ func TestScoreDifference(t *testing.T) {
 	}
 }
 
-// TestGetScoreDiff 测试获取分数差异
-func TestGetScoreDiff(t *testing.T) {
-	dc := NewDistanceCalculator(nil, nil) // 只是为了访问方法
-
+// TestEnvScoreDiff 测试获取分数差异
+func TestEnvScoreDiff(t *testing.T) {
 	testCases := []struct {
 		name     string
 		v1       vector.Vector
@@ -321,7 +319,7 @@ func TestGetScoreDiff(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			diff := dc.getScoreDiff(tc.v1, tc.v2)
+			diff := envScoreDiff(tc.v1, tc.v2)
 			assert.InDelta(t, tc.expected, diff, 0.01, "获取分数差异计算错误")
 		})
 	}

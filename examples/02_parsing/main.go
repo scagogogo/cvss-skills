@@ -18,7 +18,7 @@ func main() {
 	vectors := []struct {
 		description string
 		vector      string
-		expected    string // 期望的严重级别
+		expected    cvss.Severity // 期望的严重级别
 	}{
 		{
 			description: "关键级别(Critical) - 网络攻击，低复杂度，无权限要求，高影响",

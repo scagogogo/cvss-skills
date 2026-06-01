@@ -491,17 +491,17 @@ func TestHasEnvironmentalMetrics(t *testing.T) {
 func TestGetSeverityRating(t *testing.T) {
 	testCases := []struct {
 		score    float64
-		expected string
+		expected Severity
 	}{
-		{0.0, "None"},
-		{0.1, "Low"},
-		{3.9, "Low"},
-		{4.0, "Medium"},
-		{6.9, "Medium"},
-		{7.0, "High"},
-		{8.9, "High"},
-		{9.0, "Critical"},
-		{10.0, "Critical"},
+		{0.0, SeverityNone},
+		{0.1, SeverityLow},
+		{3.9, SeverityLow},
+		{4.0, SeverityMedium},
+		{6.9, SeverityMedium},
+		{7.0, SeverityHigh},
+		{8.9, SeverityHigh},
+		{9.0, SeverityCritical},
+		{10.0, SeverityCritical},
 	}
 
 	calc := NewCalculator(nil) // Score is parameter, CVSS not used
