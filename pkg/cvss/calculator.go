@@ -50,6 +50,11 @@ func (c *Calculator) calculateBaseScore() float64 {
 	impactSubScore := c.calculateImpactSubScore()
 	exploitabilitySubScore := c.calculateExploitabilitySubScore()
 
+	// 根据 CVSS v3.1 规范：如果影响子评分 ≤ 0，则基础评分为 0
+	if impactSubScore <= 0 {
+		return 0
+	}
+
 	// 根据范围是否改变调整影响子评分
 	if c.isChangedScope() {
 		return roundUp(math.Min(1.08*(impactSubScore+exploitabilitySubScore), 10))
@@ -137,6 +142,11 @@ func (c *Calculator) calculateEnvironmentalScore() float64 {
 
 	// 步骤2: 计算修改后的可利用性子评分
 	modifiedExploitabilitySubScore := c.calculateModifiedExploitabilitySubScore()
+
+	// 根据 CVSS v3.1 规范：如果修改后的影响子评分 ≤ 0，则环境评分为 0
+	if modifiedImpactSubScore <= 0 {
+		return 0
+	}
 
 	// 步骤3: 计算修改后的基础评分
 	var envScore float64

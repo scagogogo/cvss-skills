@@ -131,7 +131,7 @@ func TestCalculateBaseScore(t *testing.T) {
 					Availability:       vector.AvailabilityNone,
 				},
 			},
-			expected: 0.2,
+			expected: 0.0,
 		},
 	}
 

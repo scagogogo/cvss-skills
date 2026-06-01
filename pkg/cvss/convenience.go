@@ -72,9 +72,13 @@ func (x *Cvss3x) Clone() *Cvss3x {
 	if x == nil {
 		return nil
 	}
-	result := NewCvss3x()
-	result.MajorVersion = x.MajorVersion
-	result.MinorVersion = x.MinorVersion
+	result := &Cvss3x{
+		MajorVersion:        x.MajorVersion,
+		MinorVersion:        x.MinorVersion,
+		Cvss3xBase:          nil,
+		Cvss3xTemporal:      nil,
+		Cvss3xEnvironmental: nil,
+	}
 
 	// Base — vectors are immutable pointers, safe to copy
 	if x.Cvss3xBase != nil {
@@ -125,9 +129,13 @@ func (x *Cvss3x) BaseOnly() *Cvss3x {
 	if x == nil {
 		return nil
 	}
-	result := NewCvss3x()
-	result.MajorVersion = x.MajorVersion
-	result.MinorVersion = x.MinorVersion
+	result := &Cvss3x{
+		MajorVersion:        x.MajorVersion,
+		MinorVersion:        x.MinorVersion,
+		Cvss3xBase:          nil,
+		Cvss3xTemporal:      nil,
+		Cvss3xEnvironmental: nil,
+	}
 	if x.Cvss3xBase != nil {
 		result.Cvss3xBase = &Cvss3xBase{
 			AttackVector:       x.Cvss3xBase.AttackVector,
