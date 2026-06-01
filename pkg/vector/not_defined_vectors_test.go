@@ -89,7 +89,7 @@ func TestNotDefinedVectors(t *testing.T) {
 			assert.Equal(t, tc.shortVal, tc.vector.GetShortValue())
 			assert.Equal(t, tc.longVal, tc.vector.GetLongValue())
 			assert.Equal(t, tc.score, tc.vector.GetScore())
-			assert.Contains(t, tc.vector.GetDescription(), "未定义")
+			assert.Contains(t, tc.vector.GetDescription(), "Not Defined")
 		})
 	}
 }
@@ -103,7 +103,7 @@ func TestAttackVectorNotDefined(t *testing.T) {
 	assert.Equal(t, "Not Defined", v.GetLongValue())
 	assert.Equal(t, 1.0, v.GetScore())
 	assert.Equal(t, "Environmental", v.GetGroupName())
-	assert.Contains(t, v.GetDescription(), "未定义")
+	assert.Contains(t, v.GetDescription(), "Not Defined")
 	assert.Equal(t, "MAV:X", v.String())
 }
 
@@ -116,7 +116,7 @@ func TestAttackComplexityNotDefined(t *testing.T) {
 	assert.Equal(t, "Not Defined", v.GetLongValue())
 	assert.Equal(t, 1.0, v.GetScore())
 	assert.Equal(t, "Environmental", v.GetGroupName())
-	assert.Contains(t, v.GetDescription(), "未定义")
+	assert.Contains(t, v.GetDescription(), "Not Defined")
 	assert.Equal(t, "MAC:X", v.String())
 }
 
@@ -129,7 +129,7 @@ func TestPrivilegesRequiredNotDefined(t *testing.T) {
 	assert.Equal(t, "Not Defined", v.GetLongValue())
 	assert.Equal(t, 1.0, v.GetScore())
 	assert.Equal(t, "Environmental", v.GetGroupName())
-	assert.Contains(t, v.GetDescription(), "未定义")
+	assert.Contains(t, v.GetDescription(), "Not Defined")
 	assert.Equal(t, "MPR:X", v.String())
 }
 
@@ -142,7 +142,7 @@ func TestUserInteractionNotDefined(t *testing.T) {
 	assert.Equal(t, "Not Defined", v.GetLongValue())
 	assert.Equal(t, 1.0, v.GetScore())
 	assert.Equal(t, "Environmental", v.GetGroupName())
-	assert.Contains(t, v.GetDescription(), "未定义")
+	assert.Contains(t, v.GetDescription(), "Not Defined")
 	assert.Equal(t, "MUI:X", v.String())
 }
 
@@ -155,7 +155,7 @@ func TestScopeNotDefined(t *testing.T) {
 	assert.Equal(t, "Not Defined", v.GetLongValue())
 	assert.Equal(t, 1.0, v.GetScore())
 	assert.Equal(t, "Environmental", v.GetGroupName())
-	assert.Contains(t, v.GetDescription(), "未定义")
+	assert.Contains(t, v.GetDescription(), "Not Defined")
 	assert.Equal(t, "MS:X", v.String())
 }
 
@@ -168,7 +168,7 @@ func TestConfidentialityNotDefined(t *testing.T) {
 	assert.Equal(t, "Not Defined", v.GetLongValue())
 	assert.Equal(t, 1.0, v.GetScore())
 	assert.Equal(t, "Environmental", v.GetGroupName())
-	assert.Contains(t, v.GetDescription(), "未定义")
+	assert.Contains(t, v.GetDescription(), "Not Defined")
 	assert.Equal(t, "MC:X", v.String())
 }
 
@@ -181,7 +181,7 @@ func TestIntegrityNotDefined(t *testing.T) {
 	assert.Equal(t, "Not Defined", v.GetLongValue())
 	assert.Equal(t, 1.0, v.GetScore())
 	assert.Equal(t, "Environmental", v.GetGroupName())
-	assert.Contains(t, v.GetDescription(), "未定义")
+	assert.Contains(t, v.GetDescription(), "Not Defined")
 	assert.Equal(t, "MI:X", v.String())
 }
 
@@ -194,7 +194,7 @@ func TestAvailabilityNotDefined(t *testing.T) {
 	assert.Equal(t, "Not Defined", v.GetLongValue())
 	assert.Equal(t, 1.0, v.GetScore())
 	assert.Equal(t, "Environmental", v.GetGroupName())
-	assert.Contains(t, v.GetDescription(), "未定义")
+	assert.Contains(t, v.GetDescription(), "Not Defined")
 	assert.Equal(t, "MA:X", v.String())
 }
 

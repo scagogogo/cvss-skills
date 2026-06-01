@@ -1,9 +1,10 @@
 package vector
 
-// 定义在factory.go中引用但尚未定义的"NotDefined"变量
+// "Not Defined" variants for Environmental modified metrics
+// When a modified metric is set to "Not Defined" (X), the base metric value is used instead.
 
 var (
-	// 攻击向量未定义
+	// AttackVectorNotDefined represents a Not Defined (X) value for Modified Attack Vector
 	AttackVectorNotDefined = &AttackVector{
 		VectorImpl: &VectorImpl{
 			GroupName:   "Environmental",
@@ -11,12 +12,12 @@ var (
 			LongName:    "Modified Attack Vector",
 			ShortValue:  'X',
 			LongValue:   "Not Defined",
-			Description: "未定义表示此指标不应修改基本指标值",
+			Description: "Not Defined means this metric should not modify the base metric value",
 			Score:       1.0,
 		},
 	}
 
-	// 攻击复杂性未定义
+	// AttackComplexityNotDefined represents a Not Defined (X) value for Modified Attack Complexity
 	AttackComplexityNotDefined = &AttackComplexity{
 		VectorImpl: &VectorImpl{
 			GroupName:   "Environmental",
@@ -24,12 +25,12 @@ var (
 			LongName:    "Modified Attack Complexity",
 			ShortValue:  'X',
 			LongValue:   "Not Defined",
-			Description: "未定义表示此指标不应修改基本指标值",
+			Description: "Not Defined means this metric should not modify the base metric value",
 			Score:       1.0,
 		},
 	}
 
-	// 特权要求未定义
+	// PrivilegesRequiredNotDefined represents a Not Defined (X) value for Modified Privileges Required
 	PrivilegesRequiredNotDefined = &PrivilegesRequired{
 		VectorImpl: &VectorImpl{
 			GroupName:   "Environmental",
@@ -37,12 +38,12 @@ var (
 			LongName:    "Modified Privileges Required",
 			ShortValue:  'X',
 			LongValue:   "Not Defined",
-			Description: "未定义表示此指标不应修改基本指标值",
+			Description: "Not Defined means this metric should not modify the base metric value",
 			Score:       1.0,
 		},
 	}
 
-	// 用户交互未定义
+	// UserInteractionNotDefined represents a Not Defined (X) value for Modified User Interaction
 	UserInteractionNotDefined = &UserInteraction{
 		VectorImpl: &VectorImpl{
 			GroupName:   "Environmental",
@@ -50,12 +51,12 @@ var (
 			LongName:    "Modified User Interaction",
 			ShortValue:  'X',
 			LongValue:   "Not Defined",
-			Description: "未定义表示此指标不应修改基本指标值",
+			Description: "Not Defined means this metric should not modify the base metric value",
 			Score:       1.0,
 		},
 	}
 
-	// 范围未定义
+	// ScopeNotDefined represents a Not Defined (X) value for Modified Scope
 	ScopeNotDefined = &Scope{
 		VectorImpl: &VectorImpl{
 			GroupName:   "Environmental",
@@ -63,12 +64,12 @@ var (
 			LongName:    "Modified Scope",
 			ShortValue:  'X',
 			LongValue:   "Not Defined",
-			Description: "未定义表示此指标不应修改基本指标值",
+			Description: "Not Defined means this metric should not modify the base metric value",
 			Score:       1.0,
 		},
 	}
 
-	// 机密性未定义
+	// ConfidentialityNotDefined represents a Not Defined (X) value for Modified Confidentiality
 	ConfidentialityNotDefined = &Confidentiality{
 		VectorImpl: &VectorImpl{
 			GroupName:   "Environmental",
@@ -76,12 +77,12 @@ var (
 			LongName:    "Modified Confidentiality",
 			ShortValue:  'X',
 			LongValue:   "Not Defined",
-			Description: "未定义表示此指标不应修改基本指标值",
+			Description: "Not Defined means this metric should not modify the base metric value",
 			Score:       1.0,
 		},
 	}
 
-	// 完整性未定义
+	// IntegrityNotDefined represents a Not Defined (X) value for Modified Integrity
 	IntegrityNotDefined = &Integrity{
 		VectorImpl: &VectorImpl{
 			GroupName:   "Environmental",
@@ -89,12 +90,12 @@ var (
 			LongName:    "Modified Integrity",
 			ShortValue:  'X',
 			LongValue:   "Not Defined",
-			Description: "未定义表示此指标不应修改基本指标值",
+			Description: "Not Defined means this metric should not modify the base metric value",
 			Score:       1.0,
 		},
 	}
 
-	// 可用性未定义
+	// AvailabilityNotDefined represents a Not Defined (X) value for Modified Availability
 	AvailabilityNotDefined = &Availability{
 		VectorImpl: &VectorImpl{
 			GroupName:   "Environmental",
@@ -102,7 +103,7 @@ var (
 			LongName:    "Modified Availability",
 			ShortValue:  'X',
 			LongValue:   "Not Defined",
-			Description: "未定义表示此指标不应修改基本指标值",
+			Description: "Not Defined means this metric should not modify the base metric value",
 			Score:       1.0,
 		},
 	}
