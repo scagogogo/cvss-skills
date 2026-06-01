@@ -3,6 +3,9 @@ package cvss
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
+
+	"github.com/scagogogo/cvss-parser/pkg/vector"
 )
 
 // JSONOutput CVSS JSON输出格式
@@ -162,4 +165,343 @@ func (x *Cvss3x) ToJSON(calculator *Calculator) ([]byte, error) {
 	}
 
 	return json.MarshalIndent(output, "", "  ")
+}
+
+// longToShortValue 将指标的 LongValue 名称转换为 ShortValue 字符
+// 例如 "Network" → 'N', "Low" → 'L'
+// 这是从 CVSS JSON 恢复向量字符串所需的核心映射
+var longToShortValue = map[string]map[string]rune{
+	"AV": {"Network": 'N', "Adjacent": 'A', "Local": 'L', "Physical": 'P', "Not Defined": 'X'},
+	"AC": {"Low": 'L', "High": 'H', "Not Defined": 'X'},
+	"PR": {"None": 'N', "Low": 'L', "High": 'H', "Not Defined": 'X'},
+	"UI": {"None": 'N', "Required": 'R', "Not Defined": 'X'},
+	"S":  {"Unchanged": 'U', "Changed": 'C', "Not Defined": 'X'},
+	"C":  {"High": 'H', "Low": 'L', "None": 'N', "Not Defined": 'X'},
+	"I":  {"High": 'H', "Low": 'L', "None": 'N', "Not Defined": 'X'},
+	"A":  {"High": 'H', "Low": 'L', "None": 'N', "Not Defined": 'X'},
+	"E":  {"Unproven": 'U', "Proof-of-Concept": 'P', "Functional": 'F', "High": 'H', "Not Defined": 'X'},
+	"RL": {"Official Fix": 'O', "Temporary Fix": 'T', "Workaround": 'W', "Unavailable": 'U', "Not Defined": 'X'},
+	"RC": {"Unknown": 'U', "Reasonable": 'R', "Confirmed": 'C', "Not Defined": 'X'},
+	"CR": {"High": 'H', "Medium": 'M', "Low": 'L', "Not Defined": 'X'},
+	"IR": {"High": 'H', "Medium": 'M', "Low": 'L', "Not Defined": 'X'},
+	"AR": {"High": 'H', "Medium": 'M', "Low": 'L', "Not Defined": 'X'},
+}
+
+// FromJSON 从 JSON 字节数据恢复 Cvss3x 对象
+// 它提取 vectorString 并通过解析器重建 Cvss3x，同时保留 JSON 中的评分信息
+// 如果 vectorString 缺失或无效，则尝试从各指标字段重建向量字符串
+func FromJSON(data []byte) (*Cvss3x, error) {
+	var output JSONOutput
+	if err := json.Unmarshal(data, &output); err != nil {
+		return nil, fmt.Errorf("failed to parse CVSS JSON: %w", err)
+	}
+
+	// 优先使用 vectorString 直接解析
+	if output.VectorString != "" {
+		vectorStr := output.VectorString
+		// 通过内部解析重建（避免循环依赖，直接构造向量字符串）
+		return fromVectorString(vectorStr)
+	}
+
+	// 如果没有 vectorString，从各指标字段重建
+	return fromJSONMetrics(&output)
+}
+
+// fromVectorString 从向量字符串解析构建 Cvss3x
+// 内部实现，不依赖 parser 包以避免循环依赖
+func fromVectorString(vectorStr string) (*Cvss3x, error) {
+	// 验证格式
+	if len(vectorStr) < 7 || !strings.HasPrefix(strings.ToUpper(vectorStr), "CVSS:") {
+		return nil, fmt.Errorf("invalid vector string format: %s", vectorStr)
+	}
+
+	// 手动解析向量字符串（简化版，避免循环依赖）
+	parts := strings.Split(vectorStr, "/")
+	if len(parts) < 2 {
+		return nil, fmt.Errorf("invalid vector string format: %s", vectorStr)
+	}
+
+	// 解析版本
+	versionPart := parts[0] // "CVSS:3.1"
+	versionPieces := strings.Split(versionPart, ":")
+	if len(versionPieces) != 2 {
+		return nil, fmt.Errorf("invalid version format: %s", versionPart)
+	}
+	versionNums := strings.Split(versionPieces[1], ".")
+	if len(versionNums) != 2 {
+		return nil, fmt.Errorf("invalid version format: %s", versionPieces[1])
+	}
+
+	major, err := parseInt(versionNums[0])
+	if err != nil {
+		return nil, fmt.Errorf("invalid major version: %w", err)
+	}
+	minor, err := parseInt(versionNums[1])
+	if err != nil {
+		return nil, fmt.Errorf("invalid minor version: %w", err)
+	}
+
+	result := &Cvss3x{
+		MajorVersion:        major,
+		MinorVersion:        minor,
+		Cvss3xBase:          &Cvss3xBase{},
+		Cvss3xTemporal:      nil,
+		Cvss3xEnvironmental: nil,
+	}
+
+	// 解析各指标
+	for _, part := range parts[1:] {
+		kv := strings.SplitN(part, ":", 2)
+		if len(kv) != 2 {
+			continue
+		}
+		key := strings.ToUpper(kv[0])
+		value := strings.ToUpper(kv[1])
+
+		if err := mapKeyValueToStruct(result, key, value); err != nil {
+			return nil, err
+		}
+	}
+
+	return result, nil
+}
+
+// fromJSONMetrics 从 JSON 的各指标字段重建 Cvss3x
+func fromJSONMetrics(output *JSONOutput) (*Cvss3x, error) {
+	if output.Metrics == nil || output.Metrics.Base == nil {
+		return nil, fmt.Errorf("JSON missing base metrics")
+	}
+
+	// 从 version 字段推断版本号
+	major, minor := 3, 1
+	if output.Version != "" {
+		parts := strings.Split(output.Version, ".")
+		if len(parts) == 2 {
+			if m, err := parseInt(parts[0]); err == nil {
+				major = m
+			}
+			if m, err := parseInt(parts[1]); err == nil {
+				minor = m
+			}
+		}
+	}
+
+	result := &Cvss3x{
+		MajorVersion:        major,
+		MinorVersion:        minor,
+		Cvss3xBase:          &Cvss3xBase{},
+		Cvss3xTemporal:      nil,
+		Cvss3xEnvironmental: nil,
+	}
+
+	base := output.Metrics.Base
+
+	// 将 LongValue 转为 ShortValue 并映射
+	mappings := []struct {
+		key      string
+		longVal  string
+		setField func(string)
+	}{
+		{"AV", base.AttackVector, func(v string) { result.Cvss3xBase.AttackVector = mustGetVector("AV", v) }},
+		{"AC", base.AttackComplexity, func(v string) { result.Cvss3xBase.AttackComplexity = mustGetVector("AC", v) }},
+		{"PR", base.PrivilegesRequired, func(v string) { result.Cvss3xBase.PrivilegesRequired = mustGetVector("PR", v) }},
+		{"UI", base.UserInteraction, func(v string) { result.Cvss3xBase.UserInteraction = mustGetVector("UI", v) }},
+		{"S", base.Scope, func(v string) { result.Cvss3xBase.Scope = mustGetVector("S", v) }},
+		{"C", base.Confidentiality, func(v string) { result.Cvss3xBase.Confidentiality = mustGetVector("C", v) }},
+		{"I", base.Integrity, func(v string) { result.Cvss3xBase.Integrity = mustGetVector("I", v) }},
+		{"A", base.Availability, func(v string) { result.Cvss3xBase.Availability = mustGetVector("A", v) }},
+	}
+
+	for _, m := range mappings {
+		if m.longVal != "" {
+			m.setField(m.longVal)
+		}
+	}
+
+	// Temporal
+	if output.Metrics.Temporal != nil {
+		result.Cvss3xTemporal = &Cvss3xTemporal{}
+		t := output.Metrics.Temporal
+		if t.ExploitCodeMaturity != "" {
+			result.Cvss3xTemporal.ExploitCodeMaturity = mustGetVector("E", t.ExploitCodeMaturity)
+		}
+		if t.RemediationLevel != "" {
+			result.Cvss3xTemporal.RemediationLevel = mustGetVector("RL", t.RemediationLevel)
+		}
+		if t.ReportConfidence != "" {
+			result.Cvss3xTemporal.ReportConfidence = mustGetVector("RC", t.ReportConfidence)
+		}
+	}
+
+	// Environmental
+	if output.Metrics.Environmental != nil {
+		result.Cvss3xEnvironmental = &Cvss3xEnvironmental{}
+		e := output.Metrics.Environmental
+		if e.ConfidentialityRequirement != "" {
+			result.Cvss3xEnvironmental.ConfidentialityRequirement = mustGetVector("CR", e.ConfidentialityRequirement)
+		}
+		if e.IntegrityRequirement != "" {
+			result.Cvss3xEnvironmental.IntegrityRequirement = mustGetVector("IR", e.IntegrityRequirement)
+		}
+		if e.AvailabilityRequirement != "" {
+			result.Cvss3xEnvironmental.AvailabilityRequirement = mustGetVector("AR", e.AvailabilityRequirement)
+		}
+		if e.ModifiedAttackVector != "" {
+			result.Cvss3xEnvironmental.ModifiedAttackVector = mustGetVector("MAV", e.ModifiedAttackVector)
+		}
+		if e.ModifiedAttackComplexity != "" {
+			result.Cvss3xEnvironmental.ModifiedAttackComplexity = mustGetVector("MAC", e.ModifiedAttackComplexity)
+		}
+		if e.ModifiedPrivilegesRequired != "" {
+			result.Cvss3xEnvironmental.ModifiedPrivilegesRequired = mustGetVector("MPR", e.ModifiedPrivilegesRequired)
+		}
+		if e.ModifiedUserInteraction != "" {
+			result.Cvss3xEnvironmental.ModifiedUserInteraction = mustGetVector("MUI", e.ModifiedUserInteraction)
+		}
+		if e.ModifiedScope != "" {
+			result.Cvss3xEnvironmental.ModifiedScope = mustGetVector("MS", e.ModifiedScope)
+		}
+		if e.ModifiedConfidentiality != "" {
+			result.Cvss3xEnvironmental.ModifiedConfidentiality = mustGetVector("MC", e.ModifiedConfidentiality)
+		}
+		if e.ModifiedIntegrity != "" {
+			result.Cvss3xEnvironmental.ModifiedIntegrity = mustGetVector("MI", e.ModifiedIntegrity)
+		}
+		if e.ModifiedAvailability != "" {
+			result.Cvss3xEnvironmental.ModifiedAvailability = mustGetVector("MA", e.ModifiedAvailability)
+		}
+	}
+
+	return result, nil
+}
+
+// mustGetVector 通过 key 和 LongValue 获取 Vector，如果找不到返回 nil
+func mustGetVector(key, longValue string) vector.Vector {
+	if longValue == "" {
+		return nil
+	}
+	mapping, ok := longToShortValue[key]
+	if !ok {
+		return nil
+	}
+	shortVal, ok := mapping[longValue]
+	if !ok {
+		return nil
+	}
+	// 使用 vector 包的工厂函数
+	v, err := vector.GetVectorByShortName(key, string(shortVal))
+	if err != nil {
+		return nil
+	}
+	return v
+}
+
+// parseInt 解析整数
+func parseInt(s string) (int, error) {
+	var n int
+	for _, c := range s {
+		if c < '0' || c > '9' {
+			return 0, fmt.Errorf("invalid integer: %s", s)
+		}
+		n = n*10 + int(c-'0')
+	}
+	return n, nil
+}
+
+// mapKeyValueToStruct 将解析出的 key/value 映射到 Cvss3x 结构中
+func mapKeyValueToStruct(result *Cvss3x, key, value string) error {
+	vectorObj, err := vector.GetVectorByShortName(key, value)
+	if err != nil {
+		return err
+	}
+
+	switch key {
+	case "AV":
+		result.Cvss3xBase.AttackVector = vectorObj
+	case "AC":
+		result.Cvss3xBase.AttackComplexity = vectorObj
+	case "PR":
+		result.Cvss3xBase.PrivilegesRequired = vectorObj
+	case "UI":
+		result.Cvss3xBase.UserInteraction = vectorObj
+	case "S":
+		result.Cvss3xBase.Scope = vectorObj
+	case "C":
+		result.Cvss3xBase.Confidentiality = vectorObj
+	case "I":
+		result.Cvss3xBase.Integrity = vectorObj
+	case "A":
+		result.Cvss3xBase.Availability = vectorObj
+	case "E":
+		if result.Cvss3xTemporal == nil {
+			result.Cvss3xTemporal = &Cvss3xTemporal{}
+		}
+		result.Cvss3xTemporal.ExploitCodeMaturity = vectorObj
+	case "RL":
+		if result.Cvss3xTemporal == nil {
+			result.Cvss3xTemporal = &Cvss3xTemporal{}
+		}
+		result.Cvss3xTemporal.RemediationLevel = vectorObj
+	case "RC":
+		if result.Cvss3xTemporal == nil {
+			result.Cvss3xTemporal = &Cvss3xTemporal{}
+		}
+		result.Cvss3xTemporal.ReportConfidence = vectorObj
+	case "CR":
+		if result.Cvss3xEnvironmental == nil {
+			result.Cvss3xEnvironmental = &Cvss3xEnvironmental{}
+		}
+		result.Cvss3xEnvironmental.ConfidentialityRequirement = vectorObj
+	case "IR":
+		if result.Cvss3xEnvironmental == nil {
+			result.Cvss3xEnvironmental = &Cvss3xEnvironmental{}
+		}
+		result.Cvss3xEnvironmental.IntegrityRequirement = vectorObj
+	case "AR":
+		if result.Cvss3xEnvironmental == nil {
+			result.Cvss3xEnvironmental = &Cvss3xEnvironmental{}
+		}
+		result.Cvss3xEnvironmental.AvailabilityRequirement = vectorObj
+	case "MAV":
+		if result.Cvss3xEnvironmental == nil {
+			result.Cvss3xEnvironmental = &Cvss3xEnvironmental{}
+		}
+		result.Cvss3xEnvironmental.ModifiedAttackVector = vectorObj
+	case "MAC":
+		if result.Cvss3xEnvironmental == nil {
+			result.Cvss3xEnvironmental = &Cvss3xEnvironmental{}
+		}
+		result.Cvss3xEnvironmental.ModifiedAttackComplexity = vectorObj
+	case "MPR":
+		if result.Cvss3xEnvironmental == nil {
+			result.Cvss3xEnvironmental = &Cvss3xEnvironmental{}
+		}
+		result.Cvss3xEnvironmental.ModifiedPrivilegesRequired = vectorObj
+	case "MUI":
+		if result.Cvss3xEnvironmental == nil {
+			result.Cvss3xEnvironmental = &Cvss3xEnvironmental{}
+		}
+		result.Cvss3xEnvironmental.ModifiedUserInteraction = vectorObj
+	case "MS":
+		if result.Cvss3xEnvironmental == nil {
+			result.Cvss3xEnvironmental = &Cvss3xEnvironmental{}
+		}
+		result.Cvss3xEnvironmental.ModifiedScope = vectorObj
+	case "MC":
+		if result.Cvss3xEnvironmental == nil {
+			result.Cvss3xEnvironmental = &Cvss3xEnvironmental{}
+		}
+		result.Cvss3xEnvironmental.ModifiedConfidentiality = vectorObj
+	case "MI":
+		if result.Cvss3xEnvironmental == nil {
+			result.Cvss3xEnvironmental = &Cvss3xEnvironmental{}
+		}
+		result.Cvss3xEnvironmental.ModifiedIntegrity = vectorObj
+	case "MA":
+		if result.Cvss3xEnvironmental == nil {
+			result.Cvss3xEnvironmental = &Cvss3xEnvironmental{}
+		}
+		result.Cvss3xEnvironmental.ModifiedAvailability = vectorObj
+	}
+	return nil
 }
