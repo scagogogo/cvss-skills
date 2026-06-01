@@ -42,6 +42,11 @@ func (x *VectorImpl) GetScore() float64 {
 	return x.Score
 }
 
+// IsNotDefined 判断此向量是否为 "Not Defined" (X) 值
+func (x *VectorImpl) IsNotDefined() bool {
+	return x.ShortValue == 'X'
+}
+
 func (x *VectorImpl) String() string {
 	return fmt.Sprintf("%s:%c", x.ShortName, x.ShortValue)
 }

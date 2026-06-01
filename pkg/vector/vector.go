@@ -16,5 +16,9 @@ type Vector interface {
 
 	GetScore() float64
 
+	// IsNotDefined 判断此向量是否为 "Not Defined" (X) 值
+	// "Not Defined" 表示不应修改基本指标值，分数为 1.0
+	IsNotDefined() bool
+
 	String() string
 }

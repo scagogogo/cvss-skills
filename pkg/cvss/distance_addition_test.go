@@ -400,6 +400,10 @@ func (tv *testVector) GetDescription() string {
 	return "Test vector for unit tests"
 }
 
+func (tv *testVector) IsNotDefined() bool {
+	return tv.shortValue == 'X'
+}
+
 func createVectorWithScore(shortValue rune, score float64) vector.Vector {
 	return &testVector{
 		shortValue: shortValue,
