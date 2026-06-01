@@ -35,7 +35,7 @@ var (
 var (
 	ModifiedUserInteractionNone = &UserInteraction{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MUI",
 			LongName:    "Modified User Interaction",
 			ShortValue:  'N',
@@ -47,7 +47,7 @@ var (
 
 	ModifiedUserInteractionRequired = &UserInteraction{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MUI",
 			LongName:    "Modified User Interaction",
 			ShortValue:  'R',

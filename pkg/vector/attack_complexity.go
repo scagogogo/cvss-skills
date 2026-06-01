@@ -39,7 +39,7 @@ The attacker must inject themselves into the logical network path between the ta
 var (
 	ModifiedAttackComplexityLow = &AttackComplexity{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MAC",
 			LongName:    "Modified Attack Complexity",
 			ShortValue:  'L',
@@ -51,7 +51,7 @@ var (
 
 	ModifiedAttackComplexityHigh = &AttackComplexity{
 		VectorImpl: &VectorImpl{
-			GroupName:  "Environmental",
+			GroupName:  "Environmental Metrics",
 			ShortName:  "MAC",
 			LongName:   "Modified Attack Complexity",
 			ShortValue: 'H',

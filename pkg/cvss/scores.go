@@ -81,16 +81,18 @@ func (c *Calculator) GetModifiedExploitabilitySubScore() (float64, error) {
 
 // AllScores 包含 CVSS 所有可能的评分和严重性等级
 type AllScores struct {
-	BaseScore              float64
-	TemporalScore          float64
-	EnvironmentalScore     float64
-	BaseSeverity           Severity
-	TemporalSeverity       Severity
-	EnvironmentalSeverity  Severity
-	ImpactSubScore         float64
-	ExploitabilitySubScore float64
-	HasTemporal            bool
-	HasEnvironmental       bool
+	BaseScore                    float64
+	TemporalScore                float64
+	EnvironmentalScore           float64
+	BaseSeverity                 Severity
+	TemporalSeverity             Severity
+	EnvironmentalSeverity        Severity
+	ImpactSubScore               float64
+	ExploitabilitySubScore       float64
+	ModifiedImpactSubScore       float64
+	ModifiedExploitabilitySubScore float64
+	HasTemporal                  bool
+	HasEnvironmental             bool
 }
 
 // GetAllScores 一次性计算并返回所有评分和严重性等级
@@ -117,6 +119,8 @@ func (c *Calculator) GetAllScores() (*AllScores, error) {
 	}
 
 	if result.HasEnvironmental {
+		result.ModifiedImpactSubScore = c.calculateModifiedImpactSubScore()
+		result.ModifiedExploitabilitySubScore = c.calculateModifiedExploitabilitySubScore()
 		envScore := c.calculateEnvironmentalScore()
 		result.EnvironmentalScore = envScore
 		result.EnvironmentalSeverity = c.GetSeverityRating(envScore)

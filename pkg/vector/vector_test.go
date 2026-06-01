@@ -109,7 +109,7 @@ func TestVectorGroups(t *testing.T) {
 	}
 
 	for _, v := range modifiedVectors {
-		assert.Equal(t, "Environmental", v.GetGroupName(), "Vector %s should be in Environment Group", v.GetShortName())
+		assert.Equal(t, "Environmental Metrics", v.GetGroupName(), "Vector %s should be in Environmental Metrics Group", v.GetShortName())
 	}
 
 	// 测试环境度量要求向量
@@ -206,7 +206,7 @@ func TestVectorImplementation(t *testing.T) {
 		assert.Equal(t, 'N', ModifiedAttackVectorNetwork.GetShortValue())
 		assert.Equal(t, "Network", ModifiedAttackVectorNetwork.GetLongValue())
 		assert.Equal(t, AttackVectorNetwork.GetScore(), ModifiedAttackVectorNetwork.GetScore())
-		assert.Equal(t, "Environmental", ModifiedAttackVectorNetwork.GetGroupName())
+		assert.Equal(t, "Environmental Metrics", ModifiedAttackVectorNetwork.GetGroupName())
 	})
 
 	// 测试环境需求向量实现

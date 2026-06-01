@@ -20,7 +20,7 @@ func TestNotDefinedVectors(t *testing.T) {
 		{
 			name:     "AttackVectorNotDefined",
 			vector:   AttackVectorNotDefined,
-			group:    "Environmental",
+			group:    "Environmental Metrics",
 			shortVal: 'X',
 			longVal:  "Not Defined",
 			score:    1.0,
@@ -28,7 +28,7 @@ func TestNotDefinedVectors(t *testing.T) {
 		{
 			name:     "AttackComplexityNotDefined",
 			vector:   AttackComplexityNotDefined,
-			group:    "Environmental",
+			group:    "Environmental Metrics",
 			shortVal: 'X',
 			longVal:  "Not Defined",
 			score:    1.0,
@@ -36,7 +36,7 @@ func TestNotDefinedVectors(t *testing.T) {
 		{
 			name:     "PrivilegesRequiredNotDefined",
 			vector:   PrivilegesRequiredNotDefined,
-			group:    "Environmental",
+			group:    "Environmental Metrics",
 			shortVal: 'X',
 			longVal:  "Not Defined",
 			score:    1.0,
@@ -44,7 +44,7 @@ func TestNotDefinedVectors(t *testing.T) {
 		{
 			name:     "UserInteractionNotDefined",
 			vector:   UserInteractionNotDefined,
-			group:    "Environmental",
+			group:    "Environmental Metrics",
 			shortVal: 'X',
 			longVal:  "Not Defined",
 			score:    1.0,
@@ -52,7 +52,7 @@ func TestNotDefinedVectors(t *testing.T) {
 		{
 			name:     "ScopeNotDefined",
 			vector:   ScopeNotDefined,
-			group:    "Environmental",
+			group:    "Environmental Metrics",
 			shortVal: 'X',
 			longVal:  "Not Defined",
 			score:    1.0,
@@ -60,7 +60,7 @@ func TestNotDefinedVectors(t *testing.T) {
 		{
 			name:     "ConfidentialityNotDefined",
 			vector:   ConfidentialityNotDefined,
-			group:    "Environmental",
+			group:    "Environmental Metrics",
 			shortVal: 'X',
 			longVal:  "Not Defined",
 			score:    1.0,
@@ -68,7 +68,7 @@ func TestNotDefinedVectors(t *testing.T) {
 		{
 			name:     "IntegrityNotDefined",
 			vector:   IntegrityNotDefined,
-			group:    "Environmental",
+			group:    "Environmental Metrics",
 			shortVal: 'X',
 			longVal:  "Not Defined",
 			score:    1.0,
@@ -76,7 +76,7 @@ func TestNotDefinedVectors(t *testing.T) {
 		{
 			name:     "AvailabilityNotDefined",
 			vector:   AvailabilityNotDefined,
-			group:    "Environmental",
+			group:    "Environmental Metrics",
 			shortVal: 'X',
 			longVal:  "Not Defined",
 			score:    1.0,
@@ -102,7 +102,7 @@ func TestAttackVectorNotDefined(t *testing.T) {
 	assert.Equal(t, 'X', v.GetShortValue())
 	assert.Equal(t, "Not Defined", v.GetLongValue())
 	assert.Equal(t, 1.0, v.GetScore())
-	assert.Equal(t, "Environmental", v.GetGroupName())
+	assert.Equal(t, "Environmental Metrics", v.GetGroupName())
 	assert.Contains(t, v.GetDescription(), "Not Defined")
 	assert.Equal(t, "MAV:X", v.String())
 }
@@ -115,7 +115,7 @@ func TestAttackComplexityNotDefined(t *testing.T) {
 	assert.Equal(t, 'X', v.GetShortValue())
 	assert.Equal(t, "Not Defined", v.GetLongValue())
 	assert.Equal(t, 1.0, v.GetScore())
-	assert.Equal(t, "Environmental", v.GetGroupName())
+	assert.Equal(t, "Environmental Metrics", v.GetGroupName())
 	assert.Contains(t, v.GetDescription(), "Not Defined")
 	assert.Equal(t, "MAC:X", v.String())
 }
@@ -128,7 +128,7 @@ func TestPrivilegesRequiredNotDefined(t *testing.T) {
 	assert.Equal(t, 'X', v.GetShortValue())
 	assert.Equal(t, "Not Defined", v.GetLongValue())
 	assert.Equal(t, 1.0, v.GetScore())
-	assert.Equal(t, "Environmental", v.GetGroupName())
+	assert.Equal(t, "Environmental Metrics", v.GetGroupName())
 	assert.Contains(t, v.GetDescription(), "Not Defined")
 	assert.Equal(t, "MPR:X", v.String())
 }
@@ -141,7 +141,7 @@ func TestUserInteractionNotDefined(t *testing.T) {
 	assert.Equal(t, 'X', v.GetShortValue())
 	assert.Equal(t, "Not Defined", v.GetLongValue())
 	assert.Equal(t, 1.0, v.GetScore())
-	assert.Equal(t, "Environmental", v.GetGroupName())
+	assert.Equal(t, "Environmental Metrics", v.GetGroupName())
 	assert.Contains(t, v.GetDescription(), "Not Defined")
 	assert.Equal(t, "MUI:X", v.String())
 }
@@ -154,7 +154,7 @@ func TestScopeNotDefined(t *testing.T) {
 	assert.Equal(t, 'X', v.GetShortValue())
 	assert.Equal(t, "Not Defined", v.GetLongValue())
 	assert.Equal(t, 1.0, v.GetScore())
-	assert.Equal(t, "Environmental", v.GetGroupName())
+	assert.Equal(t, "Environmental Metrics", v.GetGroupName())
 	assert.Contains(t, v.GetDescription(), "Not Defined")
 	assert.Equal(t, "MS:X", v.String())
 }
@@ -167,7 +167,7 @@ func TestConfidentialityNotDefined(t *testing.T) {
 	assert.Equal(t, 'X', v.GetShortValue())
 	assert.Equal(t, "Not Defined", v.GetLongValue())
 	assert.Equal(t, 1.0, v.GetScore())
-	assert.Equal(t, "Environmental", v.GetGroupName())
+	assert.Equal(t, "Environmental Metrics", v.GetGroupName())
 	assert.Contains(t, v.GetDescription(), "Not Defined")
 	assert.Equal(t, "MC:X", v.String())
 }
@@ -180,7 +180,7 @@ func TestIntegrityNotDefined(t *testing.T) {
 	assert.Equal(t, 'X', v.GetShortValue())
 	assert.Equal(t, "Not Defined", v.GetLongValue())
 	assert.Equal(t, 1.0, v.GetScore())
-	assert.Equal(t, "Environmental", v.GetGroupName())
+	assert.Equal(t, "Environmental Metrics", v.GetGroupName())
 	assert.Contains(t, v.GetDescription(), "Not Defined")
 	assert.Equal(t, "MI:X", v.String())
 }
@@ -193,7 +193,7 @@ func TestAvailabilityNotDefined(t *testing.T) {
 	assert.Equal(t, 'X', v.GetShortValue())
 	assert.Equal(t, "Not Defined", v.GetLongValue())
 	assert.Equal(t, 1.0, v.GetScore())
-	assert.Equal(t, "Environmental", v.GetGroupName())
+	assert.Equal(t, "Environmental Metrics", v.GetGroupName())
 	assert.Contains(t, v.GetDescription(), "Not Defined")
 	assert.Equal(t, "MA:X", v.String())
 }

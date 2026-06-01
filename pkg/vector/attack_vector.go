@@ -61,7 +61,7 @@ the attacker relies on User Interaction by another person to perform actions req
 var (
 	ModifiedAttackVectorNetwork = &AttackVector{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MAV",
 			LongName:    "Modified Attack Vector",
 			ShortValue:  'N',
@@ -73,7 +73,7 @@ var (
 
 	ModifiedAttackVectorAdjacent = &AttackVector{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MAV",
 			LongName:    "Modified Attack Vector",
 			ShortValue:  'A',
@@ -85,7 +85,7 @@ var (
 
 	ModifiedAttackVectorLocal = &AttackVector{
 		VectorImpl: &VectorImpl{
-			GroupName:  "Environmental",
+			GroupName:  "Environmental Metrics",
 			ShortName:  "MAV",
 			LongName:   "Modified Attack Vector",
 			ShortValue: 'L',
@@ -99,7 +99,7 @@ the attacker relies on User Interaction by another person to perform actions req
 
 	ModifiedAttackVectorPhysical = &AttackVector{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MAV",
 			LongName:    "Modified Attack Vector",
 			ShortValue:  'P',

@@ -48,7 +48,7 @@ var (
 var (
 	ModifiedIntegrityHigh = &Integrity{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MI",
 			LongName:    "Modified Integrity",
 			ShortValue:  'H',
@@ -60,7 +60,7 @@ var (
 
 	ModifiedIntegrityLow = &Integrity{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MI",
 			LongName:    "Modified Integrity",
 			ShortValue:  'L',
@@ -72,7 +72,7 @@ var (
 
 	ModifiedIntegrityNone = &Integrity{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MI",
 			LongName:    "Modified Integrity",
 			ShortValue:  'N',

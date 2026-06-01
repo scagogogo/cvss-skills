@@ -49,7 +49,7 @@ var (
 var (
 	ModifiedPrivilegesRequiredNone = &PrivilegesRequired{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MPR",
 			LongName:    "Modified Privileges Required",
 			ShortValue:  'N',
@@ -61,7 +61,7 @@ var (
 
 	ModifiedPrivilegesRequiredLow = &PrivilegesRequired{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MPR",
 			LongName:    "Modified Privileges Required",
 			ShortValue:  'L',
@@ -74,7 +74,7 @@ var (
 
 	ModifiedPrivilegesRequiredHigh = &PrivilegesRequired{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MPR",
 			LongName:    "Modified Privileges Required",
 			ShortValue:  'H',

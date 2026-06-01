@@ -7,7 +7,7 @@ var (
 	// AttackVectorNotDefined represents a Not Defined (X) value for Modified Attack Vector
 	AttackVectorNotDefined = &AttackVector{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MAV",
 			LongName:    "Modified Attack Vector",
 			ShortValue:  'X',
@@ -20,7 +20,7 @@ var (
 	// AttackComplexityNotDefined represents a Not Defined (X) value for Modified Attack Complexity
 	AttackComplexityNotDefined = &AttackComplexity{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MAC",
 			LongName:    "Modified Attack Complexity",
 			ShortValue:  'X',
@@ -33,7 +33,7 @@ var (
 	// PrivilegesRequiredNotDefined represents a Not Defined (X) value for Modified Privileges Required
 	PrivilegesRequiredNotDefined = &PrivilegesRequired{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MPR",
 			LongName:    "Modified Privileges Required",
 			ShortValue:  'X',
@@ -46,7 +46,7 @@ var (
 	// UserInteractionNotDefined represents a Not Defined (X) value for Modified User Interaction
 	UserInteractionNotDefined = &UserInteraction{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MUI",
 			LongName:    "Modified User Interaction",
 			ShortValue:  'X',
@@ -59,7 +59,7 @@ var (
 	// ScopeNotDefined represents a Not Defined (X) value for Modified Scope
 	ScopeNotDefined = &Scope{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MS",
 			LongName:    "Modified Scope",
 			ShortValue:  'X',
@@ -72,7 +72,7 @@ var (
 	// ConfidentialityNotDefined represents a Not Defined (X) value for Modified Confidentiality
 	ConfidentialityNotDefined = &Confidentiality{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MC",
 			LongName:    "Modified Confidentiality",
 			ShortValue:  'X',
@@ -85,7 +85,7 @@ var (
 	// IntegrityNotDefined represents a Not Defined (X) value for Modified Integrity
 	IntegrityNotDefined = &Integrity{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MI",
 			LongName:    "Modified Integrity",
 			ShortValue:  'X',
@@ -98,7 +98,7 @@ var (
 	// AvailabilityNotDefined represents a Not Defined (X) value for Modified Availability
 	AvailabilityNotDefined = &Availability{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MA",
 			LongName:    "Modified Availability",
 			ShortValue:  'X',

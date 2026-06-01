@@ -47,7 +47,7 @@ var (
 var (
 	ModifiedAvailabilityHigh = &Availability{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MA",
 			LongName:    "Modified Availability",
 			ShortValue:  'H',
@@ -59,7 +59,7 @@ var (
 
 	ModifiedAvailabilityLow = &Availability{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MA",
 			LongName:    "Modified Availability",
 			ShortValue:  'L',
@@ -71,7 +71,7 @@ var (
 
 	ModifiedAvailabilityNone = &Availability{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MA",
 			LongName:    "Modified Availability",
 			ShortValue:  'N',

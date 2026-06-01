@@ -47,7 +47,7 @@ var (
 var (
 	ModifiedConfidentialityHigh = &Confidentiality{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MC",
 			LongName:    "Modified Confidentiality",
 			ShortValue:  'H',
@@ -59,7 +59,7 @@ var (
 
 	ModifiedConfidentialityLow = &Confidentiality{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MC",
 			LongName:    "Modified Confidentiality",
 			ShortValue:  'L',
@@ -71,7 +71,7 @@ var (
 
 	ModifiedConfidentialityNone = &Confidentiality{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MC",
 			LongName:    "Modified Confidentiality",
 			ShortValue:  'N',

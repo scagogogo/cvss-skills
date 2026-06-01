@@ -35,7 +35,7 @@ var (
 var (
 	ModifiedScopeUnchanged = &Scope{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MS",
 			LongName:    "Modified Scope",
 			ShortValue:  'U',
@@ -47,7 +47,7 @@ var (
 
 	ModifiedScopeChanged = &Scope{
 		VectorImpl: &VectorImpl{
-			GroupName:   "Environmental",
+			GroupName:   "Environmental Metrics",
 			ShortName:   "MS",
 			LongName:    "Modified Scope",
 			ShortValue:  'C',
