@@ -1,6 +1,9 @@
 package parser
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/scagogogo/cvss-parser/pkg/cvss"
 )
 
@@ -18,4 +21,24 @@ func MustParse(cvss3xStr string) *cvss.Cvss3x {
 		panic(err)
 	}
 	return result
+}
+
+// ParseRelaxed 宽松解析 CVSS 向量字符串
+// 与 ParseString 不同，ParseRelaxed 接受不带 "CVSS:3.1/" 前缀的向量字符串
+// 例如 "AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H" 也能被正确解析
+// 默认使用 CVSS v3.1，可通过 defaultVersion 参数指定版本（如 "3.0"）
+func ParseRelaxed(cvss3xStr string, defaultVersion string) (*cvss.Cvss3x, error) {
+	cvss3xStr = strings.TrimSpace(cvss3xStr)
+
+	// 如果已经有前缀，直接用标准解析
+	if strings.HasPrefix(strings.ToUpper(cvss3xStr), "CVSS:") {
+		return ParseString(cvss3xStr)
+	}
+
+	// 没有前缀，自动添加
+	if defaultVersion == "" {
+		defaultVersion = "3.1"
+	}
+	prefixed := fmt.Sprintf("CVSS:%s/%s", defaultVersion, cvss3xStr)
+	return ParseString(prefixed)
 }
