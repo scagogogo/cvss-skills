@@ -57,7 +57,7 @@ func TestCalculateEnvironmentalScore(t *testing.T) {
 					AvailabilityRequirement:    vector.AvailabilityRequirementLow,
 				},
 			},
-			expected: 10.0,
+			expected: 9.3, // Corrected: now includes temporal multipliers
 		},
 		{
 			name: "Environmental with modified metrics",
@@ -84,7 +84,7 @@ func TestCalculateEnvironmentalScore(t *testing.T) {
 					ModifiedAttackComplexity: vector.ModifiedAttackComplexityHigh,
 				},
 			},
-			expected: 8.4,
+			expected: 7.8, // Corrected: now includes temporal multipliers
 		},
 		{
 			name: "Full environmental metrics",
@@ -120,7 +120,7 @@ func TestCalculateEnvironmentalScore(t *testing.T) {
 					ModifiedAvailability:       vector.ModifiedAvailabilityLow,
 				},
 			},
-			expected: 3.9,
+			expected: 3.6, // Corrected: now includes temporal multipliers
 		},
 	}
 

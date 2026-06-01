@@ -58,7 +58,7 @@ func TestCalculateEnvironmentalScoreWithExamples(t *testing.T) {
 					AvailabilityRequirement:    vector.AvailabilityRequirementLow,
 				},
 			},
-			expected: 10.0, // 环境评分保持在最大值
+			expected: 9.3, // Corrected: now includes temporal multipliers (E:0.97 × RL:0.95 × RC:1.0)
 		},
 		{
 			name: "Environmental with modified metrics",
@@ -85,7 +85,7 @@ func TestCalculateEnvironmentalScoreWithExamples(t *testing.T) {
 					ModifiedAttackComplexity: vector.ModifiedAttackComplexityHigh,
 				},
 			},
-			expected: 8.4, // 环境评分降低了，修正为8.4 (根据更新后的公式计算)
+			expected: 7.8, // Corrected: now includes temporal multipliers，修正为8.4 (根据更新后的公式计算)
 		},
 		{
 			name: "Full environmental metrics",
@@ -121,7 +121,7 @@ func TestCalculateEnvironmentalScoreWithExamples(t *testing.T) {
 					ModifiedAvailability:       vector.ModifiedAvailabilityLow,
 				},
 			},
-			expected: 3.9, // 环境评分大幅降低
+			expected: 3.6, // Corrected: now includes temporal multipliers
 		},
 	}
 

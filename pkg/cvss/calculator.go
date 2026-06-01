@@ -28,22 +28,19 @@ func (c *Calculator) Calculate() (float64, error) {
 	// 计算基础评分
 	baseScore := c.calculateBaseScore()
 
-	// 如果没有设置时间指标，返回基础评分
-	if !c.hasTemporalMetrics() {
+	// 如果没有设置时间指标和环境指标，返回基础评分
+	if !c.hasTemporalMetrics() && !c.hasEnvironmentalMetrics() {
 		return baseScore, nil
 	}
 
-	// 计算时间评分
-	temporalScore := c.calculateTemporalScore(baseScore)
-
-	// 如果没有设置环境指标，返回时间评分
+	// 如果没有环境指标，计算时间评分并返回
 	if !c.hasEnvironmentalMetrics() {
+		temporalScore := c.calculateTemporalScore(baseScore)
 		return temporalScore, nil
 	}
 
-	// 计算环境评分
+	// 计算环境评分（包含 Temporal 乘数）
 	environmentalScore := c.calculateEnvironmentalScore()
-
 	return environmentalScore, nil
 }
 
@@ -131,6 +128,7 @@ func (c *Calculator) calculateTemporalScore(baseScore float64) float64 {
 }
 
 // 计算环境评分
+// 根据 CVSS v3.1 规范，Environmental Score = Roundup(Min(1.08 × (ModifiedImpact + ModifiedExploitability), 10)) × E × RL × RC
 func (c *Calculator) calculateEnvironmentalScore() float64 {
 	// 环境评分需要考虑修改后的基础指标和安全需求指标
 
@@ -141,13 +139,31 @@ func (c *Calculator) calculateEnvironmentalScore() float64 {
 	modifiedExploitabilitySubScore := c.calculateModifiedExploitabilitySubScore()
 
 	// 步骤3: 计算修改后的基础评分
+	var envScore float64
 	if c.isModifiedChangedScope() {
-		environmentalScore := roundUp(math.Min(1.08*(modifiedImpactSubScore+modifiedExploitabilitySubScore), 10))
-		return environmentalScore
+		envScore = roundUp(math.Min(1.08*(modifiedImpactSubScore+modifiedExploitabilitySubScore), 10))
 	} else {
-		environmentalScore := roundUp(math.Min(modifiedImpactSubScore+modifiedExploitabilitySubScore, 10))
-		return environmentalScore
+		envScore = roundUp(math.Min(modifiedImpactSubScore+modifiedExploitabilitySubScore, 10))
 	}
+
+	// 步骤4: 乘以时间因子（如果有设置时间指标）
+	// 未设置的 Temporal 指标使用默认分数 1.0（即 "Not Defined"）
+	exploitCodeMaturityScore := 1.0
+	if c.cvss.Cvss3xTemporal != nil && c.cvss.Cvss3xTemporal.ExploitCodeMaturity != nil {
+		exploitCodeMaturityScore = c.cvss.Cvss3xTemporal.ExploitCodeMaturity.GetScore()
+	}
+
+	remediationLevelScore := 1.0
+	if c.cvss.Cvss3xTemporal != nil && c.cvss.Cvss3xTemporal.RemediationLevel != nil {
+		remediationLevelScore = c.cvss.Cvss3xTemporal.RemediationLevel.GetScore()
+	}
+
+	reportConfidenceScore := 1.0
+	if c.cvss.Cvss3xTemporal != nil && c.cvss.Cvss3xTemporal.ReportConfidence != nil {
+		reportConfidenceScore = c.cvss.Cvss3xTemporal.ReportConfidence.GetScore()
+	}
+
+	return roundUp(envScore * exploitCodeMaturityScore * remediationLevelScore * reportConfidenceScore)
 }
 
 // 计算修改后的影响子评分
