@@ -93,7 +93,7 @@ func (c *Calculator) calculateExploitabilitySubScore() float64 {
 	attackVectorScore := c.cvss.Cvss3xBase.AttackVector.GetScore()
 	attackComplexityScore := c.cvss.Cvss3xBase.AttackComplexity.GetScore()
 	privilegesRequiredScore := c.getAdjustedPrivilegesRequiredScore()
-	userInteractionScore := c.cvss.Cvss3xBase.UserInteraction.GetScore()
+	userInteractionScore := vector.GetUserInteractionScore(c.cvss.Cvss3xBase.UserInteraction, c.cvss.MinorVersion)
 
 	// 计算可利用性子评分
 	return 8.22 * attackVectorScore * attackComplexityScore * privilegesRequiredScore * userInteractionScore
@@ -285,9 +285,9 @@ func (c *Calculator) getModifiedPrivilegesRequiredScore() float64 {
 func (c *Calculator) getModifiedUserInteractionScore() float64 {
 	if c.cvss.Cvss3xEnvironmental.ModifiedUserInteraction != nil &&
 		c.cvss.Cvss3xEnvironmental.ModifiedUserInteraction.GetShortValue() != 'X' {
-		return c.cvss.Cvss3xEnvironmental.ModifiedUserInteraction.GetScore()
+		return vector.GetUserInteractionScore(c.cvss.Cvss3xEnvironmental.ModifiedUserInteraction, c.cvss.MinorVersion)
 	}
-	return c.cvss.Cvss3xBase.UserInteraction.GetScore()
+	return vector.GetUserInteractionScore(c.cvss.Cvss3xBase.UserInteraction, c.cvss.MinorVersion)
 }
 
 // 判断修改后的范围是否改变
@@ -368,8 +368,14 @@ func (c *Calculator) hasEnvironmentalMetrics() bool {
 }
 
 // 向上取整到小数点后一位
+// 按照 CVSS v3.1 规范的整数算法定义实现：
+// Roundup(input) = smallest number, specified to one decimal place, that is equal to or larger than input
 func roundUp(x float64) float64 {
-	return math.Ceil(x*10) / 10
+	intInput := int(math.Round(x * 100000))
+	if intInput%10000 == 0 {
+		return float64(intInput) / 100000
+	}
+	return float64(intInput + (10000 - intInput%10000)) / 100000
 }
 
 // GetSeverityRating 获取严重性等级
