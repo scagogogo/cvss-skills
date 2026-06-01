@@ -13,6 +13,8 @@ import (
 var (
 	// ErrParserMagicHead 解析的时候魔术头不合法
 	ErrParserMagicHead = errors.New("cvss 3.x parser error: invalid magic head, it must equal 'CVSS'")
+	// ErrDuplicateMetric 表示向量字符串中存在重复的指标键
+	ErrDuplicateMetric = errors.New("cvss 3.x parser error: duplicate metric key")
 )
 
 const (
@@ -23,23 +25,27 @@ const (
 // CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:H
 type Cvss3xParser struct {
 	cvss3xStr string
-	csvv3x    *cvss.Cvss3x
+	cvss3x    *cvss.Cvss3x
 
 	// 解析使用的上下文
 	cvss3xRunes []rune
 	i           int
+
+	// 已解析的键，用于检测重复
+	parsedKeys map[string]bool
 }
 
 func NewCvss3xParser(cvss3xStr string) *Cvss3xParser {
 	return &Cvss3xParser{
-		cvss3xStr:   cvss3xStr,
-		cvss3xRunes: []rune(cvss3xStr),
+		cvss3xStr:   strings.TrimSpace(cvss3xStr),
+		cvss3xRunes: []rune(strings.TrimSpace(cvss3xStr)),
 		i:           0,
+		parsedKeys:  make(map[string]bool),
 	}
 }
 
 func (x *Cvss3xParser) Parse() (*cvss.Cvss3x, error) {
-	x.csvv3x = cvss.NewCvss3x()
+	x.cvss3x = cvss.NewCvss3x()
 
 	// 读取魔术头CVSS
 	if err := x.readMagicHead(); err != nil {
@@ -55,7 +61,10 @@ func (x *Cvss3xParser) Parse() (*cvss.Cvss3x, error) {
 	if !x.isNotEnd() {
 		return nil, fmt.Errorf("cvss3x %s syntax error: incomplete vector string, expected vectors after version", x.cvss3xStr)
 	}
-	if x.cvss3xRunes[x.i] != '/' {
+
+	// 跳过可能存在的空白
+	x.skipWhitespace()
+	if !x.isNotEnd() || x.cvss3xRunes[x.i] != '/' {
 		return nil, fmt.Errorf("cvss3x %s syntax error at %d, expected '/' but got '%c'", x.cvss3xStr, x.i, x.cvss3xRunes[x.i])
 	}
 
@@ -63,26 +72,45 @@ func (x *Cvss3xParser) Parse() (*cvss.Cvss3x, error) {
 	for x.isNotEnd() {
 		// 跳过 /
 		x.i++
+		x.skipWhitespace()
 
 		// 读取键
 		key, err := x.readKey()
 		if err != nil {
 			return nil, err
 		}
+		key = strings.ToUpper(key)
+
+		// 检查重复键
+		if x.parsedKeys[key] {
+			return nil, fmt.Errorf("%w: %s appears more than once", ErrDuplicateMetric, key)
+		}
+		x.parsedKeys[key] = true
 
 		// 读取值
 		value, err := x.readValue()
 		if err != nil {
 			return nil, err
 		}
+		value = strings.ToUpper(value)
 
 		// 映射向量到CVSS结构
 		if err := x.mapVectorToStruct(key, value); err != nil {
 			return nil, err
 		}
+
+		// 跳过尾部空白
+		x.skipWhitespace()
 	}
 
-	return x.csvv3x, nil
+	return x.cvss3x, nil
+}
+
+// skipWhitespace 跳过空白字符
+func (x *Cvss3xParser) skipWhitespace() {
+	for x.isNotEnd() && (x.cvss3xRunes[x.i] == ' ' || x.cvss3xRunes[x.i] == '\t') {
+		x.i++
+	}
 }
 
 // 读取魔术头，固定的CVSS
@@ -91,7 +119,7 @@ func (x *Cvss3xParser) readMagicHead() error {
 		return ErrParserMagicHead
 	}
 
-	// 检查 "CVSS:" 前缀
+	// 检查 "CVSS:" 前缀（大小写不敏感）
 	if strings.ToUpper(string(x.cvss3xRunes[0:4])) != CVSSMagicHead || x.cvss3xRunes[4] != ':' {
 		return ErrParserMagicHead
 	}
@@ -108,14 +136,14 @@ func (x *Cvss3xParser) readVersion() error {
 	if err != nil {
 		return err
 	}
-	x.csvv3x.MajorVersion = majorVersion
+	x.cvss3x.MajorVersion = majorVersion
 
 	// 副版本号
 	minorVersion, err := x.readMinorVersion()
 	if err != nil {
 		return err
 	}
-	x.csvv3x.MinorVersion = minorVersion
+	x.cvss3x.MinorVersion = minorVersion
 
 	return nil
 }
@@ -176,6 +204,9 @@ func (x *Cvss3xParser) readKey() (string, error) {
 			x.i--
 			break
 		}
+		if c == ' ' || c == '\t' {
+			continue // 跳过键中的空白
+		}
 		slice = append(slice, c)
 	}
 
@@ -202,6 +233,9 @@ func (x *Cvss3xParser) readValue() (string, error) {
 			x.i--
 			break
 		}
+		if c == ' ' || c == '\t' {
+			continue // 跳过值中的空白
+		}
 		slice = append(slice, c)
 	}
 	return string(slice), nil
@@ -218,53 +252,53 @@ func (x *Cvss3xParser) mapVectorToStruct(key, value string) error {
 	switch key {
 	// Base指标
 	case "AV": // Attack Vector
-		x.csvv3x.Cvss3xBase.AttackVector = vectorObj
+		x.cvss3x.Cvss3xBase.AttackVector = vectorObj
 	case "AC": // Attack Complexity
-		x.csvv3x.Cvss3xBase.AttackComplexity = vectorObj
+		x.cvss3x.Cvss3xBase.AttackComplexity = vectorObj
 	case "PR": // Privileges Required
-		x.csvv3x.Cvss3xBase.PrivilegesRequired = vectorObj
+		x.cvss3x.Cvss3xBase.PrivilegesRequired = vectorObj
 	case "UI": // User Interaction
-		x.csvv3x.Cvss3xBase.UserInteraction = vectorObj
+		x.cvss3x.Cvss3xBase.UserInteraction = vectorObj
 	case "S": // Scope
-		x.csvv3x.Cvss3xBase.Scope = vectorObj
+		x.cvss3x.Cvss3xBase.Scope = vectorObj
 	case "C": // Confidentiality Impact
-		x.csvv3x.Cvss3xBase.Confidentiality = vectorObj
+		x.cvss3x.Cvss3xBase.Confidentiality = vectorObj
 	case "I": // Integrity Impact
-		x.csvv3x.Cvss3xBase.Integrity = vectorObj
+		x.cvss3x.Cvss3xBase.Integrity = vectorObj
 	case "A": // Availability Impact
-		x.csvv3x.Cvss3xBase.Availability = vectorObj
+		x.cvss3x.Cvss3xBase.Availability = vectorObj
 
 	// Temporal指标
 	case "E": // Exploit Code Maturity
-		x.csvv3x.Cvss3xTemporal.ExploitCodeMaturity = vectorObj
+		x.cvss3x.Cvss3xTemporal.ExploitCodeMaturity = vectorObj
 	case "RL": // Remediation Level
-		x.csvv3x.Cvss3xTemporal.RemediationLevel = vectorObj
+		x.cvss3x.Cvss3xTemporal.RemediationLevel = vectorObj
 	case "RC": // Report Confidence
-		x.csvv3x.Cvss3xTemporal.ReportConfidence = vectorObj
+		x.cvss3x.Cvss3xTemporal.ReportConfidence = vectorObj
 
 	// Environmental指标
 	case "CR": // Confidentiality Requirement
-		x.csvv3x.Cvss3xEnvironmental.ConfidentialityRequirement = vectorObj
+		x.cvss3x.Cvss3xEnvironmental.ConfidentialityRequirement = vectorObj
 	case "IR": // Integrity Requirement
-		x.csvv3x.Cvss3xEnvironmental.IntegrityRequirement = vectorObj
+		x.cvss3x.Cvss3xEnvironmental.IntegrityRequirement = vectorObj
 	case "AR": // Availability Requirement
-		x.csvv3x.Cvss3xEnvironmental.AvailabilityRequirement = vectorObj
+		x.cvss3x.Cvss3xEnvironmental.AvailabilityRequirement = vectorObj
 	case "MAV": // Modified Attack Vector
-		x.csvv3x.Cvss3xEnvironmental.ModifiedAttackVector = vectorObj
+		x.cvss3x.Cvss3xEnvironmental.ModifiedAttackVector = vectorObj
 	case "MAC": // Modified Attack Complexity
-		x.csvv3x.Cvss3xEnvironmental.ModifiedAttackComplexity = vectorObj
+		x.cvss3x.Cvss3xEnvironmental.ModifiedAttackComplexity = vectorObj
 	case "MPR": // Modified Privileges Required
-		x.csvv3x.Cvss3xEnvironmental.ModifiedPrivilegesRequired = vectorObj
+		x.cvss3x.Cvss3xEnvironmental.ModifiedPrivilegesRequired = vectorObj
 	case "MUI": // Modified User Interaction
-		x.csvv3x.Cvss3xEnvironmental.ModifiedUserInteraction = vectorObj
+		x.cvss3x.Cvss3xEnvironmental.ModifiedUserInteraction = vectorObj
 	case "MS": // Modified Scope
-		x.csvv3x.Cvss3xEnvironmental.ModifiedScope = vectorObj
+		x.cvss3x.Cvss3xEnvironmental.ModifiedScope = vectorObj
 	case "MC": // Modified Confidentiality Impact
-		x.csvv3x.Cvss3xEnvironmental.ModifiedConfidentiality = vectorObj
+		x.cvss3x.Cvss3xEnvironmental.ModifiedConfidentiality = vectorObj
 	case "MI": // Modified Integrity Impact
-		x.csvv3x.Cvss3xEnvironmental.ModifiedIntegrity = vectorObj
+		x.cvss3x.Cvss3xEnvironmental.ModifiedIntegrity = vectorObj
 	case "MA": // Modified Availability Impact
-		x.csvv3x.Cvss3xEnvironmental.ModifiedAvailability = vectorObj
+		x.cvss3x.Cvss3xEnvironmental.ModifiedAvailability = vectorObj
 	}
 	return nil
 }

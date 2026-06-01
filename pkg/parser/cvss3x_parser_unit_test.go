@@ -126,15 +126,15 @@ func TestCvss3xParser_readVersion(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			parser := NewCvss3xParser(tc.input)
 			parser.i = tc.startIndex
-			parser.csvv3x = cvss.NewCvss3x()
+			parser.cvss3x = cvss.NewCvss3x()
 			err := parser.readVersion()
 
 			if tc.expectedError {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
-				assert.Equal(t, tc.expectedMajor, parser.csvv3x.MajorVersion)
-				assert.Equal(t, tc.expectedMinor, parser.csvv3x.MinorVersion)
+				assert.Equal(t, tc.expectedMajor, parser.cvss3x.MajorVersion)
+				assert.Equal(t, tc.expectedMinor, parser.cvss3x.MinorVersion)
 				assert.Equal(t, tc.expectedEndIndex, parser.i)
 			}
 		})
@@ -394,8 +394,8 @@ func TestCvss3xParser_mapVectorToStruct(t *testing.T) {
 			value:         "N",
 			expectedError: false,
 			checkField: func(t *testing.T, parser *Cvss3xParser) {
-				assert.NotNil(t, parser.csvv3x.Cvss3xBase.AttackVector)
-				assert.Equal(t, "N", string(parser.csvv3x.Cvss3xBase.AttackVector.GetShortValue()))
+				assert.NotNil(t, parser.cvss3x.Cvss3xBase.AttackVector)
+				assert.Equal(t, "N", string(parser.cvss3x.Cvss3xBase.AttackVector.GetShortValue()))
 			},
 		},
 		{
@@ -404,8 +404,8 @@ func TestCvss3xParser_mapVectorToStruct(t *testing.T) {
 			value:         "L",
 			expectedError: false,
 			checkField: func(t *testing.T, parser *Cvss3xParser) {
-				assert.NotNil(t, parser.csvv3x.Cvss3xBase.AttackComplexity)
-				assert.Equal(t, "L", string(parser.csvv3x.Cvss3xBase.AttackComplexity.GetShortValue()))
+				assert.NotNil(t, parser.cvss3x.Cvss3xBase.AttackComplexity)
+				assert.Equal(t, "L", string(parser.cvss3x.Cvss3xBase.AttackComplexity.GetShortValue()))
 			},
 		},
 		{
@@ -414,8 +414,8 @@ func TestCvss3xParser_mapVectorToStruct(t *testing.T) {
 			value:         "F",
 			expectedError: false,
 			checkField: func(t *testing.T, parser *Cvss3xParser) {
-				assert.NotNil(t, parser.csvv3x.Cvss3xTemporal.ExploitCodeMaturity)
-				assert.Equal(t, "F", string(parser.csvv3x.Cvss3xTemporal.ExploitCodeMaturity.GetShortValue()))
+				assert.NotNil(t, parser.cvss3x.Cvss3xTemporal.ExploitCodeMaturity)
+				assert.Equal(t, "F", string(parser.cvss3x.Cvss3xTemporal.ExploitCodeMaturity.GetShortValue()))
 			},
 		},
 		{
@@ -441,7 +441,7 @@ func TestCvss3xParser_mapVectorToStruct(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			parser := NewCvss3xParser("CVSS:3.1/AV:N")
-			parser.csvv3x = cvss.NewCvss3x()
+			parser.cvss3x = cvss.NewCvss3x()
 			err := parser.mapVectorToStruct(tc.key, tc.value)
 
 			if tc.expectedError {

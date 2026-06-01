@@ -180,12 +180,12 @@ func TestCvss3xParser_ReadMethods(t *testing.T) {
 	t.Run("readVersion", func(t *testing.T) {
 		p := NewCvss3xParser("CVSS:3.1/AV:N")
 		p.i = 5 // 跳过魔术头
-		p.csvv3x = cvss.NewCvss3x()
+		p.cvss3x = cvss.NewCvss3x()
 
 		err := p.readVersion()
 		assert.NoError(t, err)
-		assert.Equal(t, 3, p.csvv3x.MajorVersion)
-		assert.Equal(t, 1, p.csvv3x.MinorVersion)
+		assert.Equal(t, 3, p.cvss3x.MajorVersion)
+		assert.Equal(t, 1, p.cvss3x.MinorVersion)
 	})
 
 	// 测试读取键
@@ -216,7 +216,7 @@ func TestCvss3xParser_ReadMethods(t *testing.T) {
 // TestCvss3xParser_MapVectorToStruct 测试映射向量到结构体
 func TestCvss3xParser_MapVectorToStruct(t *testing.T) {
 	p := NewCvss3xParser("")
-	p.csvv3x = cvss.NewCvss3x()
+	p.cvss3x = cvss.NewCvss3x()
 
 	testCases := []struct {
 		key     string
@@ -275,7 +275,7 @@ func TestCvss3xParser_MapVectorToStruct(t *testing.T) {
 
 			assert.NoError(t, err)
 			if tc.check != nil {
-				tc.check(t, p.csvv3x)
+				tc.check(t, p.cvss3x)
 			}
 		})
 	}
