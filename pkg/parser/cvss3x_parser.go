@@ -268,36 +268,78 @@ func (x *Cvss3xParser) mapVectorToStruct(key, value string) error {
 	case "A": // Availability Impact
 		x.cvss3x.Cvss3xBase.Availability = vectorObj
 
-	// Temporal指标
+	// Temporal指标 — 惰性初始化
 	case "E": // Exploit Code Maturity
+		if x.cvss3x.Cvss3xTemporal == nil {
+			x.cvss3x.Cvss3xTemporal = &cvss.Cvss3xTemporal{}
+		}
 		x.cvss3x.Cvss3xTemporal.ExploitCodeMaturity = vectorObj
 	case "RL": // Remediation Level
+		if x.cvss3x.Cvss3xTemporal == nil {
+			x.cvss3x.Cvss3xTemporal = &cvss.Cvss3xTemporal{}
+		}
 		x.cvss3x.Cvss3xTemporal.RemediationLevel = vectorObj
 	case "RC": // Report Confidence
+		if x.cvss3x.Cvss3xTemporal == nil {
+			x.cvss3x.Cvss3xTemporal = &cvss.Cvss3xTemporal{}
+		}
 		x.cvss3x.Cvss3xTemporal.ReportConfidence = vectorObj
 
-	// Environmental指标
+	// Environmental指标 — 惰性初始化
 	case "CR": // Confidentiality Requirement
+		if x.cvss3x.Cvss3xEnvironmental == nil {
+			x.cvss3x.Cvss3xEnvironmental = &cvss.Cvss3xEnvironmental{}
+		}
 		x.cvss3x.Cvss3xEnvironmental.ConfidentialityRequirement = vectorObj
 	case "IR": // Integrity Requirement
+		if x.cvss3x.Cvss3xEnvironmental == nil {
+			x.cvss3x.Cvss3xEnvironmental = &cvss.Cvss3xEnvironmental{}
+		}
 		x.cvss3x.Cvss3xEnvironmental.IntegrityRequirement = vectorObj
 	case "AR": // Availability Requirement
+		if x.cvss3x.Cvss3xEnvironmental == nil {
+			x.cvss3x.Cvss3xEnvironmental = &cvss.Cvss3xEnvironmental{}
+		}
 		x.cvss3x.Cvss3xEnvironmental.AvailabilityRequirement = vectorObj
 	case "MAV": // Modified Attack Vector
+		if x.cvss3x.Cvss3xEnvironmental == nil {
+			x.cvss3x.Cvss3xEnvironmental = &cvss.Cvss3xEnvironmental{}
+		}
 		x.cvss3x.Cvss3xEnvironmental.ModifiedAttackVector = vectorObj
 	case "MAC": // Modified Attack Complexity
+		if x.cvss3x.Cvss3xEnvironmental == nil {
+			x.cvss3x.Cvss3xEnvironmental = &cvss.Cvss3xEnvironmental{}
+		}
 		x.cvss3x.Cvss3xEnvironmental.ModifiedAttackComplexity = vectorObj
 	case "MPR": // Modified Privileges Required
+		if x.cvss3x.Cvss3xEnvironmental == nil {
+			x.cvss3x.Cvss3xEnvironmental = &cvss.Cvss3xEnvironmental{}
+		}
 		x.cvss3x.Cvss3xEnvironmental.ModifiedPrivilegesRequired = vectorObj
 	case "MUI": // Modified User Interaction
+		if x.cvss3x.Cvss3xEnvironmental == nil {
+			x.cvss3x.Cvss3xEnvironmental = &cvss.Cvss3xEnvironmental{}
+		}
 		x.cvss3x.Cvss3xEnvironmental.ModifiedUserInteraction = vectorObj
 	case "MS": // Modified Scope
+		if x.cvss3x.Cvss3xEnvironmental == nil {
+			x.cvss3x.Cvss3xEnvironmental = &cvss.Cvss3xEnvironmental{}
+		}
 		x.cvss3x.Cvss3xEnvironmental.ModifiedScope = vectorObj
 	case "MC": // Modified Confidentiality Impact
+		if x.cvss3x.Cvss3xEnvironmental == nil {
+			x.cvss3x.Cvss3xEnvironmental = &cvss.Cvss3xEnvironmental{}
+		}
 		x.cvss3x.Cvss3xEnvironmental.ModifiedConfidentiality = vectorObj
 	case "MI": // Modified Integrity Impact
+		if x.cvss3x.Cvss3xEnvironmental == nil {
+			x.cvss3x.Cvss3xEnvironmental = &cvss.Cvss3xEnvironmental{}
+		}
 		x.cvss3x.Cvss3xEnvironmental.ModifiedIntegrity = vectorObj
 	case "MA": // Modified Availability Impact
+		if x.cvss3x.Cvss3xEnvironmental == nil {
+			x.cvss3x.Cvss3xEnvironmental = &cvss.Cvss3xEnvironmental{}
+		}
 		x.cvss3x.Cvss3xEnvironmental.ModifiedAvailability = vectorObj
 	}
 	return nil

@@ -21,9 +21,9 @@ type Cvss3x struct {
 
 func NewCvss3x() *Cvss3x {
 	return &Cvss3x{
-		Cvss3xBase: &Cvss3xBase{},
-		Cvss3xTemporal: &Cvss3xTemporal{},
-		Cvss3xEnvironmental: &Cvss3xEnvironmental{},
+		Cvss3xBase:          &Cvss3xBase{},
+		Cvss3xTemporal:      nil,
+		Cvss3xEnvironmental: nil,
 	}
 }
 

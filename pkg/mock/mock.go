@@ -54,6 +54,7 @@ func RandomCvss3x(minorVersion int) *cvss.Cvss3x {
 func RandomCvss3xWithTemporal(minorVersion int) *cvss.Cvss3x {
 	result := RandomCvss3x(minorVersion)
 
+	result.Cvss3xTemporal = &cvss.Cvss3xTemporal{}
 	result.Cvss3xTemporal.ExploitCodeMaturity = randomFromSlice([]vector.Vector{
 		vector.ExploitCodeMaturityNotDefined, vector.ExploitCodeMaturityUnproven,
 		vector.ExploitCodeMaturityProofOfConcept, vector.ExploitCodeMaturityFunctional,
@@ -77,6 +78,7 @@ func RandomCvss3xFull(minorVersion int) *cvss.Cvss3x {
 	result := RandomCvss3xWithTemporal(minorVersion)
 
 	// CIA Requirements
+	result.Cvss3xEnvironmental = &cvss.Cvss3xEnvironmental{}
 	result.Cvss3xEnvironmental.ConfidentialityRequirement = randomFromSlice([]vector.Vector{
 		vector.ConfidentialityRequirementNotDefined, vector.ConfidentialityRequirementLow,
 		vector.ConfidentialityRequirementMedium, vector.ConfidentialityRequirementHigh,
