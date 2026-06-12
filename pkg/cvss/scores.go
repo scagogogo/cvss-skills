@@ -114,6 +114,9 @@ func (c *Calculator) GetAllScores() (*AllScores, error) {
 		ExploitabilitySubScore: c.calculateExploitabilitySubScore(),
 		HasTemporal:            c.hasTemporalMetrics(),
 		HasEnvironmental:       c.hasEnvironmentalMetrics(),
+		// 未设置时默认为 None（而非空字符串零值）
+		TemporalSeverity:      SeverityNone,
+		EnvironmentalSeverity: SeverityNone,
 	}
 
 	if result.HasTemporal {

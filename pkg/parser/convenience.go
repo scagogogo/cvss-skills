@@ -42,3 +42,17 @@ func ParseRelaxed(cvss3xStr string, defaultVersion string) (*cvss.Cvss3x, error)
 	prefixed := fmt.Sprintf("CVSS:%s/%s", defaultVersion, cvss3xStr)
 	return ParseString(prefixed)
 }
+
+// ParseAndValidate 解析 CVSS 向量字符串并验证完整性
+// 如果向量不完整（缺少必需指标），返回验证错误
+// 等价于 ParseString + Validate，一步完成
+func ParseAndValidate(cvss3xStr string) (*cvss.Cvss3x, error) {
+	result, err := ParseString(cvss3xStr)
+	if err != nil {
+		return nil, err
+	}
+	if err := result.Validate(); err != nil {
+		return nil, err
+	}
+	return result, nil
+}
