@@ -43,6 +43,16 @@ func (ve ValidationErrors) HasErrors() bool {
 	return len(ve) > 0
 }
 
+// Unwrap 实现 Go 1.20+ 多错误解包接口
+// 允许 errors.Is 和 errors.As 遍历所有验证错误
+func (ve ValidationErrors) Unwrap() []error {
+	errs := make([]error, len(ve))
+	for i, e := range ve {
+		errs[i] = e
+	}
+	return errs
+}
+
 // Validate 验证 CVSS 向量的完整性，返回所有缺失/无效的指标
 // 与 Check() 不同，Validate 不会在第一个错误时短路，而是收集所有错误
 func (x *Cvss3x) Validate() error {

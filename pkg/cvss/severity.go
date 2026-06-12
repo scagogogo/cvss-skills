@@ -22,8 +22,9 @@ const (
 
 // GetSeverity 根据 CVSS 分数返回严重性等级
 // 这是 Calculator.GetSeverityRating 的独立版本，无需创建 Calculator 实例
+// 按照 CVSS v3.1 规范的阈值: None=0, Low=0.1-3.9, Medium=4.0-6.9, High=7.0-8.9, Critical=9.0-10.0
 func GetSeverity(score float64) Severity {
-	if score == 0 {
+	if score <= 0 {
 		return SeverityNone
 	} else if score < 4.0 {
 		return SeverityLow
