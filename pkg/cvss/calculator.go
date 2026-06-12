@@ -1,6 +1,7 @@
 package cvss
 
 import (
+	"fmt"
 	"math"
 
 	"github.com/scagogogo/cvss-parser/pkg/vector"
@@ -20,6 +21,9 @@ func NewCalculator(cvss *Cvss3x) *Calculator {
 
 // Calculate 计算CVSS评分
 func (c *Calculator) Calculate() (float64, error) {
+	if c == nil || c.cvss == nil {
+		return 0, fmt.Errorf("calculator or cvss is nil")
+	}
 	// 检查CVSS是否有效
 	if err := c.cvss.Check(); err != nil {
 		return 0, err

@@ -35,6 +35,9 @@ type Cvss3xBase struct {
 
 // Check 检查CVSS编号是否合法
 func (x *Cvss3xBase) Check() error {
+	if x == nil {
+		return fmt.Errorf("Cvss3xBase is nil")
+	}
 
 	if x.AttackVector == nil {
 		return fmt.Errorf("Attack Vector can not empty")

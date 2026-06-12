@@ -29,6 +29,9 @@ func NewCvss3x() *Cvss3x {
 
 // Check 检查CVSS编号是否合法，包括版本号、基础指标、时间指标和环境指标
 func (x *Cvss3x) Check() error {
+	if x == nil {
+		return fmt.Errorf("Cvss3x is nil")
+	}
 	// 校验版本号
 	if x.MajorVersion != 3 {
 		return fmt.Errorf("unsupported CVSS major version: %d, only version 3 is supported", x.MajorVersion)
