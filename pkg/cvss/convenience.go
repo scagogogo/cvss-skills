@@ -201,3 +201,19 @@ func vectorsEqual(a, b vector.Vector) bool {
 	}
 	return a.GetShortName() == b.GetShortName() && a.GetShortValue() == b.GetShortValue()
 }
+
+// IsComplete 判断 Cvss3x 是否包含所有必需的基础指标
+// 仅检查 8 个基础指标是否全部设置，不检查版本号或可选指标
+func (x *Cvss3x) IsComplete() bool {
+	if x == nil || x.Cvss3xBase == nil {
+		return false
+	}
+	return x.Cvss3xBase.AttackVector != nil &&
+		x.Cvss3xBase.AttackComplexity != nil &&
+		x.Cvss3xBase.PrivilegesRequired != nil &&
+		x.Cvss3xBase.UserInteraction != nil &&
+		x.Cvss3xBase.Scope != nil &&
+		x.Cvss3xBase.Confidentiality != nil &&
+		x.Cvss3xBase.Integrity != nil &&
+		x.Cvss3xBase.Availability != nil
+}

@@ -230,3 +230,38 @@ func envUIScoreDiff(mui1, mui2 vector.Vector, minorV1, minorV2 int) float64 {
 	ui2 := vector.GetUserInteractionScore(mui2, minorV2)
 	return math.Abs(ui1 - ui2)
 }
+
+// JaccardSimilarityWithEnv 计算包含环境指标的 Jaccard 相似度
+// 相同指标数量除以总指标数量（包括基础、时间和环境指标）
+func (dc *DistanceCalculator) JaccardSimilarityWithEnv() float64 {
+	if dc.vector1 == nil || dc.vector2 == nil ||
+		dc.vector1.Cvss3xBase == nil || dc.vector2.Cvss3xBase == nil {
+		return 0.0
+	}
+
+	// 计算总指标数
+	totalMetrics := 8 // 基础指标
+
+	// 时间指标
+	if dc.vector1.Cvss3xTemporal != nil && dc.vector2.Cvss3xTemporal != nil &&
+		dc.vector1.Cvss3xTemporal.ExploitCodeMaturity != nil && dc.vector2.Cvss3xTemporal.ExploitCodeMaturity != nil &&
+		dc.vector1.Cvss3xTemporal.RemediationLevel != nil && dc.vector2.Cvss3xTemporal.RemediationLevel != nil &&
+		dc.vector1.Cvss3xTemporal.ReportConfidence != nil && dc.vector2.Cvss3xTemporal.ReportConfidence != nil {
+		totalMetrics += 3
+	}
+
+	// 环境指标
+	if dc.isEnvironmentalMetricsComplete() {
+		totalMetrics += 11 // CR, IR, AR, MAV, MAC, MPR, MUI, MS, MC, MI, MA
+	}
+
+	// 计算汉明距离（包含环境）
+	hammingDist := dc.HammingDistanceWithEnv()
+
+	// Jaccard 相似度 = 相同指标数 / 总指标数
+	sameMetrics := totalMetrics - hammingDist
+	if totalMetrics == 0 {
+		return 0.0
+	}
+	return float64(sameMetrics) / float64(totalMetrics)
+}

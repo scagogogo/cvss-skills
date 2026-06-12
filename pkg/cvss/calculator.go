@@ -189,9 +189,10 @@ func (c *Calculator) calculateModifiedImpactSubScore() float64 {
 	availReqFactor := c.getAvailabilityRequirementFactor()
 
 	// 应用安全需求调整
-	adjustedConfScore := modifiedConfidentialityScore * confReqFactor
-	adjustedIntegScore := modifiedIntegrityScore * integReqFactor
-	adjustedAvailScore := modifiedAvailabilityScore * availReqFactor
+	// 按照 CVSS v3.1 规范，调整后的 CIA 值最大为 1.0
+	adjustedConfScore := math.Min(modifiedConfidentialityScore * confReqFactor, 1.0)
+	adjustedIntegScore := math.Min(modifiedIntegrityScore * integReqFactor, 1.0)
+	adjustedAvailScore := math.Min(modifiedAvailabilityScore * availReqFactor, 1.0)
 
 	// 计算修改后的影响基本分数
 	modifiedImpactBaseScore := 1 - ((1 - adjustedConfScore) * (1 - adjustedIntegScore) * (1 - adjustedAvailScore))
