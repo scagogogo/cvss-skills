@@ -22,11 +22,18 @@ Visit our comprehensive documentation website for:
 
 - Support for CVSS 3.0 and 3.1 vector parsing and calculation
 - Calculate base, temporal, and environmental scores
-- JSON output and formatting capabilities
-- Vector comparison and similarity calculation
-- Strict and tolerant parsing modes
-- Complete documentation and examples
-- High test coverage
+- **Builder API** for fluent vector construction
+- **Structured validation** with per-metric error reporting
+- **Diff/Merge** for comparing and combining vectors
+- **Score breakdown** with per-metric effective scores
+- JSON serialization/deserialization (MarshalJSON/UnmarshalJSON)
+- Vector comparison: Euclidean, Manhattan, Hamming, Jaccard distances
+- **Environment-aware distance** calculations
+- Version-aware scoring (v3.0 UI:R=0.56 vs v3.1 UI:R=0.62)
+- Severity convenience methods (IsCritical, IsHigh, etc.)
+- ParseRelaxed for vectors without CVSS prefix
+- Mock data generators for testing
+- High test coverage (500+ tests)
 
 ## Installation
 
@@ -36,7 +43,7 @@ go get github.com/scagogogo/cvss
 
 ## Quick Start
 
-Parse and calculate CVSS scores:
+### Parse and Calculate
 
 ```go
 package main
@@ -51,8 +58,7 @@ import (
 
 func main() {
     // Parse CVSS vector
-    p := parser.NewCvss3xParser("CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H")
-    cvssVector, err := p.Parse()
+    cvssVector, err := parser.ParseString("CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H")
     if err != nil {
         log.Fatalf("Parse failed: %v", err)
     }
@@ -69,7 +75,105 @@ func main() {
 }
 ```
 
-For more examples, see the [examples](./examples) directory.
+### Builder API
+
+```go
+cv := cvss.NewBuilder().Version(3, 1).
+    AV('N').AC('L').PR('N').UI('N').S('U').
+    C('H').I('H').A('H').MustBuild()
+
+score, _ := cvss.NewCalculator(cv).Calculate()
+fmt.Printf("Score: %.1f\n", score) // 9.8
+```
+
+### ParseRelaxed (without prefix)
+
+```go
+// Parse vectors without the "CVSS:3.1/" prefix
+cv, err := parser.ParseRelaxed("AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H", "3.1")
+```
+
+### Structured Validation
+
+```go
+cv := cvss.NewCvss3x()
+cv.MajorVersion = 3
+cv.MinorVersion = 1
+cv.Cvss3xBase.AttackVector = vector.AttackVectorNetwork
+
+err := cv.Validate()
+if ve, ok := err.(cvss.ValidationErrors); ok {
+    missing := ve.MissingMetrics()
+    fmt.Printf("Missing: %v\n", missing) // [AC, PR, UI, S, C, I, A]
+}
+```
+
+### Diff and Merge
+
+```go
+cv1 := cvss.NewBuilder().Version(3, 1).AV('N').AC('L').PR('N').UI('N').S('U').C('H').I('H').A('H').MustBuild()
+cv2 := cvss.NewBuilder().Version(3, 1).AV('L').AC('L').PR('N').UI('N').S('U').C('H').I('H').A('H').MustBuild()
+
+diffs := cv1.Diff(cv2)
+for _, d := range diffs {
+    fmt.Printf("%s: %s vs %s\n", d.Metric, d.V1, d.V2) // AV: N vs L
+}
+
+merged := cv1.Merge(cv2WithTemporal) // Overlay temporal onto base
+```
+
+### Score Breakdown
+
+```go
+calculator := cvss.NewCalculator(cv)
+breakdown, _ := calculator.GetScoreBreakdown()
+fmt.Printf("AV score: %.2f\n", breakdown.AttackVector.Score)    // 0.85
+fmt.Printf("PR score: %.2f\n", breakdown.PrivilegesRequired.Score) // 0.62 (scope-adjusted)
+```
+
+### Distance Calculation
+
+```go
+dc := cvss.NewDistanceCalculator(cv1, cv2)
+fmt.Printf("Euclidean: %.2f\n", dc.EuclideanDistance())
+fmt.Printf("Jaccard: %.2f\n", dc.JaccardSimilarity())
+fmt.Printf("JaccardWithEnv: %.2f\n", dc.JaccardSimilarityWithEnv())
+```
+
+### Convenience Methods
+
+```go
+cv.IsComplete()                    // true if all 8 base metrics are set
+cv.Is30()                          // true if CVSS v3.0
+cv.Is31()                          // true if CVSS v3.1
+cv.HasTemporalMetrics()            // true if any temporal metric is set
+cv.Description()                   // "Attack Vector: Network, ..."
+cv.Clone()                         // deep copy
+cv.BaseOnly()                      // clone without temporal/environmental
+cv.MissingMetrics()                // list of missing metric short names
+
+cvss.SeverityCritical.IsCritical() // true
+cvss.GetSeverity(9.8)              // SeverityCritical
+```
+
+### Mock Data
+
+```go
+import "github.com/scagogogo/cvss-parser/pkg/mock"
+
+cv := mock.CriticalCvss31()           // preset Critical vector
+cv := mock.RandomCvss3x(1)            // random CVSS 3.1
+cv := mock.RandomCvss3xFull(1)        // random with all metrics
+```
+
+### JSON Serialization
+
+```go
+// Cvss3x implements json.Marshaler/Unmarshaler
+data, _ := json.Marshal(cv)           // "CVSS:3.1/AV:N/..."
+var restored cvss.Cvss3x
+json.Unmarshal(data, &restored)       // restores full Cvss3x
+```
 
 ## 📚 Learning Resources
 
@@ -103,8 +207,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - [CVSS v3.1 Specification](https://www.first.org/cvss/v3.1/specification-document)
 - [CVSS v3.0 Specification](https://www.first.org/cvss/v3.0/specification-document)
-
-
-
-
-
