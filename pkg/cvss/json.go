@@ -297,103 +297,77 @@ func fromJSONMetrics(output *JSONOutput) (*Cvss3x, error) {
 	base := output.Metrics.Base
 
 	// 将 LongValue 转为 ShortValue 并映射
-	mappings := []struct {
-		key      string
-		longVal  string
-		setField func(string)
-	}{
-		{"AV", base.AttackVector, func(v string) { result.Cvss3xBase.AttackVector = mustGetVector("AV", v) }},
-		{"AC", base.AttackComplexity, func(v string) { result.Cvss3xBase.AttackComplexity = mustGetVector("AC", v) }},
-		{"PR", base.PrivilegesRequired, func(v string) { result.Cvss3xBase.PrivilegesRequired = mustGetVector("PR", v) }},
-		{"UI", base.UserInteraction, func(v string) { result.Cvss3xBase.UserInteraction = mustGetVector("UI", v) }},
-		{"S", base.Scope, func(v string) { result.Cvss3xBase.Scope = mustGetVector("S", v) }},
-		{"C", base.Confidentiality, func(v string) { result.Cvss3xBase.Confidentiality = mustGetVector("C", v) }},
-		{"I", base.Integrity, func(v string) { result.Cvss3xBase.Integrity = mustGetVector("I", v) }},
-		{"A", base.Availability, func(v string) { result.Cvss3xBase.Availability = mustGetVector("A", v) }},
+	var deserializationErrors []string
+	setField := func(key, longVal string, target *vector.Vector) {
+		if longVal == "" {
+			return
+		}
+		v, err := getVectorByKeyAndLongValue(key, longVal)
+		if err != nil {
+			deserializationErrors = append(deserializationErrors, err.Error())
+			return
+		}
+		*target = v
 	}
 
-	for _, m := range mappings {
-		if m.longVal != "" {
-			m.setField(m.longVal)
-		}
-	}
+	setField("AV", base.AttackVector, &result.Cvss3xBase.AttackVector)
+	setField("AC", base.AttackComplexity, &result.Cvss3xBase.AttackComplexity)
+	setField("PR", base.PrivilegesRequired, &result.Cvss3xBase.PrivilegesRequired)
+	setField("UI", base.UserInteraction, &result.Cvss3xBase.UserInteraction)
+	setField("S", base.Scope, &result.Cvss3xBase.Scope)
+	setField("C", base.Confidentiality, &result.Cvss3xBase.Confidentiality)
+	setField("I", base.Integrity, &result.Cvss3xBase.Integrity)
+	setField("A", base.Availability, &result.Cvss3xBase.Availability)
 
 	// Temporal
 	if output.Metrics.Temporal != nil {
 		result.Cvss3xTemporal = &Cvss3xTemporal{}
 		t := output.Metrics.Temporal
-		if t.ExploitCodeMaturity != "" {
-			result.Cvss3xTemporal.ExploitCodeMaturity = mustGetVector("E", t.ExploitCodeMaturity)
-		}
-		if t.RemediationLevel != "" {
-			result.Cvss3xTemporal.RemediationLevel = mustGetVector("RL", t.RemediationLevel)
-		}
-		if t.ReportConfidence != "" {
-			result.Cvss3xTemporal.ReportConfidence = mustGetVector("RC", t.ReportConfidence)
-		}
+		setField("E", t.ExploitCodeMaturity, &result.Cvss3xTemporal.ExploitCodeMaturity)
+		setField("RL", t.RemediationLevel, &result.Cvss3xTemporal.RemediationLevel)
+		setField("RC", t.ReportConfidence, &result.Cvss3xTemporal.ReportConfidence)
 	}
 
 	// Environmental
 	if output.Metrics.Environmental != nil {
 		result.Cvss3xEnvironmental = &Cvss3xEnvironmental{}
 		e := output.Metrics.Environmental
-		if e.ConfidentialityRequirement != "" {
-			result.Cvss3xEnvironmental.ConfidentialityRequirement = mustGetVector("CR", e.ConfidentialityRequirement)
-		}
-		if e.IntegrityRequirement != "" {
-			result.Cvss3xEnvironmental.IntegrityRequirement = mustGetVector("IR", e.IntegrityRequirement)
-		}
-		if e.AvailabilityRequirement != "" {
-			result.Cvss3xEnvironmental.AvailabilityRequirement = mustGetVector("AR", e.AvailabilityRequirement)
-		}
-		if e.ModifiedAttackVector != "" {
-			result.Cvss3xEnvironmental.ModifiedAttackVector = mustGetVector("MAV", e.ModifiedAttackVector)
-		}
-		if e.ModifiedAttackComplexity != "" {
-			result.Cvss3xEnvironmental.ModifiedAttackComplexity = mustGetVector("MAC", e.ModifiedAttackComplexity)
-		}
-		if e.ModifiedPrivilegesRequired != "" {
-			result.Cvss3xEnvironmental.ModifiedPrivilegesRequired = mustGetVector("MPR", e.ModifiedPrivilegesRequired)
-		}
-		if e.ModifiedUserInteraction != "" {
-			result.Cvss3xEnvironmental.ModifiedUserInteraction = mustGetVector("MUI", e.ModifiedUserInteraction)
-		}
-		if e.ModifiedScope != "" {
-			result.Cvss3xEnvironmental.ModifiedScope = mustGetVector("MS", e.ModifiedScope)
-		}
-		if e.ModifiedConfidentiality != "" {
-			result.Cvss3xEnvironmental.ModifiedConfidentiality = mustGetVector("MC", e.ModifiedConfidentiality)
-		}
-		if e.ModifiedIntegrity != "" {
-			result.Cvss3xEnvironmental.ModifiedIntegrity = mustGetVector("MI", e.ModifiedIntegrity)
-		}
-		if e.ModifiedAvailability != "" {
-			result.Cvss3xEnvironmental.ModifiedAvailability = mustGetVector("MA", e.ModifiedAvailability)
-		}
+		setField("CR", e.ConfidentialityRequirement, &result.Cvss3xEnvironmental.ConfidentialityRequirement)
+		setField("IR", e.IntegrityRequirement, &result.Cvss3xEnvironmental.IntegrityRequirement)
+		setField("AR", e.AvailabilityRequirement, &result.Cvss3xEnvironmental.AvailabilityRequirement)
+		setField("MAV", e.ModifiedAttackVector, &result.Cvss3xEnvironmental.ModifiedAttackVector)
+		setField("MAC", e.ModifiedAttackComplexity, &result.Cvss3xEnvironmental.ModifiedAttackComplexity)
+		setField("MPR", e.ModifiedPrivilegesRequired, &result.Cvss3xEnvironmental.ModifiedPrivilegesRequired)
+		setField("MUI", e.ModifiedUserInteraction, &result.Cvss3xEnvironmental.ModifiedUserInteraction)
+		setField("MS", e.ModifiedScope, &result.Cvss3xEnvironmental.ModifiedScope)
+		setField("MC", e.ModifiedConfidentiality, &result.Cvss3xEnvironmental.ModifiedConfidentiality)
+		setField("MI", e.ModifiedIntegrity, &result.Cvss3xEnvironmental.ModifiedIntegrity)
+		setField("MA", e.ModifiedAvailability, &result.Cvss3xEnvironmental.ModifiedAvailability)
 	}
 
 	return result, nil
 }
 
-// mustGetVector 通过 key 和 LongValue 获取 Vector，如果找不到返回 nil
-func mustGetVector(key, longValue string) vector.Vector {
+// getVectorByKeyAndLongValue 通过 key 和 LongValue 获取 Vector
+// 如果找不到映射，返回错误而不是 nil（防止静默丢弃数据）
+func getVectorByKeyAndLongValue(key, longValue string) (vector.Vector, error) {
 	if longValue == "" {
-		return nil
+		return nil, nil // 空值表示未设置，这是合法的
 	}
 	mapping, ok := longToShortValue[key]
 	if !ok {
-		return nil
+		return nil, fmt.Errorf("unknown metric key: %s", key)
 	}
 	shortVal, ok := mapping[longValue]
 	if !ok {
-		return nil
+		return nil, fmt.Errorf("unknown value %s for metric %s", longValue, key)
 	}
 	// 使用 vector 包的工厂函数
 	v, err := vector.GetVectorByShortName(key, string(shortVal))
 	if err != nil {
-		return nil
+		return nil, fmt.Errorf("invalid metric %s/%s: %w", key, string(shortVal), err)
 	}
-	return v
+	return v, nil
 }
 
 // parseInt 解析整数
