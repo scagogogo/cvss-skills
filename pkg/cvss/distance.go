@@ -61,8 +61,10 @@ func (dc *DistanceCalculator) getBaseScoreDiffs() []float64 {
 	pr2 := vector.GetPrivilegesRequiredScore(b2.PrivilegesRequired, vector.IsScopeChanged(b2.Scope))
 	diffs = append(diffs, math.Abs(pr1-pr2))
 
-	// UI
-	diffs = append(diffs, math.Abs(b1.UserInteraction.GetScore()-b2.UserInteraction.GetScore()))
+	// UI — 需要 Version 上下文才能得到正确分数（v3.0 UI:R=0.56, v3.1 UI:R=0.62）
+	ui1 := vector.GetUserInteractionScore(b1.UserInteraction, dc.vector1.MinorVersion)
+	ui2 := vector.GetUserInteractionScore(b2.UserInteraction, dc.vector2.MinorVersion)
+	diffs = append(diffs, math.Abs(ui1-ui2))
 
 	// Scope 特殊处理：转换为 0/1 数值
 	scopeDiff := 0.0

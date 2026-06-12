@@ -56,7 +56,9 @@ func (dc *DistanceCalculator) getEnvironmentalScoreDiffs() []float64 {
 		dc.vector1.Cvss3xEnvironmental.ModifiedScope, dc.vector1.Cvss3xBase.Scope,
 		dc.vector2.Cvss3xEnvironmental.ModifiedScope, dc.vector2.Cvss3xBase.Scope))
 
-	diffs = append(diffs, envScoreDiff(e1.ModifiedUserInteraction, e2.ModifiedUserInteraction))
+	// MUI needs version context (v3.0 UI:R=0.56, v3.1 UI:R=0.62)
+	diffs = append(diffs, envUIScoreDiff(e1.ModifiedUserInteraction, e2.ModifiedUserInteraction,
+		dc.vector1.MinorVersion, dc.vector2.MinorVersion))
 
 	// MS — binary 0/1
 	scopeDiff := 0.0
@@ -216,4 +218,15 @@ func envShortValue(v1, v2 vector.Vector) bool {
 		return false
 	}
 	return v1.GetShortValue() != v2.GetShortValue()
+}
+
+// envUIScoreDiff 计算两个 ModifiedUserInteraction 之间的分数差异
+// 需要版本信息，因为 v3.0 UI:R=0.56 而 v3.1 UI:R=0.62
+func envUIScoreDiff(mui1, mui2 vector.Vector, minorV1, minorV2 int) float64 {
+	if mui1 == nil || mui2 == nil {
+		return 0.0
+	}
+	ui1 := vector.GetUserInteractionScore(mui1, minorV1)
+	ui2 := vector.GetUserInteractionScore(mui2, minorV2)
+	return math.Abs(ui1 - ui2)
 }
