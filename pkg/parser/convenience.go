@@ -56,3 +56,27 @@ func ParseAndValidate(cvss3xStr string) (*cvss.Cvss3x, error) {
 	}
 	return result, nil
 }
+
+// ParseAndScore 解析 CVSS 向量字符串并计算评分
+// 返回解析后的对象、基础评分和严重性等级
+// 等价于 ParseString + NewCalculator + Calculate + GetSeverity，一步完成
+//
+// 用法:
+//
+//	cv, score, severity, err := parser.ParseAndScore("CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H")
+//	if err != nil {
+//	    log.Fatal(err)
+//	}
+//	fmt.Printf("%.1f (%s)\n", score, severity)
+func ParseAndScore(cvss3xStr string) (*cvss.Cvss3x, float64, cvss.Severity, error) {
+	cv, err := ParseString(cvss3xStr)
+	if err != nil {
+		return nil, 0, cvss.SeverityNone, err
+	}
+	calc := cvss.NewCalculator(cv)
+	score, err := calc.Calculate()
+	if err != nil {
+		return cv, 0, cvss.SeverityNone, err
+	}
+	return cv, score, cvss.GetSeverity(score), nil
+}

@@ -1,0 +1,154 @@
+version: 2
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: cvss-cli
+    main: ./cmd/cvss-cli/
+    binary: cvss
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w -X main.cliVersion={{.Version}}
+    goos:
+      - linux
+      - darwin
+      - windows
+      - freebsd
+      - netbsd
+      - openbsd
+    goarch:
+      - amd64
+      - arm64
+      - arm
+      - "386"
+      - ppc64le
+      - s390x
+      - riscv64
+    goarm:
+      - "5"
+      - "6"
+      - "7"
+    ignore:
+      # Windows on ARM is not well supported before Go 1.21
+      - goos: windows
+        goarch: arm
+      - goos: windows
+        goarch: riscv64
+      - goos: windows
+        goarch: s390x
+      - goos: windows
+        goarch: ppc64le
+      - goos: darwin
+        goarch: "386"
+      - goos: darwin
+        goarch: arm
+      - goos: darwin
+        goarch: s390x
+      - goos: darwin
+        goarch: ppc64le
+      - goos: darwin
+        goarch: riscv64
+      # BSD limited arch support
+      - goos: freebsd
+        goarch: s390x
+      - goos: freebsd
+        goarch: ppc64le
+      - goos: freebsd
+        goarch: riscv64
+      - goos: netbsd
+        goarch: s390x
+      - goos: netbsd
+        goarch: ppc64le
+      - goos: netbsd
+        goarch: riscv64
+      - goos: openbsd
+        goarch: s390x
+      - goos: openbsd
+        goarch: ppc64le
+      - goos: openbsd
+        goarch: riscv64
+
+archives:
+  - id: cvss-cli-archive
+    builds:
+      - cvss-cli
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- .Version }}_
+      {{- .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else if eq .Arch "arm64" }}aarch64
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - LICENSE
+      - README.md
+
+checksum:
+  name_template: "checksums.txt"
+
+snapshot:
+  version_template: "{{ .Version }}-next"
+
+changelog:
+  sort: asc
+  use: github
+  filters:
+    exclude:
+      - "^docs:"
+      - "^doc:"
+      - "^test:"
+      - "^ci:"
+      - "^chore:"
+      - "^build:"
+      - "merge conflict"
+  groups:
+    - title: Features
+      regexp: '^.*?feat(\([[:word:]]+\))??!?:\s'
+      order: 0
+    - title: Bug Fixes
+      regexp: '^.*?fix(\([[:word:]]+\))??!?:\s'
+      order: 1
+    - title: Performance
+      regexp: '^.*?perf(\([[:word:]]+\))??!?:\s'
+      order: 2
+    - title: Others
+      order: 999
+
+release:
+  github:
+    owner: scagogogo
+    name: cvss-skills
+  draft: false
+  prerelease: auto
+  mode: replace
+  header: |
+    ## CVSS Skills - CVSS v3.x Go SDK & CLI
+
+    A comprehensive Go SDK and command-line tool for parsing, scoring,
+    validating, comparing, and analyzing CVSS v3.0/v3.1 vectors.
+
+  footer: |
+    **Full Changelog**: https://github.com/scagogogo/cvss-skills/compare/{{ .PreviousTag }}...{{ .Tag }}
+
+    ---
+
+    ### Installation
+
+    ```bash
+    # Install with Go
+    go install github.com/scagogogo/cvss-parser/cmd/cvss-cli@{{ .Tag }}
+
+    # Or download the binary for your platform from the assets below
+    ```
+
+    See the [README](https://github.com/scagogogo/cvss-skills#installation) for more installation options.

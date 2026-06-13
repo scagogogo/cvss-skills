@@ -108,10 +108,15 @@ func (x *Cvss3x) ToJSON(calculator *Calculator) ([]byte, error) {
 		temporalScore := calculator.calculateTemporalScore(baseScore)
 		output.TemporalScore = temporalScore
 		output.TemporalSeverity = calculator.GetSeverityRating(temporalScore)
-		output.Metrics.Temporal = &JSONTemporalMetrics{
-			ExploitCodeMaturity: x.Cvss3xTemporal.ExploitCodeMaturity.GetLongValue(),
-			RemediationLevel:    x.Cvss3xTemporal.RemediationLevel.GetLongValue(),
-			ReportConfidence:    x.Cvss3xTemporal.ReportConfidence.GetLongValue(),
+		output.Metrics.Temporal = &JSONTemporalMetrics{}
+		if x.Cvss3xTemporal.ExploitCodeMaturity != nil {
+			output.Metrics.Temporal.ExploitCodeMaturity = x.Cvss3xTemporal.ExploitCodeMaturity.GetLongValue()
+		}
+		if x.Cvss3xTemporal.RemediationLevel != nil {
+			output.Metrics.Temporal.RemediationLevel = x.Cvss3xTemporal.RemediationLevel.GetLongValue()
+		}
+		if x.Cvss3xTemporal.ReportConfidence != nil {
+			output.Metrics.Temporal.ReportConfidence = x.Cvss3xTemporal.ReportConfidence.GetLongValue()
 		}
 	}
 
@@ -343,6 +348,10 @@ func fromJSONMetrics(output *JSONOutput) (*Cvss3x, error) {
 		setField("MC", e.ModifiedConfidentiality, &result.Cvss3xEnvironmental.ModifiedConfidentiality)
 		setField("MI", e.ModifiedIntegrity, &result.Cvss3xEnvironmental.ModifiedIntegrity)
 		setField("MA", e.ModifiedAvailability, &result.Cvss3xEnvironmental.ModifiedAvailability)
+	}
+
+	if len(deserializationErrors) > 0 {
+		return nil, fmt.Errorf("JSON deserialization errors: %s", strings.Join(deserializationErrors, "; "))
 	}
 
 	return result, nil

@@ -390,7 +390,7 @@ func (b *Cvss3xBuilder) MA(val rune) *Cvss3xBuilder {
 }
 
 // Build 构建并返回 Cvss3x 对象
-// 如果任何指标值无效，返回错误
+// 如果任何指标值无效或基础指标不完整，返回错误
 func (b *Cvss3xBuilder) Build() (*Cvss3x, error) {
 	if b.err != nil {
 		return nil, b.err
@@ -402,6 +402,31 @@ func (b *Cvss3xBuilder) Build() (*Cvss3x, error) {
 		Cvss3xBase:          b.base,
 		Cvss3xTemporal:      b.temporal,
 		Cvss3xEnvironmental: b.env,
+	}
+
+	return result, nil
+}
+
+// BuildChecked 构建并返回 Cvss3x 对象，同时验证基础指标是否完整
+// 如果任何指标值无效、版本不支持或基础指标不完整，返回错误
+func (b *Cvss3xBuilder) BuildChecked() (*Cvss3x, error) {
+	result, err := b.Build()
+	if err != nil {
+		return nil, err
+	}
+
+	// 验证版本
+	if result.MajorVersion != 3 {
+		return nil, fmt.Errorf("unsupported major version %d, only 3 is supported", result.MajorVersion)
+	}
+	if result.MinorVersion != 0 && result.MinorVersion != 1 {
+		return nil, fmt.Errorf("unsupported minor version %d, only 3.0 and 3.1 are supported", result.MinorVersion)
+	}
+
+	// 验证基础指标完整性
+	if !result.IsComplete() {
+		missing := result.MissingMetrics()
+		return nil, fmt.Errorf("incomplete base metrics, missing: %v", missing)
 	}
 
 	return result, nil

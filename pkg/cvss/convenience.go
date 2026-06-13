@@ -217,3 +217,41 @@ func (x *Cvss3x) IsComplete() bool {
 		x.Cvss3xBase.Integrity != nil &&
 		x.Cvss3xBase.Availability != nil
 }
+
+// EqualScore 判断两个 Cvss3x 的基础评分是否相同
+// 返回比较结果和可能的计算错误
+func (x *Cvss3x) EqualScore(other *Cvss3x) (bool, error) {
+	if x == nil || other == nil {
+		return x == other, nil
+	}
+	c1 := NewCalculator(x)
+	c2 := NewCalculator(other)
+	s1, err := c1.GetBaseScore()
+	if err != nil {
+		return false, err
+	}
+	s2, err := c2.GetBaseScore()
+	if err != nil {
+		return false, err
+	}
+	return s1 == s2, nil
+}
+
+// SameSeverity 判断两个 Cvss3x 的严重性等级是否相同
+// 基于基础评分计算严重性等级进行比较
+func (x *Cvss3x) SameSeverity(other *Cvss3x) (bool, error) {
+	if x == nil || other == nil {
+		return x == other, nil
+	}
+	c1 := NewCalculator(x)
+	c2 := NewCalculator(other)
+	s1, err := c1.GetBaseScore()
+	if err != nil {
+		return false, err
+	}
+	s2, err := c2.GetBaseScore()
+	if err != nil {
+		return false, err
+	}
+	return GetSeverity(s1) == GetSeverity(s2), nil
+}

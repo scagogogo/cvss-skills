@@ -122,3 +122,28 @@ func (x *Cvss3x) UnmarshalJSON(data []byte) error {
 	*x = *parsed
 	return nil
 }
+
+// MarshalText 实现 encoding.TextMarshaler 接口
+// 将 Cvss3x 序列化为向量字符串文本格式
+// 可用于 encoding/xml、mapstructure、数据库驱动等场景
+func (x *Cvss3x) MarshalText() ([]byte, error) {
+	if x == nil {
+		return nil, nil
+	}
+	return []byte(x.String()), nil
+}
+
+// UnmarshalText 实现 encoding.TextUnmarshaler 接口
+// 从向量字符串文本格式反序列化为 Cvss3x
+// 可用于 encoding/xml、mapstructure、数据库驱动等场景
+func (x *Cvss3x) UnmarshalText(data []byte) error {
+	if len(data) == 0 {
+		return nil
+	}
+	parsed, err := fromVectorString(string(data))
+	if err != nil {
+		return fmt.Errorf("failed to unmarshal Cvss3x from text: %w", err)
+	}
+	*x = *parsed
+	return nil
+}
