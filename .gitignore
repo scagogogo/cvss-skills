@@ -64,9 +64,9 @@ coverage.txt
 # 项目特定文件
 # CVSS项目编译结果
 cmd/cvss-cli/cvss-cli
-cvss-cli
-cvss-parser
-cvss-calculator
+/cvss-cli
+/cvss-parser
+/cvss-calculator
 
 # 示例程序编译结果
 examples/*/main
