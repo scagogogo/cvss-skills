@@ -91,7 +91,7 @@ func init() {
 
 	// Mark base metrics as required
 	for _, name := range []string{"AV", "AC", "PR", "UI", "S", "C", "I", "A"} {
-		buildCmd.MarkFlagRequired(name)
+		_ = buildCmd.MarkFlagRequired(name)
 	}
 
 	rootCmd.AddCommand(buildCmd)

@@ -33,15 +33,19 @@ PowerShell:
 	Args:      cobra.ExactArgs(1),
 	ValidArgs: []string{"bash", "zsh", "fish", "powershell"},
 	Run: func(cmd *cobra.Command, args []string) {
+		var err error
 		switch args[0] {
 		case "bash":
-			cmd.Root().GenBashCompletion(os.Stdout)
+			err = cmd.Root().GenBashCompletion(os.Stdout)
 		case "zsh":
-			cmd.Root().GenZshCompletion(os.Stdout)
+			err = cmd.Root().GenZshCompletion(os.Stdout)
 		case "fish":
-			cmd.Root().GenFishCompletion(os.Stdout, true)
+			err = cmd.Root().GenFishCompletion(os.Stdout, true)
 		case "powershell":
-			cmd.Root().GenPowerShellCompletion(os.Stdout)
+			err = cmd.Root().GenPowerShellCompletion(os.Stdout)
+		}
+		if err != nil {
+			dief("Completion generation error: %v\n", err)
 		}
 	},
 }

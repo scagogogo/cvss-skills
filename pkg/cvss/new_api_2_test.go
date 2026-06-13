@@ -509,7 +509,7 @@ func TestReadCSV(t *testing.T) {
 	// Write then read
 	v1 := CriticalV31()
 	var buf bytes.Buffer
-	WriteCSV(&buf, []*Cvss3x{v1})
+	WriteCSV(&buf, []*Cvss3x{v1}) //nolint:errcheck
 
 	vectors, err := ReadCSV(&buf)
 	if err != nil {
