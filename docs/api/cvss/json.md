@@ -1,6 +1,6 @@
 # JSON Support
 
-CVSS Parser provides comprehensive JSON serialization and deserialization support, making it easy to store, transmit, and integrate data with other systems.
+CVSS Skills provides comprehensive JSON serialization and deserialization support, making it easy to store, transmit, and integrate data with other systems.
 
 ## Overview
 
@@ -163,8 +163,8 @@ import (
     "fmt"
     "log"
     
-    "github.com/scagogogo/cvss-parser/pkg/cvss"
-    "github.com/scagogogo/cvss-parser/pkg/parser"
+    "github.com/scagogogo/cvss-skills/pkg/cvss"
+    "github.com/scagogogo/cvss-skills/pkg/parser"
 )
 
 func main() {

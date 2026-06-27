@@ -1,6 +1,6 @@
 # .gitignore 文档
 
-本文档解释了 CVSS Parser 项目中 `.gitignore` 文件的配置和最佳实践。
+本文档解释了 CVSS Skills 项目中 `.gitignore` 文件的配置和最佳实践。
 
 ## 概述
 
@@ -288,7 +288,7 @@ config/
 根据项目需求添加特定忽略：
 
 ```gitignore
-# CVSS Parser 特定
+# CVSS Skills 特定
 /examples/output/
 /benchmarks/results/
 /tools/generated/

@@ -4,7 +4,7 @@
 
 ## 概述
 
-CVSS Parser 支持解析各种格式和配置的 CVSS 3.0 和 3.1 向量字符串。本指南涵盖：
+CVSS Skills 支持解析各种格式和配置的 CVSS 3.0 和 3.1 向量字符串。本指南涵盖：
 
 - 基本向量解析
 - 不同向量格式
@@ -23,7 +23,7 @@ import (
     "fmt"
     "log"
 
-    "github.com/scagogogo/cvss-parser/pkg/parser"
+    "github.com/scagogogo/cvss-skills/pkg/parser"
 )
 
 func main() {

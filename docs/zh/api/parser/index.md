@@ -5,7 +5,7 @@
 ## 包概述
 
 ```go
-import "github.com/scagogogo/cvss-parser/pkg/parser"
+import "github.com/scagogogo/cvss-skills/pkg/parser"
 ```
 
 ## 主要类型

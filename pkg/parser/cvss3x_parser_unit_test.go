@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/scagogogo/cvss-parser/pkg/cvss"
+	"github.com/scagogogo/cvss-skills/pkg/cvss"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -554,6 +554,33 @@ func TestCvss3xParser_ParseDetailed(t *testing.T) {
 			expectedError: true,
 			checkResults: func(t *testing.T, result *cvss.Cvss3x, err error) {
 				assert.Error(t, err)
+			},
+		},
+		{
+			name:          "Invalid CVSS String - Invalid Version (0.0)",
+			input:         "CVSS:0.0/S:C",
+			expectedError: true,
+			checkResults: func(t *testing.T, result *cvss.Cvss3x, err error) {
+				assert.Error(t, err)
+				assert.True(t, strings.Contains(err.Error(), "major version"))
+			},
+		},
+		{
+			name:          "Invalid CVSS String - Invalid Major Version (4.1)",
+			input:         "CVSS:4.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+			expectedError: true,
+			checkResults: func(t *testing.T, result *cvss.Cvss3x, err error) {
+				assert.Error(t, err)
+				assert.True(t, strings.Contains(err.Error(), "major version"))
+			},
+		},
+		{
+			name:          "Invalid CVSS String - Invalid Minor Version (3.2)",
+			input:         "CVSS:3.2/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+			expectedError: true,
+			checkResults: func(t *testing.T, result *cvss.Cvss3x, err error) {
+				assert.Error(t, err)
+				assert.True(t, strings.Contains(err.Error(), "minor version"))
 			},
 		},
 		{

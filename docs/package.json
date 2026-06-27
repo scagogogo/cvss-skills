@@ -1,8 +1,8 @@
 {
-  "name": "cvss-parser-docs",
+  "name": "cvss-skills-docs",
   "version": "1.0.0",
   "type": "module",
-  "description": "Documentation for CVSS Parser",
+  "description": "Documentation for CVSS Skills",
   "scripts": {
     "docs:dev": "vitepress dev",
     "docs:build": "vitepress build",

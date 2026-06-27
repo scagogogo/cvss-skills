@@ -3,7 +3,7 @@ package cvss
 import (
 	"fmt"
 
-	"github.com/scagogogo/cvss-parser/pkg/vector"
+	"github.com/scagogogo/cvss-skills/pkg/vector"
 )
 
 // ConvertToVersion 将 CVSS 向量从一个版本转换到另一个版本

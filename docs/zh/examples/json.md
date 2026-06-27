@@ -4,7 +4,7 @@
 
 ## 概述
 
-CVSS Parser 为以下功能提供全面的 JSON 支持：
+CVSS Skills 为以下功能提供全面的 JSON 支持：
 
 - 将解析的向量序列化为 JSON
 - 将 JSON 反序列化回向量对象
@@ -24,8 +24,8 @@ import (
     "fmt"
     "log"
 
-    "github.com/scagogogo/cvss-parser/pkg/cvss"
-    "github.com/scagogogo/cvss-parser/pkg/parser"
+    "github.com/scagogogo/cvss-skills/pkg/cvss"
+    "github.com/scagogogo/cvss-skills/pkg/parser"
 )
 
 func main() {

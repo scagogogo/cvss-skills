@@ -1,6 +1,6 @@
 # Risk Assessment
 
-This guide demonstrates comprehensive risk assessment methodologies using CVSS Parser, including vulnerability prioritization, risk scoring, and enterprise risk management frameworks.
+This guide demonstrates comprehensive risk assessment methodologies using CVSS Skills, including vulnerability prioritization, risk scoring, and enterprise risk management frameworks.
 
 ## Overview
 

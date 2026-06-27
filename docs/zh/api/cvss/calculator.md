@@ -1,6 +1,6 @@
 # Calculator 计算器
 
-`Calculator` 是 CVSS Parser 中用于计算 CVSS 评分的核心组件。它提供了完整的 CVSS 3.x 评分计算功能，包括基础评分、时间评分和环境评分。
+`Calculator` 是 CVSS Skills 中用于计算 CVSS 评分的核心组件。它提供了完整的 CVSS 3.x 评分计算功能，包括基础评分、时间评分和环境评分。
 
 ## 接口定义
 
@@ -179,8 +179,8 @@ import (
     "fmt"
     "log"
     
-    "github.com/scagogogo/cvss-parser/pkg/cvss"
-    "github.com/scagogogo/cvss-parser/pkg/parser"
+    "github.com/scagogogo/cvss-skills/pkg/cvss"
+    "github.com/scagogogo/cvss-skills/pkg/parser"
 )
 
 func main() {

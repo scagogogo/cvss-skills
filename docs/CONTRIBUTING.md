@@ -1,13 +1,13 @@
 # Contributing Guide
 
-Thank you for your interest in the CVSS Parser library! This document provides guidance on how to contribute code, report issues, and improve the project.
+Thank you for your interest in the CVSS Skills library! This document provides guidance on how to contribute code, report issues, and improve the project.
 
 ## Development Setup
 
 1. Ensure you have Go 1.19 or higher installed
 2. Clone the repository and set up your development environment:
    ```bash
-   git clone https://github.com/scagogogo/cvss.git
+   git clone https://github.com/scagogogo/cvss-skills.git
    cd cvss
    go mod download
    ```
@@ -30,7 +30,7 @@ git clone https://github.com/YOUR_USERNAME/cvss.git
 cd cvss
 
 # Add the original repository as upstream
-git remote add upstream https://github.com/scagogogo/cvss.git
+git remote add upstream https://github.com/scagogogo/cvss-skills.git
 ```
 
 ### 2. Create a Feature Branch
@@ -206,7 +206,7 @@ Parser returns error: "unknown metric CR"
 ## Environment
 - Go version: 1.19
 - OS: macOS 12.0
-- CVSS Parser version: v1.0.0
+- CVSS Skills version: v1.0.0
 ```
 
 ### ✨ Feature Requests
@@ -362,4 +362,4 @@ Contributors are recognized through:
 - **GitHub contributor graphs**
 - **Special thanks** for significant contributions
 
-Thank you for contributing to CVSS Parser! 🎉
+Thank you for contributing to CVSS Skills! 🎉

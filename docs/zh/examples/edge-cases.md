@@ -1,6 +1,6 @@
 # 边缘情况示例
 
-本示例演示如何处理边缘情况、错误条件和使用 CVSS Parser 时的复杂场景。
+本示例演示如何处理边缘情况、错误条件和使用 CVSS Skills 时的复杂场景。
 
 ## 概述
 
@@ -24,7 +24,7 @@ import (
     "fmt"
     "strings"
 
-    "github.com/scagogogo/cvss-parser/pkg/parser"
+    "github.com/scagogogo/cvss-skills/pkg/parser"
 )
 
 func main() {

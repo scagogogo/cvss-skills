@@ -4,7 +4,7 @@ This example demonstrates how to serialize CVSS vectors to JSON format and deser
 
 ## Overview
 
-CVSS Parser provides comprehensive JSON support for:
+CVSS Skills provides comprehensive JSON support for:
 
 - Serializing parsed vectors to JSON
 - Deserializing JSON back to vector objects
@@ -24,8 +24,8 @@ import (
     "fmt"
     "log"
 
-    "github.com/scagogogo/cvss-parser/pkg/cvss"
-    "github.com/scagogogo/cvss-parser/pkg/parser"
+    "github.com/scagogogo/cvss-skills/pkg/cvss"
+    "github.com/scagogogo/cvss-skills/pkg/parser"
 )
 
 func main() {

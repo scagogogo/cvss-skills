@@ -5,7 +5,7 @@ import (
 	"math"
 	"testing"
 
-	"github.com/scagogogo/cvss-parser/pkg/cvss"
+	"github.com/scagogogo/cvss-skills/pkg/cvss"
 	"github.com/stretchr/testify/assert"
 )
 

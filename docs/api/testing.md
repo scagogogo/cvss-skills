@@ -1,6 +1,6 @@
 # Testing Guide
 
-This comprehensive guide covers testing strategies, patterns, and best practices for applications using CVSS Parser.
+This comprehensive guide covers testing strategies, patterns, and best practices for applications using CVSS Skills.
 
 ## Overview
 
@@ -44,8 +44,8 @@ import (
     "testing"
     "github.com/stretchr/testify/assert"
     "github.com/stretchr/testify/require"
-    "github.com/scagogogo/cvss-parser/pkg/cvss"
-    "github.com/scagogogo/cvss-parser/pkg/parser"
+    "github.com/scagogogo/cvss-skills/pkg/cvss"
+    "github.com/scagogogo/cvss-skills/pkg/parser"
 )
 
 func TestVectorParsing(t *testing.T) {

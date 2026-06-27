@@ -1,6 +1,6 @@
 # Vector 接口
 
-`Vector` 接口是 CVSS Parser 中所有指标的统一抽象，定义了指标的基本行为和属性。
+`Vector` 接口是 CVSS Skills 中所有指标的统一抽象，定义了指标的基本行为和属性。
 
 ## 接口定义
 

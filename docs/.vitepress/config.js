@@ -1,9 +1,9 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
-  title: 'CVSS Parser',
-  description: 'Go CVSS Parser - Complete API Documentation',
-  base: '/cvss/',
+  title: 'CVSS Skills',
+  description: 'Go CVSS Parsing & Scoring Library - Complete API Documentation',
+  base: '/cvss-skills/',
   ignoreDeadLinks: true,
 
   // 国际化配置
@@ -11,14 +11,14 @@ export default defineConfig({
     root: {
       label: 'English',
       lang: 'en',
-      title: 'CVSS Parser',
-      description: 'Go CVSS Parser - Complete API Documentation',
+      title: 'CVSS Skills',
+      description: 'Go CVSS Parsing & Scoring Library - Complete API Documentation',
       themeConfig: {
         nav: [
           { text: 'Home', link: '/' },
           { text: 'API Docs', link: '/api/' },
           { text: 'Examples', link: '/examples/' },
-          { text: 'GitHub', link: 'https://github.com/scagogogo/cvss' }
+          { text: 'GitHub', link: 'https://github.com/scagogogo/cvss-skills' }
         ],
         sidebar: {
           '/api/': [
@@ -38,26 +38,36 @@ export default defineConfig({
                 },
                 {
                   text: 'CVSS Package Details',
-                  collapsed: false,
+                  collapsed: true,
                   items: [
-                    { text: 'Calculator', link: '/api/cvss/calculator' },
                     { text: 'Cvss3x', link: '/api/cvss/cvss3x' },
+                    { text: 'Calculator', link: '/api/cvss/calculator' },
                     { text: 'Distance Calculator', link: '/api/cvss/distance' },
-                    { text: 'JSON Support', link: '/api/cvss/json' }
+                    { text: 'JSON Support', link: '/api/cvss/json' },
+                    { text: 'Comparison', link: '/api/cvss/comparison' }
                   ]
                 },
                 {
-                  text: 'Parser Package',
-                  collapsed: false,
+                  text: 'Parser Package Details',
+                  collapsed: true,
                   items: [
                     { text: 'Cvss3xParser', link: '/api/parser/cvss3x-parser' }
                   ]
                 },
                 {
-                  text: 'Vector Package',
-                  collapsed: false,
+                  text: 'Vector Package Details',
+                  collapsed: true,
                   items: [
                     { text: 'Vector Interface', link: '/api/vector/interface' }
+                  ]
+                },
+                {
+                  text: 'Guides',
+                  collapsed: true,
+                  items: [
+                    { text: 'Error Handling', link: '/api/error-handling' },
+                    { text: 'Performance', link: '/api/performance' },
+                    { text: 'Testing', link: '/api/testing' }
                   ]
                 }
               ]
@@ -68,7 +78,20 @@ export default defineConfig({
               text: 'Examples',
               items: [
                 { text: 'Overview', link: '/examples/' },
-                { text: 'Basic Usage', link: '/examples/basic' }
+                { text: 'Basic Usage', link: '/examples/basic' },
+                { text: 'Parsing Vectors', link: '/examples/parsing' },
+                { text: 'JSON Output', link: '/examples/json' },
+                { text: 'Temporal Metrics', link: '/examples/temporal' },
+                { text: 'Environmental Metrics', link: '/examples/environmental' },
+                { text: 'Distance Calculation', link: '/examples/distance' },
+                { text: 'Vector Comparison', link: '/examples/comparison' },
+                { text: 'Severity Levels', link: '/examples/severity' },
+                { text: 'Edge Cases', link: '/examples/edge-cases' },
+                { text: 'Performance', link: '/examples/performance' },
+                { text: 'Monitoring', link: '/examples/monitoring' },
+                { text: 'Security', link: '/examples/security' },
+                { text: 'Risk Assessment', link: '/examples/risk-assessment' },
+                { text: 'Production', link: '/examples/production' }
               ]
             }
           ]
@@ -78,14 +101,14 @@ export default defineConfig({
     zh: {
       label: '简体中文',
       lang: 'zh-CN',
-      title: 'CVSS 解析器',
-      description: 'Go语言CVSS解析器 - 完整的API文档',
+      title: 'CVSS Skills',
+      description: 'Go语言CVSS解析与评分库 - 完整的API文档',
       themeConfig: {
         nav: [
           { text: '首页', link: '/zh/' },
           { text: 'API文档', link: '/zh/api/' },
           { text: '示例', link: '/zh/examples/' },
-          { text: 'GitHub', link: 'https://github.com/scagogogo/cvss' }
+          { text: 'GitHub', link: 'https://github.com/scagogogo/cvss-skills' }
         ],
         sidebar: {
           '/zh/api/': [
@@ -105,24 +128,24 @@ export default defineConfig({
                 },
                 {
                   text: 'CVSS 包详细文档',
-                  collapsed: false,
+                  collapsed: true,
                   items: [
-                    { text: '计算器', link: '/zh/api/cvss/calculator' },
                     { text: 'Cvss3x', link: '/zh/api/cvss/cvss3x' },
+                    { text: '计算器', link: '/zh/api/cvss/calculator' },
                     { text: '距离计算器', link: '/zh/api/cvss/distance' },
                     { text: 'JSON 支持', link: '/zh/api/cvss/json' }
                   ]
                 },
                 {
                   text: '解析器包',
-                  collapsed: false,
+                  collapsed: true,
                   items: [
                     { text: 'Cvss3x解析器', link: '/zh/api/parser/cvss3x-parser' }
                   ]
                 },
                 {
                   text: '向量包',
-                  collapsed: false,
+                  collapsed: true,
                   items: [
                     { text: '向量接口', link: '/zh/api/vector/interface' }
                   ]
@@ -135,7 +158,18 @@ export default defineConfig({
               text: '示例',
               items: [
                 { text: '概述', link: '/zh/examples/' },
-                { text: '基础用法', link: '/zh/examples/basic' }
+                { text: '基础用法', link: '/zh/examples/basic' },
+                { text: '解析向量', link: '/zh/examples/parsing' },
+                { text: 'JSON 输出', link: '/zh/examples/json' },
+                { text: '时间指标', link: '/zh/examples/temporal' },
+                { text: '环境指标', link: '/zh/examples/environmental' },
+                { text: '距离计算', link: '/zh/examples/distance' },
+                { text: '向量比较', link: '/zh/examples/comparison' },
+                { text: '严重性级别', link: '/zh/examples/severity' },
+                { text: '边缘情况', link: '/zh/examples/edge-cases' },
+                { text: '性能优化', link: '/zh/examples/performance' },
+                { text: '监控集成', link: '/zh/examples/monitoring' },
+                { text: '安全评估', link: '/zh/examples/risk-assessment' }
               ]
             }
           ]
@@ -155,21 +189,21 @@ export default defineConfig({
       ]
     },
     nav: [
-      { text: '首页', link: '/' },
-      { text: 'API文档', link: '/api/' },
-      { text: '示例', link: '/examples/' },
-      { text: 'GitHub', link: 'https://github.com/scagogogo/cvss' }
+      { text: 'Home', link: '/' },
+      { text: 'API Docs', link: '/api/' },
+      { text: 'Examples', link: '/examples/' },
+      { text: 'GitHub', link: 'https://github.com/scagogogo/cvss-skills' }
     ],
 
     sidebar: {
       '/api/': [
         {
-          text: 'API 参考',
+          text: 'API Reference',
           items: [
-            { text: '概述', link: '/api/' },
-            { text: '快速开始', link: '/api/getting-started' },
+            { text: 'Overview', link: '/api/' },
+            { text: 'Getting Started', link: '/api/getting-started' },
             {
-              text: '核心包',
+              text: 'Core Packages',
               collapsed: false,
               items: [
                 { text: 'cvss', link: '/api/cvss/' },
@@ -178,31 +212,37 @@ export default defineConfig({
               ]
             },
             {
-              text: 'CVSS 包详细文档',
-              collapsed: false,
+              text: 'CVSS Package Details',
+              collapsed: true,
               items: [
                 { text: 'Cvss3x', link: '/api/cvss/cvss3x' },
                 { text: 'Calculator', link: '/api/cvss/calculator' },
-                { text: 'DistanceCalculator', link: '/api/cvss/distance' },
-                { text: 'JSON 支持', link: '/api/cvss/json' }
+                { text: 'Distance Calculator', link: '/api/cvss/distance' },
+                { text: 'JSON Support', link: '/api/cvss/json' },
+                { text: 'Comparison', link: '/api/cvss/comparison' }
               ]
             },
             {
-              text: 'Parser 包详细文档',
-              collapsed: false,
+              text: 'Parser Package Details',
+              collapsed: true,
               items: [
-                { text: 'Cvss3xParser', link: '/api/parser/cvss3x-parser' },
-                { text: 'VectorParser', link: '/api/parser/vector-parser' }
+                { text: 'Cvss3xParser', link: '/api/parser/cvss3x-parser' }
               ]
             },
             {
-              text: 'Vector 包详细文档',
-              collapsed: false,
+              text: 'Vector Package Details',
+              collapsed: true,
               items: [
-                { text: 'Vector 接口', link: '/api/vector/interface' },
-                { text: '基础指标', link: '/api/vector/base-metrics' },
-                { text: '时间指标', link: '/api/vector/temporal-metrics' },
-                { text: '环境指标', link: '/api/vector/environmental-metrics' }
+                { text: 'Vector Interface', link: '/api/vector/interface' }
+              ]
+            },
+            {
+              text: 'Guides',
+              collapsed: true,
+              items: [
+                { text: 'Error Handling', link: '/api/error-handling' },
+                { text: 'Performance', link: '/api/performance' },
+                { text: 'Testing', link: '/api/testing' }
               ]
             }
           ]
@@ -210,30 +250,35 @@ export default defineConfig({
       ],
       '/examples/': [
         {
-          text: '示例',
+          text: 'Examples',
           items: [
-            { text: '概述', link: '/examples/' },
-            { text: '基础用法', link: '/examples/basic' },
-            { text: '解析向量', link: '/examples/parsing' },
-            { text: 'JSON 输出', link: '/examples/json' },
-            { text: '时间指标', link: '/examples/temporal' },
-            { text: '环境指标', link: '/examples/environmental' },
-            { text: '距离计算', link: '/examples/distance' },
-            { text: '向量比较', link: '/examples/comparison' },
-            { text: '严重性级别', link: '/examples/severity' },
-            { text: '边缘情况', link: '/examples/edge-cases' }
+            { text: 'Overview', link: '/examples/' },
+            { text: 'Basic Usage', link: '/examples/basic' },
+            { text: 'Parsing Vectors', link: '/examples/parsing' },
+            { text: 'JSON Output', link: '/examples/json' },
+            { text: 'Temporal Metrics', link: '/examples/temporal' },
+            { text: 'Environmental Metrics', link: '/examples/environmental' },
+            { text: 'Distance Calculation', link: '/examples/distance' },
+            { text: 'Vector Comparison', link: '/examples/comparison' },
+            { text: 'Severity Levels', link: '/examples/severity' },
+            { text: 'Edge Cases', link: '/examples/edge-cases' },
+            { text: 'Performance', link: '/examples/performance' },
+            { text: 'Monitoring', link: '/examples/monitoring' },
+            { text: 'Security', link: '/examples/security' },
+            { text: 'Risk Assessment', link: '/examples/risk-assessment' },
+            { text: 'Production', link: '/examples/production' }
           ]
         }
       ]
     },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/scagogogo/cvss' }
+      { icon: 'github', link: 'https://github.com/scagogogo/cvss-skills' }
     ],
 
     footer: {
       message: 'Released under the MIT License.',
-      copyright: 'Copyright © 2024 CVSS Parser'
+      copyright: 'Copyright © 2024-2026 CVSS Skills'
     },
 
     search: {

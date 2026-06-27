@@ -1,6 +1,6 @@
 # 示例
 
-这里提供了 CVSS Parser 的完整示例集合，涵盖了从基础用法到高级功能的各种使用场景。
+这里提供了 CVSS Skills 的完整示例集合，涵盖了从基础用法到高级功能的各种使用场景。
 
 ## 示例概览
 
@@ -23,7 +23,7 @@
 
 ## 快速开始
 
-如果你是第一次使用 CVSS Parser，建议按以下顺序学习：
+如果你是第一次使用 CVSS Skills，建议按以下顺序学习：
 
 1. **[基础用法](/zh/examples/basic)** - 了解基本的解析和计算流程
 2. **[解析向量](/zh/examples/parsing)** - 学习如何解析不同格式的向量
@@ -35,7 +35,7 @@
 所有示例都可以直接运行。首先克隆项目：
 
 ```bash
-git clone https://github.com/scagogogo/cvss.git
+git clone https://github.com/scagogogo/cvss-skills.git
 cd cvss
 ```
 
@@ -72,8 +72,8 @@ import (
     "fmt"
     "log"
     
-    "github.com/scagogogo/cvss-parser/pkg/parser"
-    "github.com/scagogogo/cvss-parser/pkg/cvss"
+    "github.com/scagogogo/cvss-skills/pkg/parser"
+    "github.com/scagogogo/cvss-skills/pkg/cvss"
 )
 
 func main() {
@@ -192,7 +192,7 @@ go tool pprof mem.prof
 如果在运行示例时遇到问题：
 
 - 查看 [API 文档](/zh/api/)
-- 检查 [GitHub Issues](https://github.com/scagogogo/cvss/issues)
+- 检查 [GitHub Issues](https://github.com/scagogogo/cvss-skills/issues)
 - 参考 [最佳实践](/zh/api/getting-started)
 
 ## 下一步

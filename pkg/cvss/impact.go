@@ -5,7 +5,7 @@ import (
 	"math"
 	"sort"
 
-	"github.com/scagogogo/cvss-parser/pkg/vector"
+	"github.com/scagogogo/cvss-skills/pkg/vector"
 )
 
 // MetricImpact 表示单个指标变化对评分的影响

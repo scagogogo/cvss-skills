@@ -1,13 +1,13 @@
 # Getting Started
 
-This guide will help you get started with CVSS Parser in 5 minutes.
+This guide will help you get started with CVSS Skills in 5 minutes.
 
 ## Installation
 
-Install CVSS Parser using Go modules:
+Install CVSS Skills using Go modules:
 
 ```bash
-go get github.com/scagogogo/cvss
+go get github.com/scagogogo/cvss-skills
 ```
 
 ## Your First Program
@@ -21,8 +21,8 @@ import (
     "fmt"
     "log"
 
-    "github.com/scagogogo/cvss-parser/pkg/cvss"
-    "github.com/scagogogo/cvss-parser/pkg/parser"
+    "github.com/scagogogo/cvss-skills/pkg/cvss"
+    "github.com/scagogogo/cvss-skills/pkg/parser"
 )
 
 func main() {
@@ -190,7 +190,7 @@ if err != nil {
 
 ## Error Handling
 
-CVSS Parser provides detailed error information:
+CVSS Skills provides detailed error information:
 
 ```go
 vector, err := parser.Parse()
@@ -280,5 +280,5 @@ Now that you've mastered the basics, you can continue learning:
 If you encounter issues:
 
 - Check the [FAQ](/api/faq)
-- Browse [GitHub Issues](https://github.com/scagogogo/cvss/issues)
-- Join [Community Discussions](https://github.com/scagogogo/cvss/discussions)
+- Browse [GitHub Issues](https://github.com/scagogogo/cvss-skills/issues)
+- Join [Community Discussions](https://github.com/scagogogo/cvss-skills/discussions)

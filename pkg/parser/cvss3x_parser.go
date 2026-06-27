@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/scagogogo/cvss-parser/pkg/cvss"
-	"github.com/scagogogo/cvss-parser/pkg/vector"
+	"github.com/scagogogo/cvss-skills/pkg/cvss"
+	"github.com/scagogogo/cvss-skills/pkg/vector"
 )
 
 var (
@@ -144,6 +144,14 @@ func (x *Cvss3xParser) readVersion() error {
 		return err
 	}
 	x.cvss3x.MinorVersion = minorVersion
+
+	// 校验版本号范围：仅支持 3.0 和 3.1
+	if majorVersion != 3 {
+		return fmt.Errorf("unsupported CVSS major version: %d, only version 3 is supported", majorVersion)
+	}
+	if minorVersion != 0 && minorVersion != 1 {
+		return fmt.Errorf("unsupported CVSS minor version: %d, only 3.0 and 3.1 are supported", minorVersion)
+	}
 
 	return nil
 }

@@ -1,6 +1,6 @@
 # 基础用法示例
 
-这个示例演示了 CVSS Parser 的最基本用法：解析 CVSS 向量字符串并计算评分。
+这个示例演示了 CVSS Skills 的最基本用法：解析 CVSS 向量字符串并计算评分。
 
 ## 示例代码
 
@@ -11,8 +11,8 @@ import (
     "fmt"
     "log"
 
-    "github.com/scagogogo/cvss-parser/pkg/cvss"
-    "github.com/scagogogo/cvss-parser/pkg/parser"
+    "github.com/scagogogo/cvss-skills/pkg/cvss"
+    "github.com/scagogogo/cvss-skills/pkg/parser"
 )
 
 func main() {

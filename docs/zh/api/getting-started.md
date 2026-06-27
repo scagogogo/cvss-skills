@@ -1,13 +1,13 @@
 # 快速开始
 
-欢迎使用 CVSS Parser！本指南将在 5 分钟内帮你上手这个强大的 CVSS 解析和计算库。
+欢迎使用 CVSS Skills！本指南将在 5 分钟内帮你上手这个强大的 CVSS 解析和计算库。
 
 ## 安装
 
-使用 Go modules 安装 CVSS Parser：
+使用 Go modules 安装 CVSS Skills：
 
 ```bash
-go get github.com/scagogogo/cvss
+go get github.com/scagogogo/cvss-skills
 ```
 
 ## 第一个程序
@@ -21,8 +21,8 @@ import (
     "fmt"
     "log"
 
-    "github.com/scagogogo/cvss-parser/pkg/cvss"
-    "github.com/scagogogo/cvss-parser/pkg/parser"
+    "github.com/scagogogo/cvss-skills/pkg/cvss"
+    "github.com/scagogogo/cvss-skills/pkg/parser"
 )
 
 func main() {
@@ -190,7 +190,7 @@ if err != nil {
 
 ## 错误处理
 
-CVSS Parser 提供详细的错误信息：
+CVSS Skills 提供详细的错误信息：
 
 ```go
 vector, err := parser.Parse()
@@ -280,5 +280,5 @@ func processBatch(vectors []string) {
 如果遇到问题：
 
 - 查看 [常见问题](/zh/api/faq)
-- 浏览 [GitHub Issues](https://github.com/scagogogo/cvss/issues)
-- 参与 [社区讨论](https://github.com/scagogogo/cvss/discussions)
+- 浏览 [GitHub Issues](https://github.com/scagogogo/cvss-skills/issues)
+- 参与 [社区讨论](https://github.com/scagogogo/cvss-skills/discussions)

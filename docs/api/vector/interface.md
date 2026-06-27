@@ -1,6 +1,6 @@
 # Vector Interface
 
-The `Vector` interface is the unified abstraction for all metrics in CVSS Parser, defining the basic behavior and properties of metrics.
+The `Vector` interface is the unified abstraction for all metrics in CVSS Skills, defining the basic behavior and properties of metrics.
 
 ## Interface Definition
 

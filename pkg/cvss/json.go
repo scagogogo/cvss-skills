@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/scagogogo/cvss-parser/pkg/vector"
+	"github.com/scagogogo/cvss-skills/pkg/vector"
 )
 
 // JSONOutput CVSS JSON输出格式

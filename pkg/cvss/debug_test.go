@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/scagogogo/cvss-parser/pkg/vector"
+	"github.com/scagogogo/cvss-skills/pkg/vector"
 )
 
 func TestDebugEnvironmentalScore(t *testing.T) {

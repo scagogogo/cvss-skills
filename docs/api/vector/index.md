@@ -5,7 +5,7 @@ The `vector` package provides unified interfaces and concrete implementations fo
 ## Package Overview
 
 ```go
-import "github.com/scagogogo/cvss-parser/pkg/vector"
+import "github.com/scagogogo/cvss-skills/pkg/vector"
 ```
 
 ## Core Interface

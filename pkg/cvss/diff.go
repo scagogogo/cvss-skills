@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/scagogogo/cvss-parser/pkg/vector"
+	"github.com/scagogogo/cvss-skills/pkg/vector"
 )
 
 // DiffEntry 表示两个 Cvss3x 在某个指标上的差异

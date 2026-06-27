@@ -4,7 +4,7 @@ This example demonstrates various ways to parse CVSS vector strings, including d
 
 ## Overview
 
-CVSS Parser supports parsing CVSS 3.0 and 3.1 vector strings in various formats and configurations. This guide covers:
+CVSS Skills supports parsing CVSS 3.0 and 3.1 vector strings in various formats and configurations. This guide covers:
 
 - Basic vector parsing
 - Different vector formats
@@ -23,7 +23,7 @@ import (
     "fmt"
     "log"
 
-    "github.com/scagogogo/cvss-parser/pkg/parser"
+    "github.com/scagogogo/cvss-skills/pkg/parser"
 )
 
 func main() {

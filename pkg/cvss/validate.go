@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/scagogogo/cvss-parser/pkg/vector"
+	"github.com/scagogogo/cvss-skills/pkg/vector"
 )
 
 // ValidationError 表示 CVSS 验证失败的结构化错误

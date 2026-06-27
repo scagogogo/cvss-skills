@@ -1,6 +1,6 @@
 # Basic Usage Examples
 
-This example demonstrates the most basic usage of CVSS Parser: parsing CVSS vector strings and calculating scores.
+This example demonstrates the most basic usage of CVSS Skills: parsing CVSS vector strings and calculating scores.
 
 ## Example Code
 
@@ -11,13 +11,13 @@ import (
     "fmt"
     "log"
 
-    "github.com/scagogogo/cvss-parser/pkg/cvss"
-    "github.com/scagogogo/cvss-parser/pkg/parser"
+    "github.com/scagogogo/cvss-skills/pkg/cvss"
+    "github.com/scagogogo/cvss-skills/pkg/parser"
 )
 
 func main() {
     // =====================================================
-    // CVSS Parser Basic Usage Example
+    // CVSS Skills Basic Usage Example
     // Demonstrates how to parse CVSS vector strings and get basic information and scores
     // =====================================================
 
@@ -135,8 +135,8 @@ import (
     "fmt"
     "log"
 
-    "github.com/scagogogo/cvss-parser/pkg/cvss"
-    "github.com/scagogogo/cvss-parser/pkg/parser"
+    "github.com/scagogogo/cvss-skills/pkg/cvss"
+    "github.com/scagogogo/cvss-skills/pkg/parser"
 )
 ```
 
@@ -280,7 +280,7 @@ func safeParseAndCalculate(vectorStr string) {
 2. **Initialize Go module** (if not already done):
    ```bash
    go mod init cvss-example
-   go get github.com/scagogogo/cvss
+   go get github.com/scagogogo/cvss-skills
    ```
 
 3. **Run the example**:
@@ -303,8 +303,8 @@ After understanding this basic example, you can explore:
 
 Make sure you're using the correct import path:
 ```go
-"github.com/scagogogo/cvss-parser/pkg/cvss"
-"github.com/scagogogo/cvss-parser/pkg/parser"
+"github.com/scagogogo/cvss-skills/pkg/cvss"
+"github.com/scagogogo/cvss-skills/pkg/parser"
 ```
 
 ### Invalid Vector Strings

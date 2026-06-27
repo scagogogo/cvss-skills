@@ -1,10 +1,10 @@
 # Error Handling Guide
 
-This guide covers comprehensive error handling patterns, error types, and best practices for robust CVSS Parser applications.
+This guide covers comprehensive error handling patterns, error types, and best practices for robust CVSS Skills applications.
 
 ## Overview
 
-CVSS Parser provides structured error handling with:
+CVSS Skills provides structured error handling with:
 
 - Typed error interfaces
 - Error categorization

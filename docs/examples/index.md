@@ -1,6 +1,6 @@
 # Examples
 
-This section provides a comprehensive collection of CVSS Parser examples, covering various use cases from basic usage to advanced functionality.
+This section provides a comprehensive collection of CVSS Skills examples, covering various use cases from basic usage to advanced functionality.
 
 ## Examples Overview
 
@@ -23,7 +23,7 @@ This section provides a comprehensive collection of CVSS Parser examples, coveri
 
 ## Quick Start
 
-If you're new to CVSS Parser, we recommend learning in the following order:
+If you're new to CVSS Skills, we recommend learning in the following order:
 
 1. **[Basic Usage](/examples/basic)** - Understand basic parsing and calculation workflow
 2. **[Vector Parsing](/examples/parsing)** - Learn how to parse vectors in different formats
@@ -396,7 +396,7 @@ func TestVectorParsing(t *testing.T) {
 After exploring these examples, you can:
 
 1. **Read the [API Documentation](/api/)** for detailed interface specifications
-2. **Check the [GitHub Repository](https://github.com/scagogogo/cvss)** for the latest updates
+2. **Check the [GitHub Repository](https://github.com/scagogogo/cvss-skills)** for the latest updates
 3. **Contribute** by submitting issues or pull requests
 4. **Join the Community** for discussions and support
 
@@ -405,6 +405,6 @@ After exploring these examples, you can:
 If you need help with any of these examples:
 
 - Check the [API Documentation](/api/) for detailed method descriptions
-- Browse the [GitHub Issues](https://github.com/scagogogo/cvss/issues) for common problems
+- Browse the [GitHub Issues](https://github.com/scagogogo/cvss-skills/issues) for common problems
 - Submit a new issue if you find a bug or need a feature
-- Join our [Community Discussions](https://github.com/scagogogo/cvss/discussions) for general questions
+- Join our [Community Discussions](https://github.com/scagogogo/cvss-skills/discussions) for general questions

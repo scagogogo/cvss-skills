@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/scagogogo/cvss-parser/pkg/cvss"
+	"github.com/scagogogo/cvss-skills/pkg/cvss"
 )
 
 // ParseString 解析 CVSS 3.x 向量字符串为 Cvss3x 对象

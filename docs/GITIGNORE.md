@@ -128,7 +128,7 @@ docs/.gitignore     # Documentation-specific gitignore
 
 ### 8. Project-Specific
 
-#### CVSS Parser Specific
+#### CVSS Skills Specific
 - `examples/output/` - Example program outputs
 - `benchmark-results/` - Benchmark result files
 - `test-vectors/` - Test vector files (if large)

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/scagogogo/cvss-parser/pkg/vector"
+	"github.com/scagogogo/cvss-skills/pkg/vector"
 )
 
 // Calculator CVSS 3.x 评分计算器

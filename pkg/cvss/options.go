@@ -3,7 +3,7 @@ package cvss
 import (
 	"fmt"
 
-	"github.com/scagogogo/cvss-parser/pkg/vector"
+	"github.com/scagogogo/cvss-skills/pkg/vector"
 )
 
 // Option 是 Cvss3x 的 Functional Option 函数类型

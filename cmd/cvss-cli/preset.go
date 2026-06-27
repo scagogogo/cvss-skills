@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/scagogogo/cvss-parser/pkg/cvss"
+	"github.com/scagogogo/cvss-skills/pkg/cvss"
 	"github.com/spf13/cobra"
 )
 

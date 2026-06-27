@@ -1,6 +1,6 @@
 # Performance API Reference
 
-This document provides detailed API reference for performance optimization features in CVSS Parser.
+This document provides detailed API reference for performance optimization features in CVSS Skills.
 
 ## Overview
 

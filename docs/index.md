@@ -2,9 +2,9 @@
 layout: home
 
 hero:
-  name: "CVSS Parser"
-  text: "Go CVSS Parsing Library"
-  tagline: "Powerful, flexible, and easy-to-use CVSS 3.0/3.1 parsing and calculation library"
+  name: "CVSS Skills"
+  text: "Go CVSS Parsing & Scoring Library"
+  tagline: "Powerful, flexible, and easy-to-use CVSS 3.0/3.1 parsing, scoring, and analysis library"
   actions:
     - theme: brand
       text: Get Started
@@ -14,7 +14,7 @@ hero:
       link: /examples/
     - theme: alt
       text: GitHub
-      link: https://github.com/scagogogo/cvss
+      link: https://github.com/scagogogo/cvss-skills
 
 features:
   - icon: 🚀
@@ -40,7 +40,7 @@ features:
 ## Quick Installation
 
 ```bash
-go get github.com/scagogogo/cvss
+go get github.com/scagogogo/cvss-skills
 ```
 
 ## Simple Example
@@ -52,8 +52,8 @@ import (
     "fmt"
     "log"
 
-    "github.com/scagogogo/cvss-parser/pkg/cvss"
-    "github.com/scagogogo/cvss-parser/pkg/parser"
+    "github.com/scagogogo/cvss-skills/pkg/cvss"
+    "github.com/scagogogo/cvss-skills/pkg/parser"
 )
 
 func main() {
@@ -139,20 +139,20 @@ if err != nil {
 
 ## Community and Support
 
-- 📖 [Complete Documentation](https://scagogogo.github.io/cvss/)
-- 🐛 [Issue Tracker](https://github.com/scagogogo/cvss/issues)
-- 💬 [Discussions](https://github.com/scagogogo/cvss/discussions)
+- 📖 [Complete Documentation](https://scagogogo.github.io/cvss-skills/)
+- 🐛 [Issue Tracker](https://github.com/scagogogo/cvss-skills/issues)
+- 💬 [Discussions](https://github.com/scagogogo/cvss-skills/discussions)
 - 📧 [Contact Us](mailto:your-email@example.com)
 
 ---
 
 <div style="text-align: center; margin-top: 2rem;">
   <p>
-    <strong>CVSS Parser</strong> - Making CVSS processing simple and efficient
+    <strong>CVSS Skills</strong> - Making CVSS processing simple and efficient
   </p>
   <p>
     <a href="/api/getting-started">Get Started</a> |
-    <a href="https://github.com/scagogogo/cvss">View Source</a> |
+    <a href="https://github.com/scagogogo/cvss-skills">View Source</a> |
     <a href="/examples/">Browse Examples</a>
   </p>
 </div>

@@ -3,7 +3,7 @@ package parser
 import (
 	"sync"
 
-	cvss "github.com/scagogogo/cvss-parser/pkg/cvss"
+	cvss "github.com/scagogogo/cvss-skills/pkg/cvss"
 )
 
 // BatchParseResult 批量解析结果

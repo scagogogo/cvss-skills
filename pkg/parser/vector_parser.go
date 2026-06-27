@@ -2,7 +2,7 @@ package parser
 
 import (
 	"fmt"
-	"github.com/scagogogo/cvss-parser/pkg/vector"
+	"github.com/scagogogo/cvss-skills/pkg/vector"
 )
 
 var DefaultVectorParser = NewVectorParser()

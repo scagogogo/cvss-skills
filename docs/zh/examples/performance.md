@@ -1,6 +1,6 @@
 # 性能优化
 
-本指南涵盖 CVSS Parser 的高级性能优化技术，包括基准测试、内存管理和并发处理策略。
+本指南涵盖 CVSS Skills 的高级性能优化技术，包括基准测试、内存管理和并发处理策略。
 
 ## 概述
 
@@ -22,8 +22,8 @@ package main
 
 import (
     "testing"
-    "github.com/scagogogo/cvss-parser/pkg/cvss"
-    "github.com/scagogogo/cvss-parser/pkg/parser"
+    "github.com/scagogogo/cvss-skills/pkg/cvss"
+    "github.com/scagogogo/cvss-skills/pkg/parser"
 )
 
 func BenchmarkVectorParsing(b *testing.B) {

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/scagogogo/cvss-parser/pkg/vector"
+	"github.com/scagogogo/cvss-skills/pkg/vector"
 )
 
 // ScoreRange 表示部分向量的评分范围

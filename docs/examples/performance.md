@@ -1,6 +1,6 @@
 # Performance Optimization
 
-This guide covers advanced performance optimization techniques for CVSS Parser, including benchmarking, memory management, and concurrent processing strategies.
+This guide covers advanced performance optimization techniques for CVSS Skills, including benchmarking, memory management, and concurrent processing strategies.
 
 ## Overview
 
@@ -22,8 +22,8 @@ package main
 
 import (
     "testing"
-    "github.com/scagogogo/cvss-parser/pkg/cvss"
-    "github.com/scagogogo/cvss-parser/pkg/parser"
+    "github.com/scagogogo/cvss-skills/pkg/cvss"
+    "github.com/scagogogo/cvss-skills/pkg/parser"
 )
 
 func BenchmarkVectorParsing(b *testing.B) {

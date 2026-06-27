@@ -3,7 +3,7 @@ package cvss
 import (
 	"math"
 
-	"github.com/scagogogo/cvss-parser/pkg/vector"
+	"github.com/scagogogo/cvss-skills/pkg/vector"
 )
 
 // isEnvironmentalMetricsComplete 检查两个向量的环境指标是否完整

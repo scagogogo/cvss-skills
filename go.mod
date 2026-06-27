@@ -1,4 +1,4 @@
-module github.com/scagogogo/cvss-parser
+module github.com/scagogogo/cvss-skills
 
 go 1.18
 

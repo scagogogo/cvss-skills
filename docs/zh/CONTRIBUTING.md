@@ -1,10 +1,10 @@
 # 贡献指南
 
-感谢您对 CVSS Parser 项目的兴趣！本指南将帮助您了解如何为项目做出贡献。
+感谢您对 CVSS Skills 项目的兴趣！本指南将帮助您了解如何为项目做出贡献。
 
 ## 概述
 
-CVSS Parser 是一个用于解析和计算 CVSS 3.x 向量的 Go 库。我们欢迎各种形式的贡献，包括：
+CVSS Skills 是一个用于解析和计算 CVSS 3.x 向量的 Go 库。我们欢迎各种形式的贡献，包括：
 
 - 错误报告
 - 功能请求
@@ -26,13 +26,13 @@ CVSS Parser 是一个用于解析和计算 CVSS 3.x 向量的 Go 库。我们欢
 1. **Fork 仓库**
    ```bash
    # 在 GitHub 上 fork 仓库，然后克隆您的 fork
-   git clone https://github.com/YOUR_USERNAME/cvss-parser.git
-   cd cvss-parser
+   git clone https://github.com/YOUR_USERNAME/cvss-skills.git
+   cd cvss-skills
    ```
 
 2. **添加上游远程**
    ```bash
-   git remote add upstream https://github.com/scagogogo/cvss-parser.git
+   git remote add upstream https://github.com/scagogogo/cvss-skills.git
    ```
 
 3. **安装依赖**
@@ -377,7 +377,7 @@ A: 我们努力在 48 小时内进行初始审查，但复杂的 PR 可能需要
 
 ## 致谢
 
-感谢所有为 CVSS Parser 项目做出贡献的开发者！
+感谢所有为 CVSS Skills 项目做出贡献的开发者！
 
 ## 许可证
 

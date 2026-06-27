@@ -2,9 +2,9 @@
 layout: home
 
 hero:
-  name: "CVSS 解析器"
-  text: "Go 语言 CVSS 解析库"
-  tagline: 强大、灵活、易用的 CVSS 3.0/3.1 解析和计算库
+  name: "CVSS Skills"
+  text: "Go 语言 CVSS 解析与评分库"
+  tagline: 强大、灵活、易用的 CVSS 3.0/3.1 解析、评分和分析库
   actions:
     - theme: brand
       text: 快速开始
@@ -14,7 +14,7 @@ hero:
       link: /zh/examples/
     - theme: alt
       text: GitHub
-      link: https://github.com/scagogogo/cvss
+      link: https://github.com/scagogogo/cvss-skills
 
 features:
   - icon: 🚀
@@ -45,7 +45,7 @@ features:
 ## 快速安装
 
 ```bash
-go get github.com/scagogogo/cvss
+go get github.com/scagogogo/cvss-skills
 ```
 
 ## 简单示例
@@ -57,8 +57,8 @@ import (
     "fmt"
     "log"
 
-    "github.com/scagogogo/cvss-parser/pkg/cvss"
-    "github.com/scagogogo/cvss-parser/pkg/parser"
+    "github.com/scagogogo/cvss-skills/pkg/cvss"
+    "github.com/scagogogo/cvss-skills/pkg/parser"
 )
 
 func main() {
@@ -144,20 +144,20 @@ if err != nil {
 
 ## 社区和支持
 
-- 📖 [完整文档](https://scagogogo.github.io/cvss/)
-- 🐛 [问题反馈](https://github.com/scagogogo/cvss/issues)
-- 💬 [讨论区](https://github.com/scagogogo/cvss/discussions)
+- 📖 [完整文档](https://scagogogo.github.io/cvss-skills/)
+- 🐛 [问题反馈](https://github.com/scagogogo/cvss-skills/issues)
+- 💬 [讨论区](https://github.com/scagogogo/cvss-skills/discussions)
 - 📧 [联系我们](mailto:your-email@example.com)
 
 ---
 
 <div style="text-align: center; margin-top: 2rem;">
   <p>
-    <strong>CVSS 解析器</strong> - 让 CVSS 处理变得简单高效
+    <strong>CVSS Skills</strong> - 让 CVSS 处理变得简单高效
   </p>
   <p>
     <a href="/zh/api/getting-started">立即开始</a> |
-    <a href="https://github.com/scagogogo/cvss">查看源码</a> |
+    <a href="https://github.com/scagogogo/cvss-skills">查看源码</a> |
     <a href="/zh/examples/">浏览示例</a>
   </p>
 </div>

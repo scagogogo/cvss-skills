@@ -3,7 +3,7 @@ package cvss
 import (
 	"fmt"
 
-	"github.com/scagogogo/cvss-parser/pkg/vector"
+	"github.com/scagogogo/cvss-skills/pkg/vector"
 )
 
 // MetricInfo 表示一个指标的完整信息（所有可选值）

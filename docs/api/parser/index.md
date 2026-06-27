@@ -5,7 +5,7 @@ The `parser` package is responsible for parsing CVSS vector strings into structu
 ## Package Overview
 
 ```go
-import "github.com/scagogogo/cvss-parser/pkg/parser"
+import "github.com/scagogogo/cvss-skills/pkg/parser"
 ```
 
 ## Main Types
@@ -26,7 +26,7 @@ import (
     "fmt"
     "log"
     
-    "github.com/scagogogo/cvss-parser/pkg/parser"
+    "github.com/scagogogo/cvss-skills/pkg/parser"
 )
 
 func main() {

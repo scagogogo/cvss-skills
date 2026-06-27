@@ -37,7 +37,7 @@ mkdir -p .claude/commands
 
 ## Project Overview
 
-This is `github.com/scagogogo/cvss-parser`, a Go library for parsing, calculating, and processing CVSS (Common Vulnerability Scoring System) v3.0 and v3.1 vector strings.
+This is `github.com/scagogogo/cvss-skills`, a Go library for parsing, calculating, and processing CVSS (Common Vulnerability Scoring System) v3.0 and v3.1 vector strings.
 
 ## Architecture
 
@@ -126,7 +126,7 @@ CVSS Vector: $ARGUMENTS
 
 Generate a Go program that:
 
-1. Imports `github.com/scagogogo/cvss-parser/pkg/parser` and `github.com/scagogogo/cvss-parser/pkg/cvss`
+1. Imports `github.com/scagogogo/cvss-skills/pkg/parser` and `github.com/scagogogo/cvss-skills/pkg/cvss`
 2. Parses the vector string using `parser.NewCvss3xParser(vectorString).Parse()`
 3. Prints each metric's short name, short value, long name, long value, and numeric score
 4. Calculates the base/temporal/environmental score using `cvss.NewCalculator(cvss3x).Calculate()`
@@ -140,8 +140,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/scagogogo/cvss-parser/pkg/cvss"
-	"github.com/scagogogo/cvss-parser/pkg/parser"
+	"github.com/scagogogo/cvss-skills/pkg/cvss"
+	"github.com/scagogogo/cvss-skills/pkg/parser"
 )
 
 func main() {
@@ -201,8 +201,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/scagogogo/cvss-parser/pkg/cvss"
-	"github.com/scagogogo/cvss-parser/pkg/parser"
+	"github.com/scagogogo/cvss-skills/pkg/cvss"
+	"github.com/scagogogo/cvss-skills/pkg/parser"
 )
 
 func main() {
@@ -276,8 +276,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/scagogogo/cvss-parser/pkg/cvss"
-	"github.com/scagogogo/cvss-parser/pkg/parser"
+	"github.com/scagogogo/cvss-skills/pkg/cvss"
+	"github.com/scagogogo/cvss-skills/pkg/parser"
 )
 
 func main() {
@@ -368,8 +368,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/scagogogo/cvss-parser/pkg/cvss"
-	"github.com/scagogogo/cvss-parser/pkg/parser"
+	"github.com/scagogogo/cvss-skills/pkg/cvss"
+	"github.com/scagogogo/cvss-skills/pkg/parser"
 )
 
 func main() {
@@ -444,7 +444,7 @@ First, check the existing examples in the `examples/` directory for reference pa
 Generate a complete Go program that:
 
 1. Has a `package main` and `func main()`
-2. Imports the correct packages from `github.com/scagogogo/cvss-parser/pkg/...`
+2. Imports the correct packages from `github.com/scagogogo/cvss-skills/pkg/...`
 3. Includes helpful comments explaining each step
 4. Uses realistic CVSS vector strings
 5. Handles errors properly

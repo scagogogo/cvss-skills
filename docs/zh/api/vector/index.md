@@ -5,7 +5,7 @@
 ## 包概述
 
 ```go
-import "github.com/scagogogo/cvss-parser/pkg/vector"
+import "github.com/scagogogo/cvss-skills/pkg/vector"
 ```
 
 ## 核心接口

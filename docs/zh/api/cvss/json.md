@@ -1,6 +1,6 @@
 # JSON 支持
 
-CVSS Parser 提供全面的 JSON 序列化和反序列化支持，便于数据存储、传输和与其他系统集成。
+CVSS Skills 提供全面的 JSON 序列化和反序列化支持，便于数据存储、传输和与其他系统集成。
 
 ## 概述
 
@@ -150,8 +150,8 @@ import (
     "fmt"
     "log"
 
-    "github.com/scagogogo/cvss-parser/pkg/cvss"
-    "github.com/scagogogo/cvss-parser/pkg/parser"
+    "github.com/scagogogo/cvss-skills/pkg/cvss"
+    "github.com/scagogogo/cvss-skills/pkg/parser"
 )
 
 func main() {

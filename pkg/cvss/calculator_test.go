@@ -3,7 +3,7 @@ package cvss
 import (
 	"testing"
 
-	"github.com/scagogogo/cvss-parser/pkg/vector"
+	"github.com/scagogogo/cvss-skills/pkg/vector"
 )
 
 func TestCalculateEnvironmentalScore(t *testing.T) {

@@ -3,7 +3,7 @@ package cvss
 import (
 	"fmt"
 
-	"github.com/scagogogo/cvss-parser/pkg/vector"
+	"github.com/scagogogo/cvss-skills/pkg/vector"
 )
 
 // Version 返回 CVSS 版本字符串，如 "3.0" 或 "3.1"

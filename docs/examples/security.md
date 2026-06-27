@@ -1,6 +1,6 @@
 # Security Examples
 
-This guide demonstrates security best practices and patterns when using CVSS Parser in security-sensitive environments.
+This guide demonstrates security best practices and patterns when using CVSS Skills in security-sensitive environments.
 
 ## Overview
 

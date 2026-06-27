@@ -1,8 +1,8 @@
 package mock
 
 import (
-	"github.com/scagogogo/cvss-parser/pkg/cvss"
-	"github.com/scagogogo/cvss-parser/pkg/vector"
+	"github.com/scagogogo/cvss-skills/pkg/cvss"
+	"github.com/scagogogo/cvss-skills/pkg/vector"
 )
 
 // CriticalCvss31 返回一个 CVSS 3.1 Critical 级别的预设向量

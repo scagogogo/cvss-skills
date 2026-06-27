@@ -1,6 +1,6 @@
 # 监控和告警
 
-本指南涵盖生产环境中 CVSS Parser 的全面监控、告警和可观测性策略。
+本指南涵盖生产环境中 CVSS Skills 的全面监控、告警和可观测性策略。
 
 ## 概述
 
@@ -170,7 +170,7 @@ func (l *Logger) LogError(ctx context.Context, err error, vector string) {
 <filter cvss.service>
   @type record_transformer
   <record>
-    service cvss-parser
+    service cvss-skills
     environment ${ENV}
     version ${VERSION}
   </record>
@@ -198,7 +198,7 @@ groups:
     for: 2m
     labels:
       severity: warning
-      service: cvss-parser
+      service: cvss-skills
     annotations:
       summary: "CVSS 处理中的高错误率"
       description: "错误率为每秒 {{ $value }} 个错误"
@@ -208,7 +208,7 @@ groups:
     for: 5m
     labels:
       severity: warning
-      service: cvss-parser
+      service: cvss-skills
     annotations:
       summary: "CVSS 处理中的高延迟"
       description: "95% 延迟为 {{ $value }} 秒"
@@ -218,7 +218,7 @@ groups:
     for: 1m
     labels:
       severity: critical
-      service: cvss-parser
+      service: cvss-skills
     annotations:
       summary: "CVSS 服务宕机"
       description: "CVSS 服务已宕机超过 1 分钟"
@@ -228,7 +228,7 @@ groups:
     for: 5m
     labels:
       severity: warning
-      service: cvss-parser
+      service: cvss-skills
     annotations:
       summary: "CVSS 服务中的高内存使用"
       description: "内存使用为 {{ $value | humanizeBytes }}"
@@ -238,7 +238,7 @@ groups:
     for: 10m
     labels:
       severity: warning
-      service: cvss-parser
+      service: cvss-skills
     annotations:
       summary: "高缓存未命中率"
       description: "缓存未命中率为 {{ $value | humanizePercentage }}"
@@ -262,7 +262,7 @@ route:
       severity: critical
     receiver: 'critical-alerts'
   - match:
-      service: cvss-parser
+      service: cvss-skills
     receiver: 'cvss-team'
 
 receivers:
@@ -297,7 +297,7 @@ receivers:
 ```json
 {
   "dashboard": {
-    "title": "CVSS Parser 监控",
+    "title": "CVSS Skills 监控",
     "panels": [
       {
         "title": "请求速率",
@@ -462,7 +462,7 @@ func initTracing() {
         trace.WithBatcher(exporter),
         trace.WithResource(resource.NewWithAttributes(
             semconv.SchemaURL,
-            semconv.ServiceNameKey.String("cvss-parser"),
+            semconv.ServiceNameKey.String("cvss-skills"),
             semconv.ServiceVersionKey.String(version.Get()),
         )),
     )
@@ -472,7 +472,7 @@ func initTracing() {
 }
 
 func (s *CVSSService) ProcessVectorWithTracing(ctx context.Context, vectorStr string) (*VectorResult, error) {
-    tracer := otel.Tracer("cvss-parser")
+    tracer := otel.Tracer("cvss-skills")
     ctx, span := tracer.Start(ctx, "process_vector")
     defer span.End()
     

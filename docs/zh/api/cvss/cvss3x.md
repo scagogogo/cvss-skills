@@ -1,6 +1,6 @@
 # Cvss3x 数据结构
 
-`Cvss3x` 是 CVSS Parser 中表示 CVSS 3.x 向量的核心数据结构。它包含了完整的 CVSS 向量信息，包括版本、基础指标、时间指标和环境指标。
+`Cvss3x` 是 CVSS Skills 中表示 CVSS 3.x 向量的核心数据结构。它包含了完整的 CVSS 向量信息，包括版本、基础指标、时间指标和环境指标。
 
 ## 结构定义
 
@@ -266,8 +266,8 @@ import (
     "fmt"
     "log"
     
-    "github.com/scagogogo/cvss-parser/pkg/cvss"
-    "github.com/scagogogo/cvss-parser/pkg/vector"
+    "github.com/scagogogo/cvss-skills/pkg/cvss"
+    "github.com/scagogogo/cvss-skills/pkg/vector"
 )
 
 func main() {

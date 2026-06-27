@@ -1,6 +1,6 @@
 # Edge Cases Examples
 
-This example demonstrates how to handle edge cases, error conditions, and complex scenarios when working with CVSS Parser.
+This example demonstrates how to handle edge cases, error conditions, and complex scenarios when working with CVSS Skills.
 
 ## Overview
 
@@ -24,7 +24,7 @@ import (
     "fmt"
     "strings"
 
-    "github.com/scagogogo/cvss-parser/pkg/parser"
+    "github.com/scagogogo/cvss-skills/pkg/parser"
 )
 
 func main() {

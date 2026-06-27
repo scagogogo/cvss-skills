@@ -3,7 +3,7 @@ package cvss
 import (
 	"fmt"
 
-	"github.com/scagogogo/cvss-parser/pkg/vector"
+	"github.com/scagogogo/cvss-skills/pkg/vector"
 )
 
 // Cvss3xBuilder 提供 Fluent API 构建 Cvss3x 对象

@@ -3,7 +3,7 @@ package cvss
 import (
 	"math"
 
-	"github.com/scagogogo/cvss-parser/pkg/vector"
+	"github.com/scagogogo/cvss-skills/pkg/vector"
 )
 
 // DistanceCalculator 计算两个CVSS向量之间的距离

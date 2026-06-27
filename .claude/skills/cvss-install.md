@@ -52,7 +52,7 @@ Move-Item cvss.exe C:\Users\YourUser\bin\
 ### Install with Go
 
 ```bash
-go install github.com/scagogogo/cvss-parser/cmd/cvss-cli@latest
+go install github.com/scagogogo/cvss-skills/cmd/cvss-cli@latest
 ```
 
 This installs the `cvss-cli` binary to `$GOPATH/bin`. You may need to rename it:
@@ -76,15 +76,15 @@ cvss score "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
 ### Add as Dependency
 
 ```bash
-go get github.com/scagogogo/cvss-parser@latest
+go get github.com/scagogogo/cvss-skills@latest
 ```
 
 ### Import in Go Code
 
 ```go
 import (
-    "github.com/scagogogo/cvss-parser/pkg/cvss"
-    "github.com/scagogogo/cvss-parser/pkg/parser"
+    "github.com/scagogogo/cvss-skills/pkg/cvss"
+    "github.com/scagogogo/cvss-skills/pkg/parser"
 )
 ```
 

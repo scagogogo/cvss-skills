@@ -483,8 +483,8 @@ import (
 	"fmt"
 	"math/rand"
 
-	"github.com/scagogogo/cvss-parser/pkg/cvss"
-	"github.com/scagogogo/cvss-parser/pkg/vector"
+	"github.com/scagogogo/cvss-skills/pkg/cvss"
+	"github.com/scagogogo/cvss-skills/pkg/vector"
 )
 
 // RandomCvss3x 生成一个随机的 CVSS 3.x 对象（仅包含基础指标）

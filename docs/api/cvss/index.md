@@ -1,11 +1,11 @@
 # cvss Package
 
-The `cvss` package is the core package of CVSS Parser, providing data structures, score calculation, and analysis functions for CVSS 3.x vectors.
+The `cvss` package is the core package of CVSS Skills, providing data structures, score calculation, and analysis functions for CVSS 3.x vectors.
 
 ## Package Overview
 
 ```go
-import "github.com/scagogogo/cvss-parser/pkg/cvss"
+import "github.com/scagogogo/cvss-skills/pkg/cvss"
 ```
 
 ## Main Types

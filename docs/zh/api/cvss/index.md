@@ -1,11 +1,11 @@
 # cvss 包
 
-`cvss` 包是 CVSS Parser 的核心包，提供了 CVSS 3.x 向量的数据结构、评分计算和分析功能。
+`cvss` 包是 CVSS Skills 的核心包，提供了 CVSS 3.x 向量的数据结构、评分计算和分析功能。
 
 ## 包概述
 
 ```go
-import "github.com/scagogogo/cvss-parser/pkg/cvss"
+import "github.com/scagogogo/cvss-skills/pkg/cvss"
 ```
 
 ## 主要类型

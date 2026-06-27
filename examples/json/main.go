@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/scagogogo/cvss-parser/pkg/parser"
+	"github.com/scagogogo/cvss-skills/pkg/parser"
 )
 
 func main() {

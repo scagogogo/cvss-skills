@@ -1,10 +1,10 @@
 # API Reference
 
-CVSS Parser provides a complete set of Go language APIs for parsing, calculating, and processing CVSS (Common Vulnerability Scoring System) vectors.
+CVSS Skills provides a complete set of Go language APIs for parsing, calculating, and processing CVSS (Common Vulnerability Scoring System) vectors.
 
 ## Package Structure
 
-CVSS Parser contains three main packages:
+CVSS Skills contains three main packages:
 
 ### 📦 [cvss](/api/cvss/)
 Core package containing CVSS data structures, score calculators, and distance calculation functionality.
@@ -55,8 +55,8 @@ import (
     "fmt"
     "log"
 
-    "github.com/scagogogo/cvss-parser/pkg/cvss"
-    "github.com/scagogogo/cvss-parser/pkg/parser"
+    "github.com/scagogogo/cvss-skills/pkg/cvss"
+    "github.com/scagogogo/cvss-skills/pkg/parser"
 )
 
 func main() {
@@ -147,7 +147,7 @@ if err != nil {
 
 ## Version Compatibility
 
-| CVSS Parser Version | CVSS Specification Support | Go Version Requirement |
+| CVSS Skills Version | CVSS Specification Support | Go Version Requirement |
 |---------------------|----------------------------|------------------------|
 | v1.x | CVSS 3.0, 3.1 | Go 1.19+ |
 | v2.x | CVSS 3.0, 3.1, 4.0 | Go 1.21+ |
@@ -202,5 +202,5 @@ If you encounter issues while using the API:
 
 1. Check the [FAQ](/api/faq)
 2. Browse [Example Code](/examples/)
-3. Submit issues on [GitHub](https://github.com/scagogogo/cvss/issues)
-4. Join [Community Discussions](https://github.com/scagogogo/cvss/discussions)
+3. Submit issues on [GitHub](https://github.com/scagogogo/cvss-skills/issues)
+4. Join [Community Discussions](https://github.com/scagogogo/cvss-skills/discussions)

@@ -1,6 +1,6 @@
 # Monitoring and Alerting
 
-This guide covers comprehensive monitoring, alerting, and observability strategies for CVSS Parser in production environments.
+This guide covers comprehensive monitoring, alerting, and observability strategies for CVSS Skills in production environments.
 
 ## Overview
 
@@ -170,7 +170,7 @@ func (l *Logger) LogError(ctx context.Context, err error, vector string) {
 <filter cvss.service>
   @type record_transformer
   <record>
-    service cvss-parser
+    service cvss-skills
     environment ${ENV}
     version ${VERSION}
   </record>
@@ -198,7 +198,7 @@ groups:
     for: 2m
     labels:
       severity: warning
-      service: cvss-parser
+      service: cvss-skills
     annotations:
       summary: "High error rate in CVSS processing"
       description: "Error rate is {{ $value }} errors per second"
@@ -208,7 +208,7 @@ groups:
     for: 5m
     labels:
       severity: warning
-      service: cvss-parser
+      service: cvss-skills
     annotations:
       summary: "High latency in CVSS processing"
       description: "95th percentile latency is {{ $value }} seconds"
@@ -218,7 +218,7 @@ groups:
     for: 1m
     labels:
       severity: critical
-      service: cvss-parser
+      service: cvss-skills
     annotations:
       summary: "CVSS service is down"
       description: "CVSS service has been down for more than 1 minute"
@@ -228,7 +228,7 @@ groups:
     for: 5m
     labels:
       severity: warning
-      service: cvss-parser
+      service: cvss-skills
     annotations:
       summary: "High memory usage in CVSS service"
       description: "Memory usage is {{ $value | humanizeBytes }}"
@@ -238,7 +238,7 @@ groups:
     for: 10m
     labels:
       severity: warning
-      service: cvss-parser
+      service: cvss-skills
     annotations:
       summary: "High cache miss rate"
       description: "Cache miss rate is {{ $value | humanizePercentage }}"
@@ -262,7 +262,7 @@ route:
       severity: critical
     receiver: 'critical-alerts'
   - match:
-      service: cvss-parser
+      service: cvss-skills
     receiver: 'cvss-team'
 
 receivers:
@@ -297,7 +297,7 @@ receivers:
 ```json
 {
   "dashboard": {
-    "title": "CVSS Parser Monitoring",
+    "title": "CVSS Skills Monitoring",
     "panels": [
       {
         "title": "Request Rate",
@@ -462,7 +462,7 @@ func initTracing() {
         trace.WithBatcher(exporter),
         trace.WithResource(resource.NewWithAttributes(
             semconv.SchemaURL,
-            semconv.ServiceNameKey.String("cvss-parser"),
+            semconv.ServiceNameKey.String("cvss-skills"),
             semconv.ServiceVersionKey.String(version.Get()),
         )),
     )
@@ -472,7 +472,7 @@ func initTracing() {
 }
 
 func (s *CVSSService) ProcessVectorWithTracing(ctx context.Context, vectorStr string) (*VectorResult, error) {
-    tracer := otel.Tracer("cvss-parser")
+    tracer := otel.Tracer("cvss-skills")
     ctx, span := tracer.Start(ctx, "process_vector")
     defer span.End()
     

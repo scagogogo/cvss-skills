@@ -1,10 +1,10 @@
 # Production Deployment
 
-This guide covers enterprise deployment patterns, configuration management, and production best practices for CVSS Parser.
+This guide covers enterprise deployment patterns, configuration management, and production best practices for CVSS Skills.
 
 ## Overview
 
-Deploying CVSS Parser in production environments requires careful consideration of:
+Deploying CVSS Skills in production environments requires careful consideration of:
 
 - Scalability and performance
 - Security and compliance

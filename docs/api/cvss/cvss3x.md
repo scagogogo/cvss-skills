@@ -1,6 +1,6 @@
 # Cvss3x Data Structure
 
-The `Cvss3x` struct is the core data structure in CVSS Parser, representing a complete CVSS 3.x vector with all its metrics and metadata.
+The `Cvss3x` struct is the core data structure in CVSS Skills, representing a complete CVSS 3.x vector with all its metrics and metadata.
 
 ## Type Definition
 
@@ -233,8 +233,8 @@ package main
 import (
     "fmt"
     
-    "github.com/scagogogo/cvss-parser/pkg/cvss"
-    "github.com/scagogogo/cvss-parser/pkg/vector"
+    "github.com/scagogogo/cvss-skills/pkg/cvss"
+    "github.com/scagogogo/cvss-skills/pkg/vector"
 )
 
 func main() {

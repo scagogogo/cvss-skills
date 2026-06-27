@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/scagogogo/cvss-parser/pkg/parser"
+	"github.com/scagogogo/cvss-skills/pkg/parser"
 	"github.com/spf13/cobra"
 )
 
