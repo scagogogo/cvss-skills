@@ -112,6 +112,10 @@ docs/pnpm-lock.yaml
 docs/.temp/
 docs/.cache/
 
+# React 官网构建输出
+website/dist/
+website/node_modules/
+
 # 性能分析文件
 *.pprof
 cpu.prof

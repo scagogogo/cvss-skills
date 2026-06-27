@@ -3,7 +3,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: 'CVSS Skills',
   description: 'Go CVSS Parsing & Scoring Library - Complete API Documentation',
-  base: '/cvss-skills/',
+  base: '/cvss-skills/docs/',
   ignoreDeadLinks: true,
 
   // 国际化配置

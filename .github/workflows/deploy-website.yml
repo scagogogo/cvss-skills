@@ -1,66 +1,76 @@
-name: Deploy Documentation
+name: Deploy Website
 
 on:
   push:
     branches:
       - main
     paths:
+      - 'website/**'
       - 'docs/**'
-      - '.github/workflows/docs.yml'
+      - '.github/workflows/deploy-website.yml'
   pull_request:
     branches:
       - main
     paths:
+      - 'website/**'
       - 'docs/**'
 
-# 设置权限以允许部署到 GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# 只允许一个并发部署，跳过正在进行的运行之间排队的运行。
-# 但是，不要取消正在进行的运行，因为我们希望让这些生产部署完成。
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
-  # 构建作业
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # 如果未启用 lastUpdated，则不需要
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
           cache: npm
-          cache-dependency-path: docs/package-lock.json
+          cache-dependency-path: |
+            website/package-lock.json
+            docs/package-lock.json
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      - name: Install dependencies
-        run: |
-          cd docs
-          npm ci
+      # Build the React website (root path)
+      - name: Install website dependencies
+        run: cd website && npm ci
 
-      - name: Build with VitePress
+      - name: Build website
+        run: cd website && npm run build
+
+      # Build the VitePress API docs (/docs subpath)
+      - name: Install docs dependencies
+        run: cd docs && npm ci
+
+      - name: Build API docs
+        run: cd docs && npm run docs:build
+
+      # Merge both into a single deployment directory
+      - name: Assemble deployment
         run: |
-          cd docs
-          npm run docs:build
+          mkdir -p deploy
+          # React website goes to root
+          cp -r website/dist/* deploy/
+          # VitePress API docs go to /docs subpath
+          cp -r docs/.vitepress/dist deploy/docs
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: docs/.vitepress/dist
+          path: deploy
 
-  # 部署作业
   deploy:
     if: github.ref == 'refs/heads/main'
     environment:
