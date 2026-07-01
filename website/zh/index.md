@@ -75,7 +75,7 @@ flowchart TB
 
     Skills --> CLI
     MCP --> CLI
-    CLI --> SDK
+    CLI --> Parser
     SDK --> Parser
     Parser --> Vector
     Vector --> CVSS

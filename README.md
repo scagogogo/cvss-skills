@@ -69,7 +69,7 @@ flowchart TB
     end
     Skills --> CLI
     MCP --> CLI
-    CLI --> SDK
+    CLI --> Parser
     SDK --> Parser --> Vector --> CVSS --> Result(["Score · Severity · JSON"])
 ```
 
