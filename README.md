@@ -78,7 +78,7 @@ The canonical pipeline — from a raw vector string to a score and severity:
 ```mermaid
 flowchart LR
     A["CVSS:3.1/AV:N/..."] --> B{Parse}
-    B -->|error| E1["ParseError"]
+    B -->|error| E1["error<br/>(invalid magic head,<br/>malformed vector, …)"]
     B -->|ok| C["Cvss3x struct"]
     C --> D{Validate}
     D -->|missing metric| E2["ValidationErrors"]
@@ -112,7 +112,7 @@ flowchart LR
 claude mcp add --scope user cvss-skills -- https://github.com/scagogogo/cvss-skills
 ```
 
-This enables **9 CVSS skills** inside Claude Code: `/cvss-parse`, `/cvss-score`, `/cvss-validate`, `/cvss-construct`, `/cvss-compare`, `/cvss-metrics`, `/cvss-serialize`, `/cvss-advanced`, `/cvss-install`.
+This enables **9 CVSS skills** inside Claude Code — each a markdown instruction file under `.claude/skills/` that tells Claude which `cvss` CLI command to run: `cvss-parse`, `cvss-score`, `cvss-validate`, `cvss-construct`, `cvss-compare`, `cvss-metrics`, `cvss-serialize`, `cvss-advanced`, `cvss-install`. Ask in natural language ("score this vector: …") and Claude picks the right skill automatically.
 
 <details>
 <summary>Manual installation</summary>

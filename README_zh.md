@@ -84,7 +84,7 @@ flowchart TB
 ```mermaid
 flowchart LR
     A["CVSS:3.1/AV:N/..."] --> B{解析}
-    B -->|错误| E1["ParseError"]
+    B -->|错误| E1["error<br/>（非法头部、<br/>畸形向量等）"]
     B -->|成功| C["Cvss3x 结构体"]
     C --> D{校验}
     D -->|指标缺失| E2["ValidationErrors"]
@@ -120,19 +120,21 @@ flowchart LR
 claude mcp add --scope user cvss-skills -- https://github.com/scagogogo/cvss-skills
 ```
 
-启用 **9 个 CVSS 技能**：
+启用 **9 个 CVSS 技能** —— 每个是 `.claude/skills/` 下的一个 markdown 指导文件，告诉 Claude 应运行哪条 `cvss` CLI 命令：
 
 | 技能 | 说明 |
 |------|------|
-| `/cvss-parse` | 解析 CVSS v3.0/v3.1 向量字符串 |
-| `/cvss-score` | 计算基础/时间/环境评分 |
-| `/cvss-validate` | 验证向量完整性和正确性 |
-| `/cvss-construct` | 使用 Builder API 构建向量 |
-| `/cvss-compare` | 差异对比、合并和距离计算 |
-| `/cvss-metrics` | 枚举和查看指标定义 |
-| `/cvss-serialize` | JSON/文本序列化与反序列化 |
-| `/cvss-advanced` | 敏感度分析、评分范围、预设向量 |
-| `/cvss-install` | 安装 CLI 工具和 Go SDK 依赖 |
+| `cvss-parse` | 解析 CVSS v3.0/v3.1 向量字符串 |
+| `cvss-score` | 计算基础/时间/环境评分 |
+| `cvss-validate` | 验证向量完整性和正确性 |
+| `cvss-construct` | 使用 Builder API 构建向量 |
+| `cvss-compare` | 差异对比、合并和距离计算 |
+| `cvss-metrics` | 枚举和查看指标定义 |
+| `cvss-serialize` | JSON/文本序列化与反序列化 |
+| `cvss-advanced` | 敏感度分析、评分范围、预设向量 |
+| `cvss-install` | 安装 CLI 工具和 Go SDK 依赖 |
+
+用自然语言提问（如「给这个向量评分：…」），Claude 会自动选用正确的技能。
 
 <details>
 <summary>手动安装</summary>
