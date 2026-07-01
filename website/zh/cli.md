@@ -110,6 +110,10 @@ mindmap
 cvss score "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H" --format json | jq .score
 ```
 
+::: tip 脚本化约定
+`--format json` 是稳定、机器可读的接口 —— 在脚本中应优先使用它，而不要解析给人看的输出。命令在解析/校验失败时返回非零退出码，因此你可以直接用 `cvss validate "<向量>" && …` 做门控，无需检查 stdout。
+:::
+
 ### 用管道组合命令
 
 由于每条命令都是「读入向量、输出 JSON」，命令可以干净地串联，用于批量定级：

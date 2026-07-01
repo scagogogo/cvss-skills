@@ -53,6 +53,17 @@ sequenceDiagram
 | 💻       | **CLI**                    | Scripting, batch processing, quick lookups  | See [Downloads](/downloads/)                                               |
 | 🔌       | **MCP**                    | AI agent integration via Model Context      | Add this repo as an MCP server from any MCP-compatible client               |
 
+::: details When each surface fits — and when it doesn't
+| Surface     | Reach for it when…                                              | Look elsewhere when…                                             |
+| ----------- | -------------------------------------------------------------- | --------------------------------------------------------------- |
+| **Skills**  | You're already in Claude Code and want natural-language analysis | You need reproducible output in a script → use the **CLI**      |
+| **Go SDK**  | You're building a Go service and want compile-time type safety  | You're not writing Go → use the **CLI** or **MCP**              |
+| **CLI**     | You want pipeable, JSON-emitting commands in shell or CI         | You need in-process access to intermediate structs → **Go SDK** |
+| **MCP**     | Your agent (Claude Desktop, Continue, custom) speaks MCP         | You're in Claude Code specifically → **Skills** is more direct  |
+
+All four share the same scoring core, so results are identical across surfaces — the choice is purely about ergonomics.
+:::
+
 ## 1. Claude Code Skills
 
 One command enables **9 CVSS skills** inside Claude Code:
@@ -112,6 +123,10 @@ func main() {
 ```
 
 Full API reference: [API Docs](/docs/api/).
+
+::: tip Prefer `ParseAndScore` for the common path
+`parser.ParseAndScore` collapses parse → validate → calculate into one call. Drop down to `parser.ParseString` + `cvss.NewCalculator` only when you need the intermediate `Cvss3x` struct (e.g. to inspect individual metrics or diff two vectors).
+:::
 
 ## 3. CLI
 

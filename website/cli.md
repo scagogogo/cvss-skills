@@ -110,6 +110,10 @@ Every command accepts `--format json` for machine-readable output — ideal for 
 cvss score "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H" --format json | jq .score
 ```
 
+::: tip Scripting contract
+`--format json` is the stable, machine-readable interface — prefer it over parsing human output in scripts. Commands exit non-zero on parse/validation failure, so you can gate on `cvss validate "<vector>" && …` without inspecting stdout.
+:::
+
 ### Composing commands in a pipeline
 
 Because every command reads a vector and writes JSON, commands chain cleanly for batch triage:
