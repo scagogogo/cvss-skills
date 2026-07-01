@@ -6,7 +6,7 @@ all: build
 # 编译
 build:
 	@echo "Building cvss-cli..."
-	@go build -o bin/cvss-cli cmd/cvss-cli/main.go
+	@go build -o bin/cvss-cli ./cmd/cvss-cli/
 
 # 运行测试
 test:

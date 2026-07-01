@@ -84,10 +84,11 @@ cd cvss-skills
 go build -o cvss ./cmd/cvss-cli/
 ```
 
-或使用提供的 Makefile：
+或使用提供的 Makefile（产出 `bin/cvss-cli`）：
 
 ```bash
 make build
+./bin/cvss-cli --version
 ```
 
 ## 预编译二进制矩阵

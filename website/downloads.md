@@ -84,10 +84,11 @@ cd cvss-skills
 go build -o cvss ./cmd/cvss-cli/
 ```
 
-Or use the provided Makefile:
+Or use the provided Makefile (produces `bin/cvss-cli`):
 
 ```bash
 make build
+./bin/cvss-cli --version
 ```
 
 ## Pre-built Binary Matrix
