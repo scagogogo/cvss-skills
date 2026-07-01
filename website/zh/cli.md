@@ -116,15 +116,22 @@ cvss score "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H" --format json | jq .sc
 
 ### 用管道组合命令
 
-由于每条命令都是「读入向量、输出 JSON」，命令可以干净地串联，用于批量定级：
+`--format json` 让命令逐行输出 JSON 对象，因此 `cvss batch` 可直接管道传入 `jq`，用于批量定级：
 
 ```mermaid
 flowchart LR
-    F[("vectors.txt")] --> B["cvss batch"]
-    B -->|"--format json"| S["cvss sort<br/>按评分降序"]
-    S --> J["jq '.[] | select(.score >= 9.0)'"]
+    F[("vectors.txt")] --> B["cvss batch score<br/>--format json"]
+    B -->|"逐行 JSON"| J["jq 'select(.score >= 9.0)'"]
     J --> Out(["仅保留严重漏洞"])
 
     classDef io fill:#f9f0ff,stroke:#722ed1,color:#391085;
     class F,Out io;
 ```
+
+```bash
+cvss batch score --format json vectors.txt | jq 'select(.score >= 9.0)'
+```
+
+::: tip `cvss sort` 读入的是向量，不是 JSON
+`cvss sort` 接收纯文本向量文件（每行一个向量），输出 `评分  向量` 文本 —— 它**不**消费 `--format json` 的输出。要排序向量，请直接喂原始文本文件：`cvss sort vectors.txt`。
+:::

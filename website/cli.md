@@ -116,15 +116,22 @@ cvss score "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H" --format json | jq .sc
 
 ### Composing commands in a pipeline
 
-Because every command reads a vector and writes JSON, commands chain cleanly for batch triage:
+`--format json` makes commands emit line-delimited JSON objects, so `cvss batch` pipes cleanly into `jq` for batch triage:
 
 ```mermaid
 flowchart LR
-    F[("vectors.txt")] --> B["cvss batch"]
-    B -->|"--format json"| S["cvss sort<br/>by score desc"]
-    S --> J["jq '.[] | select(.score >= 9.0)'"]
+    F[("vectors.txt")] --> B["cvss batch score<br/>--format json"]
+    B -->|"line-delimited JSON"| J["jq 'select(.score >= 9.0)'"]
     J --> Out(["Critical vulns only"])
 
     classDef io fill:#f9f0ff,stroke:#722ed1,color:#391085;
     class F,Out io;
 ```
+
+```bash
+cvss batch score --format json vectors.txt | jq 'select(.score >= 9.0)'
+```
+
+::: tip `cvss sort` reads vectors, not JSON
+`cvss sort` takes a plain text file of vector strings (one per line) and prints `score  vector` lines — it does **not** consume `--format json` output. To rank vectors, feed it the raw text file: `cvss sort vectors.txt`.
+:::
