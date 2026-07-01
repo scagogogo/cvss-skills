@@ -372,30 +372,30 @@ cv.SameSeverity(other)       // 基于严重性等级的比较
 | `cvss score` | 计算 CVSS 评分 | `cvss score "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"` |
 | `cvss parse` | 解析向量字符串 | `cvss parse "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"` |
 | `cvss validate` | 验证向量字符串 | `cvss validate "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"` |
-| `cvss build` | 通过指标标志构建向量 | `cvss build --av N --ac L --pr N --ui N --s U --c H --i H --a H` |
+| `cvss build` | 通过指标标志构建向量 | `cvss build --AV N --AC L --PR N --UI N --S U --C H --I H --A H` |
 | `cvss describe` | 人类可读的描述 | `cvss describe "CVSS:3.1/..."` |
 | `cvss diff` | 比较两个向量 | `cvss diff "CVSS:3.1/..." "CVSS:3.1/..."` |
 | `cvss merge` | 合并两个向量 | `cvss merge "CVSS:3.1/..." "CVSS:3.1/..."` |
 | `cvss distance` | 计算距离度量 | `cvss distance "CVSS:3.1/..." "CVSS:3.1/..."` |
 | `cvss analyze` | 影响/敏感度分析 | `cvss analyze "CVSS:3.1/..."` |
 | `cvss range` | 部分向量的评分范围 | `cvss range "CVSS:3.1/AV:N"` |
-| `cvss preset` | 生成预设向量 | `cvss preset critical-network` |
-| `cvss random` | 生成随机向量 | `cvss random --version 3.1` |
+| `cvss preset` | 生成预设向量 | `cvss preset critical` |
+| `cvss random` | 生成随机向量 | `cvss random --cvss-version 3.1` |
 | `cvss json` | JSON 序列化 | `cvss json "CVSS:3.1/..."` |
-| `cvss csv` | CSV 文件读写 | `cvss csv input.csv --output results.csv` |
-| `cvss batch` | 批量操作 | `cvss batch --file vectors.txt` |
-| `cvss severity` | 获取严重性评级 | `cvss severity "CVSS:3.1/..."` |
+| `cvss csv` | CSV 读写（子命令） | `cvss csv read input.csv` |
+| `cvss batch` | 批量评分/校验（子命令） | `cvss batch score vectors.txt` |
+| `cvss severity` | 由分数得严重性等级 | `cvss severity 9.8` |
 | `cvss sort` | 按评分排序向量 | `cvss sort file.csv` |
 | `cvss canonicalize` | 规范化向量格式 | `cvss canonicalize "CVSS:3.1/..."` |
 | `cvss convert` | 版本转换 | `cvss convert "CVSS:3.0/..." --to 3.1` |
-| `cvss enumerate` | 枚举指标值 | `cvss enumerate AV` |
+| `cvss enumerate` | 列出某指标的合法取值 | `cvss enumerate --metric AV` |
 | `cvss equal` | 比较两个向量 | `cvss equal "CVSS:3.1/..." "CVSS:3.1/..."` |
-| `cvss get` | 获取指定指标值 | `cvss get AV "CVSS:3.1/..."` |
-| `cvss groups` | 显示指标分组 | `cvss groups` |
-| `cvss map` | 映射/变换向量 | `cvss map --preset high-severity` |
-| `cvss modify` | 修改指标值 | `cvss modify AV L "CVSS:3.1/..."` |
+| `cvss get` | 获取单个指标值 | `cvss get "CVSS:3.1/..." AV` |
+| `cvss groups` | 按分组显示指标 | `cvss groups "CVSS:3.1/..."` |
+| `cvss map` | 输出向量为 key=value | `cvss map "CVSS:3.1/..."` |
+| `cvss modify` | 修改指标（用标志） | `cvss modify "CVSS:3.1/..." --AV L` |
 | `cvss strip` | 移除时间/环境指标 | `cvss strip "CVSS:3.1/..."` |
-| `cvss subs` | 显示指标替代关系 | `cvss subs` |
+| `cvss subs` | 显示影响/可利用子分数 | `cvss subs "CVSS:3.1/..."` |
 
 所有命令均支持 `--format json` 输出结构化数据。运行 `cvss --help` 查看完整列表。
 
