@@ -83,7 +83,7 @@ export default withMermaid(defineConfig({
     },
   },
 
-  // Mermaid 全局配置：跟随 VitePress 明暗主题
+  // Mermaid 全局配置：固定 default 主题（暗色模式下图例仍为浅色配色）
   mermaid: {
     theme: 'default',
   },
