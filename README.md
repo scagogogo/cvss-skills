@@ -83,7 +83,7 @@ flowchart LR
     C --> D{Validate}
     D -->|missing metric| E2["ValidationErrors"]
     D -->|complete| F["Calculator"]
-    F --> G["Base / Temporal / Environmental"]
+    F --> G["Overall score<br/>(base / temporal /<br/>environmental, as present)"]
     G --> H["GetSeverity()"]
     H --> K(["9.8 · Critical"])
 ```

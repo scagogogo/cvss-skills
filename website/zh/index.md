@@ -99,10 +99,8 @@ flowchart LR
     C --> D{校验}
     D -->|指标缺失/非法| E2["ValidationErrors"]
     D -->|完整| F["计算器"]
-    F --> G["基础评分"]
-    F --> H["时间评分"]
-    F --> I["环境评分"]
-    G --> J["GetSeverity()"]
+    F --> O["整体评分<br/>（基础 → 时间 →<br/>环境，按存在者）"]
+    O --> J["GetSeverity()"]
     J --> K(["9.8 · Critical"])
 
     classDef err fill:#fff1f0,stroke:#ff4d4f,color:#a8071a;

@@ -99,10 +99,8 @@ flowchart LR
     C --> D{Validate}
     D -->|missing/invalid metric| E2["ValidationErrors"]
     D -->|complete| F["Calculator"]
-    F --> G["Base Score"]
-    F --> H["Temporal Score"]
-    F --> I["Environmental Score"]
-    G --> J["GetSeverity()"]
+    F --> O["Overall score<br/>(base → temporal →<br/>environmental, as present)"]
+    O --> J["GetSeverity()"]
     J --> K(["9.8 · Critical"])
 
     classDef err fill:#fff1f0,stroke:#ff4d4f,color:#a8071a;

@@ -89,7 +89,7 @@ flowchart LR
     C --> D{校验}
     D -->|指标缺失| E2["ValidationErrors"]
     D -->|完整| F["计算器"]
-    F --> G["基础 / 时间 / 环境"]
+    F --> G["整体评分<br/>（基础 / 时间 /<br/>环境，按存在者）"]
     G --> H["GetSeverity()"]
     H --> K(["9.8 · Critical"])
 ```
