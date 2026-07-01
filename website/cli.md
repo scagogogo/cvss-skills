@@ -51,7 +51,7 @@ mindmap
       equal
     Transform
       modify
-      strip
+      base-only
       convert
       map
     Inspect Metrics
@@ -98,7 +98,7 @@ mindmap
 | `cvss groups`       | Show metrics by group        | `cvss groups "CVSS:3.1/..."`                                           |
 | `cvss map`          | Output vector as key=value   | `cvss map "CVSS:3.1/..."`                                              |
 | `cvss modify`       | Modify metrics (via flags)   | `cvss modify "CVSS:3.1/..." --AV L`                                    |
-| `cvss strip`        | Strip temporal/env metrics   | `cvss strip "CVSS:3.1/..."`                                            |
+| `cvss base-only`    | Strip temporal/env metrics   | `cvss base-only "CVSS:3.1/..."` (`strip` alias)                        |
 | `cvss subs`         | Show Impact/Exploitability   | `cvss subs "CVSS:3.1/..."`                                             |
 
 Run `cvss --help` for the full list and `cvss <command> --help` for per-command options.

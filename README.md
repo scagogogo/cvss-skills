@@ -377,7 +377,7 @@ cv.SameSeverity(other)  // severity-based comparison
 | `cvss groups` | Show metrics by group | `cvss groups "CVSS:3.1/..."` |
 | `cvss map` | Output vector as key=value | `cvss map "CVSS:3.1/..."` |
 | `cvss modify` | Modify metrics (via flags) | `cvss modify "CVSS:3.1/..." --AV L` |
-| `cvss strip` | Strip temporal/env metrics | `cvss strip "CVSS:3.1/..."` |
+| `cvss base-only` | Strip temporal/env metrics (`strip` alias) | `cvss base-only "CVSS:3.1/..."` |
 | `cvss subs` | Show Impact/Exploitability sub-scores | `cvss subs "CVSS:3.1/..."` |
 
 ---

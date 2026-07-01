@@ -395,7 +395,7 @@ cv.SameSeverity(other)       // 基于严重性等级的比较
 | `cvss groups` | 按分组显示指标 | `cvss groups "CVSS:3.1/..."` |
 | `cvss map` | 输出向量为 key=value | `cvss map "CVSS:3.1/..."` |
 | `cvss modify` | 修改指标（用标志） | `cvss modify "CVSS:3.1/..." --AV L` |
-| `cvss strip` | 移除时间/环境指标 | `cvss strip "CVSS:3.1/..."` |
+| `cvss base-only` | 移除时间/环境指标（别名 `strip`） | `cvss base-only "CVSS:3.1/..."` |
 | `cvss subs` | 显示影响/可利用子分数 | `cvss subs "CVSS:3.1/..."` |
 
 所有命令均支持 `--format json` 输出结构化数据。运行 `cvss --help` 查看完整列表。

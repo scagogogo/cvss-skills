@@ -51,7 +51,7 @@ mindmap
       equal
     变换
       modify
-      strip
+      base-only
       convert
       map
     检视指标
@@ -98,7 +98,7 @@ mindmap
 | `cvss groups`       | 按分组显示指标       | `cvss groups "CVSS:3.1/..."`                                           |
 | `cvss map`          | 输出向量为 key=value | `cvss map "CVSS:3.1/..."`                                              |
 | `cvss modify`       | 修改指标（用标志）   | `cvss modify "CVSS:3.1/..." --AV L`                                    |
-| `cvss strip`        | 剥离时间/环境指标    | `cvss strip "CVSS:3.1/..."`                                            |
+| `cvss base-only`    | 剥离时间/环境指标    | `cvss base-only "CVSS:3.1/..."`（别名 `strip`）                       |
 | `cvss subs`         | 显示影响/可利用子分数| `cvss subs "CVSS:3.1/..."`                                             |
 
 运行 `cvss --help` 查看完整列表，`cvss <命令> --help` 查看单命令选项。
