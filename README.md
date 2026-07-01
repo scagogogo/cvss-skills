@@ -166,7 +166,9 @@ func main() {
 
 ```bash
 # Install a pre-built binary (auto-detects OS/arch)
-curl -sL https://github.com/scagogogo/cvss-skills/releases/latest/download/cvss-skills_$(uname -s | tr A-Z a-z)_$(uname -m).tar.gz | tar xz
+os=$(uname -s | tr '[:upper:]' '[:lower:]'); arch=$(uname -m)
+case "$arch" in arm64) arch=aarch64 ;; amd64) arch=x86_64 ;; esac
+curl -sL "https://github.com/scagogogo/cvss-skills/releases/latest/download/cvss-skills_${os}_${arch}.tar.gz" | tar xz
 sudo mv cvss /usr/local/bin/
 
 # Or install with Go

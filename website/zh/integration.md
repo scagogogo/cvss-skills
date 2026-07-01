@@ -1,3 +1,8 @@
+---
+title: 集成方式
+description: 对比使用 CVSS Skills 的四种方式 —— Claude Code Skills、Go SDK、CLI 与 MCP 服务器，并用决策树帮你为工作流选择合适的接入面。
+---
+
 # 集成方式
 
 CVSS Skills 提供 **四种**集成方式，按你的工作流选择。

@@ -185,9 +185,11 @@ func main() {
 ### 3. CLI — 30+ 命令
 
 ```bash
-# 从 GitHub Release 安装
-curl -sL https://github.com/scagogogo/cvss-skills/releases/latest/download/cvss-skills_$(uname -s | tr A-Z a-z)_$(uname -m).tar.gz | tar xz
-mv cvss /usr/local/bin/
+# 从 GitHub Release 安装（自动识别系统/架构）
+os=$(uname -s | tr '[:upper:]' '[:lower:]'); arch=$(uname -m)
+case "$arch" in arm64) arch=aarch64 ;; amd64) arch=x86_64 ;; esac
+curl -sL "https://github.com/scagogogo/cvss-skills/releases/latest/download/cvss-skills_${os}_${arch}.tar.gz" | tar xz
+sudo mv cvss /usr/local/bin/
 
 # 或使用 Go 安装
 go install github.com/scagogogo/cvss-skills/cmd/cvss-cli@latest

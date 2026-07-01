@@ -1,3 +1,8 @@
+---
+title: Integration Methods
+description: Compare the four ways to use CVSS Skills — Claude Code Skills, Go SDK, CLI, and MCP server — with a decision tree to pick the right surface for your workflow.
+---
+
 # Integration Methods
 
 CVSS Skills is available through **four** integration methods. Pick the one that fits your workflow.

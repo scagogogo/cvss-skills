@@ -1,3 +1,8 @@
+---
+title: CLI Reference
+description: Complete reference for the cvss command-line tool — 30+ commands for parsing, scoring, validating, comparing, and analyzing CVSS v3.0/v3.1 vectors, all with JSON output.
+---
+
 # CLI Reference
 
 The `cvss` CLI provides **30+ commands** for parsing, scoring, validating, comparing, and analyzing CVSS vectors. Every command supports `--format json` for structured output.
@@ -7,7 +12,9 @@ The `cvss` CLI provides **30+ commands** for parsing, scoring, validating, compa
 ::: code-group
 
 ```bash [curl (pre-built binary)]
-curl -sL https://github.com/scagogogo/cvss-skills/releases/latest/download/cvss-skills_$(uname -s | tr A-Z a-z)_$(uname -m).tar.gz | tar xz
+os=$(uname -s | tr '[:upper:]' '[:lower:]'); arch=$(uname -m)
+case "$arch" in arm64) arch=aarch64 ;; amd64) arch=x86_64 ;; esac
+curl -sL "https://github.com/scagogogo/cvss-skills/releases/latest/download/cvss-skills_${os}_${arch}.tar.gz" | tar xz
 sudo mv cvss /usr/local/bin/
 ```
 

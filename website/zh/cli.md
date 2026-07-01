@@ -1,3 +1,8 @@
+---
+title: 命令行参考
+description: cvss 命令行工具完整参考 —— 30+ 命令，用于解析、评分、校验、比较与分析 CVSS v3.0/v3.1 向量，全部支持 JSON 输出。
+---
+
 # 命令行参考
 
 `cvss` CLI 提供 **30+ 命令**，用于解析、评分、校验、比较与分析 CVSS 向量。每条命令均支持 `--format json` 以输出结构化数据。
@@ -7,7 +12,9 @@
 ::: code-group
 
 ```bash [curl（预编译二进制）]
-curl -sL https://github.com/scagogogo/cvss-skills/releases/latest/download/cvss-skills_$(uname -s | tr A-Z a-z)_$(uname -m).tar.gz | tar xz
+os=$(uname -s | tr '[:upper:]' '[:lower:]'); arch=$(uname -m)
+case "$arch" in arm64) arch=aarch64 ;; amd64) arch=x86_64 ;; esac
+curl -sL "https://github.com/scagogogo/cvss-skills/releases/latest/download/cvss-skills_${os}_${arch}.tar.gz" | tar xz
 sudo mv cvss /usr/local/bin/
 ```
 

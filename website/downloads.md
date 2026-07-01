@@ -1,3 +1,8 @@
+---
+title: Downloads
+description: Pre-built cvss binaries for Linux, macOS, Windows, and BSD across 30+ architecture packages, plus one-line install, go install, source build, and checksum verification.
+---
+
 # Downloads
 
 Pre-built binaries are published with every [GitHub Release](https://github.com/scagogogo/cvss-skills/releases). They cover **6 operating systems across many architectures** (30+ packages total), built by GoReleaser via GitHub Actions.
@@ -28,14 +33,33 @@ flowchart LR
 
 ## One-Line Install (Linux / macOS)
 
-Auto-detects your OS and architecture:
+Auto-detects your OS and architecture, normalizing the `uname` output to match the archive naming convention:
 
 ```bash
-curl -sL https://github.com/scagogogo/cvss-skills/releases/latest/download/cvss-skills_$(uname -s | tr A-Z a-z)_$(uname -m).tar.gz | tar xz
+os=$(uname -s | tr '[:upper:]' '[:lower:]')
+arch=$(uname -m)
+case "$arch" in
+  arm64)  arch=aarch64 ;;   # macOS Apple Silicon reports arm64
+  amd64)  arch=x86_64  ;;   # FreeBSD reports amd64
+esac
+curl -sL "https://github.com/scagogogo/cvss-skills/releases/latest/download/cvss-skills_${os}_${arch}.tar.gz" | tar xz
 sudo mv cvss /usr/local/bin/
 ```
 
-> `uname -m` returns `x86_64` or `aarch64`, which matches the archive naming convention below.
+::: warning Don't use a bare `uname -m` in the URL
+The release archives use `x86_64` / `aarch64`, but `uname -m` reports **`arm64`** on Apple Silicon Macs and **`amd64`** on FreeBSD. Piping `uname -m` straight into the URL 404s on those platforms — the `case` block above normalizes it.
+:::
+
+### Architecture name aliases
+
+The archive names use the following canonical arch labels. If you know your platform's Go arch (`GOARCH`) or `uname -m` output, map it here:
+
+| Archive label | `GOARCH` | `uname -m` (typical)      |
+| ------------- | -------- | ------------------------- |
+| `x86_64`      | `amd64`  | `x86_64` (Linux/macOS), `amd64` (FreeBSD) |
+| `aarch64`     | `arm64`  | `aarch64` (Linux), `arm64` (macOS) |
+| `i386`        | `386`    | `i686` / `i386`           |
+| `armv6/v7`    | `arm`    | `armv6l` / `armv7l`       |
 
 ## Install via Go
 
@@ -119,3 +143,21 @@ Every release ships a `checksums.txt` (SHA256). Verify a download:
 curl -sL https://github.com/scagogogo/cvss-skills/releases/latest/download/checksums.txt | grep linux_x86_64
 sha256sum cvss-skills_latest_linux_x86_64.tar.gz
 ```
+
+::: tip Compare the two hashes
+The value printed by `sha256sum` must match the one in `checksums.txt` character-for-character. A mismatch means the download was corrupted or tampered with — delete it and re-download.
+:::
+
+::: details Windows / macOS checksum commands
+On Windows PowerShell:
+
+```powershell
+Get-FileHash .\cvss-skills_latest_windows_x86_64.zip -Algorithm SHA256
+```
+
+On macOS (uses `shasum` instead of `sha256sum`):
+
+```bash
+shasum -a 256 cvss-skills_latest_darwin_aarch64.tar.gz
+```
+:::
