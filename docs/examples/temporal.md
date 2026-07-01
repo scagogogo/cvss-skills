@@ -12,6 +12,31 @@ Temporal metrics allow you to adjust CVSS scores based on:
 
 These metrics help provide more accurate risk assessment by considering the current threat landscape.
 
+## How Temporal Metrics Evolve
+
+The three temporal metrics track a vulnerability's lifecycle. As an exploit matures and a fix ships, the temporal score moves — always **≤ the base score**:
+
+```mermaid
+stateDiagram-v2
+    [*] --> Disclosed
+    Disclosed --> PoC: exploit appears (E:P)
+    PoC --> Functional: reliable exploit (E:F)
+    Functional --> Weaponized: mass exploitation (E:H)
+
+    Disclosed --> Workaround: mitigation (RL:W)
+    Workaround --> TempFix: temporary fix (RL:T)
+    TempFix --> Patched: official fix (RL:O)
+    Patched --> [*]
+
+    note right of Weaponized
+        E raises the temporal score
+        toward the base score
+    end note
+    note right of Patched
+        RL:O lowers the temporal score
+    end note
+```
+
 ## Basic Temporal Metrics
 
 ### Understanding Temporal Metrics

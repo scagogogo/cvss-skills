@@ -2,6 +2,20 @@
 
 This guide will help you get started with CVSS Skills in 5 minutes.
 
+## The 3-Step Mental Model
+
+Almost every program follows the same three steps: **parse → calculate → interpret**.
+
+```mermaid
+flowchart LR
+    A["1 · Parse<br/>NewCvss3xParser().Parse()"] --> B["2 · Calculate<br/>NewCalculator().Calculate()"]
+    B --> C["3 · Interpret<br/>GetSeverityRating(score)"]
+    C --> R(["9.8 → Critical"])
+
+    classDef step fill:#e6f4ff,stroke:#1677ff,color:#003a8c;
+    class A,B,C step;
+```
+
 ## Installation
 
 Install CVSS Skills using Go modules:

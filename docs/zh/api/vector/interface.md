@@ -2,6 +2,38 @@
 
 `Vector` 接口是 CVSS Skills 中所有指标的统一抽象，定义了指标的基本行为和属性。
 
+## 类型层次
+
+每个具体指标（如 `AttackVectorNetwork`）都实现同一个 `Vector` 接口，因此评分与格式化代码可以统一对待所有指标：
+
+```mermaid
+classDiagram
+    class Vector {
+        <<interface>>
+        +GetGroupName() string
+        +GetShortName() string
+        +GetLongName() string
+        +GetShortValue() rune
+        +GetLongValue() string
+        +GetDescription() string
+        +GetScore() float64
+        +String() string
+    }
+    class AttackVectorNetwork
+    class AttackComplexityLow
+    class ScopeChanged
+    class ConfidentialityHigh
+    class ExploitCodeMaturity
+    class ModifiedAttackVector
+
+    Vector <|.. AttackVectorNetwork : 基础
+    Vector <|.. AttackComplexityLow : 基础
+    Vector <|.. ScopeChanged : 基础
+    Vector <|.. ConfidentialityHigh : 基础
+    Vector <|.. ExploitCodeMaturity : 时间
+    Vector <|.. ModifiedAttackVector : 环境
+```
+
 ## 接口定义
 
 ```go

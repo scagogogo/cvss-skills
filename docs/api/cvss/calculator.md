@@ -2,6 +2,55 @@
 
 The `Calculator` is the core component in CVSS Skills for computing CVSS scores. It provides complete CVSS 3.x score calculation functionality, including base score, temporal score, and environmental score.
 
+## How `Calculate()` Chooses a Score
+
+`Calculate()` inspects which metric groups are present and returns the most specific score available — environmental > temporal > base:
+
+```mermaid
+flowchart TD
+    Start(["Calculate()"]) --> Q1{Has environmental<br/>metrics?}
+    Q1 -->|Yes| Env["CalculateEnvironmentalScore()"]
+    Q1 -->|No| Q2{Has temporal<br/>metrics?}
+    Q2 -->|Yes| Temp["CalculateTemporalScore()"]
+    Q2 -->|No| Base["CalculateBaseScore()"]
+    Env --> R(["final score 0.0–10.0"])
+    Temp --> R
+    Base --> R
+
+    classDef pick fill:#f6ffed,stroke:#52c41a,color:#135200;
+    class Env,Temp,Base pick;
+```
+
+## Base Score Formula (CVSS v3.1)
+
+The base score is derived from two sub-scores — Impact and Exploitability — combined differently depending on whether Scope (`S`) changed:
+
+```mermaid
+flowchart TD
+    subgraph Inputs["Base metrics"]
+        AV & AC & PR & UI & S & C & I & A
+    end
+    C & I & A --> ISC["ISC_Base = 1 − (1−C)(1−I)(1−A)"]
+    S --> Scope{Scope changed?}
+    ISC --> Scope
+    Scope -->|Unchanged| ImpU["Impact = 6.42 × ISC"]
+    Scope -->|Changed| ImpC["Impact = 7.52×(ISC−0.029)<br/>− 3.25×(ISC−0.02)^15"]
+    AV & AC & PR & UI --> Expl["Exploitability =<br/>8.22 × AV × AC × PR × UI"]
+    ImpU --> Comb{Combine}
+    ImpC --> Comb
+    Expl --> Comb
+    Comb -->|Impact ≤ 0| Zero["0.0"]
+    Comb -->|Unchanged| RU["roundup(min(Impact+Expl, 10))"]
+    Comb -->|Changed| RC["roundup(min(1.08×(Impact+Expl), 10))"]
+
+    classDef out fill:#fff1f0,stroke:#ff4d4f,color:#a8071a;
+    class Zero,RU,RC out;
+```
+
+::: tip Version-specific quirk
+`PR` and `UI` value weights differ between v3.0 and v3.1 (e.g. `UI:R` = 0.56 in v3.0 vs 0.62 in v3.1). The Calculator is version-aware and applies the correct table automatically based on the parsed `CVSS:3.0` / `CVSS:3.1` prefix.
+:::
+
 ## Interface Definition
 
 ```go

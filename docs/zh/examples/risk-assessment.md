@@ -2,6 +2,28 @@
 
 本指南演示使用 CVSS Skills 进行全面风险评估的方法，包括漏洞优先级排序、风险评分和企业风险管理框架。
 
+## 从 CVSS 评分到业务风险
+
+原始的 CVSS 基础评分只是起点。时间与环境指标对其修正，再结合业务上下文，才能转化为有优先级的行动：
+
+```mermaid
+flowchart LR
+    Base["基础评分<br/>（技术严重性）"] --> Temp["× 时间<br/>（利用成熟度、修复可用性）"]
+    Temp --> Env["× 环境<br/>（资产价值、暴露面）"]
+    Env --> Ctx["+ 业务上下文<br/>（数据敏感度、合规）"]
+    Ctx --> Prio{优先级}
+    Prio -->|"≥ 9.0 且暴露"| P1["P1 · 立即修复"]
+    Prio -->|"7–9"| P2["P2 · 本迭代"]
+    Prio -->|"< 7"| P3["P3 · 待办池"]
+
+    classDef p1 fill:#fff1f0,stroke:#ff4d4f,color:#a8071a;
+    classDef p2 fill:#fff7e6,stroke:#fa8c16,color:#873800;
+    classDef p3 fill:#f6ffed,stroke:#52c41a,color:#135200;
+    class P1 p1;
+    class P2 p2;
+    class P3 p3;
+```
+
 ## 概述
 
 使用 CVSS 进行风险评估包括：

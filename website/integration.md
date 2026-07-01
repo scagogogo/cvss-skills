@@ -4,6 +4,43 @@ CVSS Skills is available through **four** integration methods. Pick the one that
 
 ![Integration Methods](/images/integration-methods.png)
 
+## Which Method Should I Use?
+
+```mermaid
+flowchart TD
+    Start(["I need to work with CVSS vectors"]) --> Q1{In a conversation<br/>with an AI agent?}
+    Q1 -->|Yes, Claude Code| Skills["🤖 Skills<br/>natural-language commands"]
+    Q1 -->|Yes, other client| MCP["🔌 MCP<br/>standard protocol"]
+    Q1 -->|No| Q2{Writing Go code?}
+    Q2 -->|Yes| SDK["📦 Go SDK<br/>full type-safe API"]
+    Q2 -->|No| Q3{Shell scripts<br/>or one-off lookups?}
+    Q3 -->|Yes| CLI["💻 CLI<br/>JSON-friendly commands"]
+    Q3 -->|Just exploring| CLI
+
+    classDef pick fill:#e6f4ff,stroke:#1677ff,color:#003a8c;
+    class Skills,MCP,SDK,CLI pick;
+```
+
+## How the Surfaces Relate
+
+The CLI, Skills, and MCP surfaces all ultimately call the same Go core. Nothing re-implements scoring:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User
+    participant Agent as AI Agent / Shell
+    participant CLI as cvss CLI
+    participant Core as pkg/cvss + pkg/parser
+    User->>Agent: "score CVSS:3.1/AV:N/..."
+    Agent->>CLI: cvss score "<vector>" --format json
+    CLI->>Core: parser.ParseAndScore(vector)
+    Core->>Core: parse → validate → calculate
+    Core-->>CLI: score, severity, err
+    CLI-->>Agent: {"score":9.8,"severity":"Critical"}
+    Agent-->>User: 9.8 (Critical)
+```
+
 |          | Integration                | Best For                                    | Install                                                                     |
 | -------- | -------------------------- | ------------------------------------------- | --------------------------------------------------------------------------- |
 | 🤖       | **Skills** (Claude Code)   | Interactive analysis, natural language      | `claude mcp add --scope user cvss-skills -- https://github.com/scagogogo/cvss-skills` |

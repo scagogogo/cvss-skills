@@ -52,11 +52,107 @@ CVSS is the industry standard for rating vulnerability severity, but working wit
 
 ![Feature Map](/images/feature-map.png)
 
+## Architecture at a Glance
+
+Every integration method — Skills, Go SDK, CLI, and MCP — is a thin surface over the same well-tested core packages. Learn the model once; use it everywhere.
+
+```mermaid
+flowchart TB
+    subgraph Surfaces["Integration Surfaces"]
+        direction LR
+        Skills["🤖 Claude Code Skills"]
+        MCP["🔌 MCP Server"]
+        CLI["💻 CLI (cvss)"]
+        SDK["📦 Go SDK"]
+    end
+
+    subgraph Core["Core Packages"]
+        direction LR
+        Parser["pkg/parser<br/>vector → struct"]
+        CVSS["pkg/cvss<br/>Calculator · Distance · Diff"]
+        Vector["pkg/vector<br/>Vector interface"]
+    end
+
+    Skills --> CLI
+    MCP --> CLI
+    CLI --> SDK
+    SDK --> Parser
+    Parser --> Vector
+    Vector --> CVSS
+    CVSS --> Result(["Score · Severity · JSON"])
+
+    classDef surface fill:#e6f4ff,stroke:#1677ff,color:#003a8c;
+    classDef core fill:#f6ffed,stroke:#52c41a,color:#135200;
+    class Skills,MCP,CLI,SDK surface;
+    class Parser,CVSS,Vector core;
+```
+
+## From Vector String to Score
+
+The canonical pipeline: a raw vector string is parsed into a typed struct, validated, then run through the version-aware calculator to produce a score and severity rating.
+
+```mermaid
+flowchart LR
+    A["CVSS:3.1/AV:N/...<br/>vector string"] --> B{Parse}
+    B -->|syntax error| E1["ParseError"]
+    B -->|ok| C["Cvss3x struct"]
+    C --> D{Validate}
+    D -->|missing/invalid metric| E2["ValidationErrors"]
+    D -->|complete| F["Calculator"]
+    F --> G["Base Score"]
+    F --> H["Temporal Score"]
+    F --> I["Environmental Score"]
+    G --> J["GetSeverity()"]
+    J --> K(["9.8 · Critical"])
+
+    classDef err fill:#fff1f0,stroke:#ff4d4f,color:#a8071a;
+    class E1,E2 err;
+```
+
 ## CVSS Vector Structure
 
 A CVSS vector consists of up to **3 layers** of metrics:
 
 ![Vector Structure](/images/vector-structure.png)
+
+```mermaid
+flowchart TD
+    Prefix["CVSS:3.1"] --> Base
+
+    subgraph Base["Base Metrics — required (all 8)"]
+        direction LR
+        AV["AV<br/>Attack Vector"]
+        AC["AC<br/>Attack Complexity"]
+        PR["PR<br/>Privileges Req."]
+        UI["UI<br/>User Interaction"]
+        S["S<br/>Scope"]
+        C["C<br/>Confidentiality"]
+        I["I<br/>Integrity"]
+        A["A<br/>Availability"]
+    end
+
+    subgraph Temporal["Temporal Metrics — optional"]
+        direction LR
+        E["E<br/>Exploit Maturity"]
+        RL["RL<br/>Remediation Level"]
+        RC["RC<br/>Report Confidence"]
+    end
+
+    subgraph Env["Environmental Metrics — optional"]
+        direction LR
+        CR["CR / IR / AR<br/>Requirements"]
+        M["MAV…MA<br/>Modified Base"]
+    end
+
+    Base --> Temporal --> Env
+
+    classDef base fill:#e6f4ff,stroke:#1677ff,color:#003a8c;
+    classDef temporal fill:#fffbe6,stroke:#faad14,color:#874d00;
+    classDef env fill:#f9f0ff,stroke:#722ed1,color:#391085;
+    class AV,AC,PR,UI,S,C,I,A base;
+    class E,RL,RC temporal;
+    class CR,M env;
+```
 
 ## Severity Scale
 
@@ -69,6 +165,29 @@ A CVSS vector consists of up to **3 layers** of metrics:
 | Medium   | 4.0 – 6.9   | Yellow  |
 | High     | 7.0 – 8.9   | Orange  |
 | Critical | 9.0 – 10.0  | Red     |
+
+A numeric base score maps to exactly one rating band via `GetSeverity()`:
+
+```mermaid
+flowchart LR
+    Score(["Base Score 0.0–10.0"]) --> D{Which band?}
+    D -->|"= 0.0"| N["None"]
+    D -->|"0.1 – 3.9"| L["Low"]
+    D -->|"4.0 – 6.9"| M["Medium"]
+    D -->|"7.0 – 8.9"| H["High"]
+    D -->|"9.0 – 10.0"| Cr["Critical"]
+
+    classDef none fill:#f0f0f0,stroke:#8c8c8c,color:#262626;
+    classDef low fill:#f6ffed,stroke:#52c41a,color:#135200;
+    classDef med fill:#fffbe6,stroke:#faad14,color:#874d00;
+    classDef high fill:#fff7e6,stroke:#fa8c16,color:#873800;
+    classDef crit fill:#fff1f0,stroke:#ff4d4f,color:#a8071a;
+    class N none;
+    class L low;
+    class M med;
+    class H high;
+    class Cr crit;
+```
 
 ## Quick Start
 

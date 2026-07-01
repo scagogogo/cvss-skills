@@ -48,6 +48,46 @@ It is delivered through **4 integration methods**:
 
 ---
 
+## 🏛️ Architecture
+
+Every integration surface is a thin layer over the same well-tested Go core — nothing re-implements scoring:
+
+```mermaid
+flowchart TB
+    subgraph Surfaces["Integration Surfaces"]
+        direction LR
+        Skills["🤖 Claude Code Skills"]
+        MCP["🔌 MCP Server"]
+        CLI["💻 CLI (cvss)"]
+        SDK["📦 Go SDK"]
+    end
+    subgraph Core["Core Packages"]
+        direction LR
+        Parser["pkg/parser"]
+        CVSS["pkg/cvss"]
+        Vector["pkg/vector"]
+    end
+    Skills --> CLI
+    MCP --> CLI
+    CLI --> SDK
+    SDK --> Parser --> Vector --> CVSS --> Result(["Score · Severity · JSON"])
+```
+
+The canonical pipeline — from a raw vector string to a score and severity:
+
+```mermaid
+flowchart LR
+    A["CVSS:3.1/AV:N/..."] --> B{Parse}
+    B -->|error| E1["ParseError"]
+    B -->|ok| C["Cvss3x struct"]
+    C --> D{Validate}
+    D -->|missing metric| E2["ValidationErrors"]
+    D -->|complete| F["Calculator"]
+    F --> G["Base / Temporal / Environmental"]
+    G --> H["GetSeverity()"]
+    H --> K(["9.8 · Critical"])
+```
+
 ## ✨ Feature Map
 
 ![Feature Map](docs/images/feature-map.png)
@@ -207,6 +247,16 @@ A CVSS vector consists of up to **3 layers** of metrics:
 | Medium | 4.0 – 6.9 | Yellow |
 | High | 7.0 – 8.9 | Orange |
 | Critical | 9.0 – 10.0 | Red |
+
+```mermaid
+flowchart LR
+    Score(["Base Score 0.0–10.0"]) --> D{Band?}
+    D -->|"= 0.0"| N["None"]
+    D -->|"0.1–3.9"| L["Low"]
+    D -->|"4.0–6.9"| M["Medium"]
+    D -->|"7.0–8.9"| H["High"]
+    D -->|"9.0–10.0"| Cr["Critical"]
+```
 
 ---
 

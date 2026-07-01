@@ -2,6 +2,30 @@
 
 每次 [GitHub Release](https://github.com/scagogogo/cvss-skills/releases) 均发布预编译二进制，覆盖 **6 系统、多架构**（共 30+ 个包），由 GoReleaser 经 GitHub Actions 构建。
 
+## 发布是如何构建的
+
+推送一个版本标签即自动触发整条发布流水线，无需手工上传：
+
+```mermaid
+flowchart LR
+    Tag(["git tag v0.1.0<br/>git push --tags"]) --> GA["GitHub Actions<br/>release.yml"]
+    GA --> GR["GoReleaser"]
+    GR --> X1["交叉编译<br/>6 系统 × 多架构"]
+    GR --> X2["nfpms<br/>deb · rpm · apk"]
+    GR --> X3["scoops<br/>Windows bucket"]
+    X1 --> Sum["checksums.txt<br/>SHA256"]
+    X1 --> Rel[("GitHub Release<br/>30+ 产物")]
+    X2 --> Rel
+    X3 --> Rel
+    Sum --> Rel
+    Rel --> DL(["curl / go install /<br/>包管理器"])
+
+    classDef trigger fill:#e6f4ff,stroke:#1677ff,color:#003a8c;
+    classDef out fill:#f6ffed,stroke:#52c41a,color:#135200;
+    class Tag trigger;
+    class Rel,DL out;
+```
+
 ## 一行安装（Linux / macOS）
 
 自动检测系统与架构：

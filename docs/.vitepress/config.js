@@ -1,6 +1,8 @@
 import { defineConfig } from 'vitepress'
+import { withMermaid } from 'vitepress-plugin-mermaid'
 
-export default defineConfig({
+// withMermaid 包裹以支持 ```mermaid 代码块渲染类图/时序图/流程图等
+export default withMermaid(defineConfig({
   title: 'CVSS Skills',
   description: 'Go CVSS Parsing & Scoring Library - Complete API Documentation',
   base: '/cvss-skills/docs/',
@@ -284,5 +286,13 @@ export default defineConfig({
     search: {
       provider: 'local'
     }
+  },
+
+  // Mermaid 全局配置
+  mermaid: {
+    theme: 'default'
+  },
+  mermaidPlugin: {
+    class: 'mermaid-diagram'
   }
-})
+}))

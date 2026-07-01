@@ -2,6 +2,28 @@
 
 This guide demonstrates comprehensive risk assessment methodologies using CVSS Skills, including vulnerability prioritization, risk scoring, and enterprise risk management frameworks.
 
+## From CVSS Score to Business Risk
+
+A raw CVSS base score is only the starting point. Temporal and environmental metrics refine it, and business context turns it into a prioritized action:
+
+```mermaid
+flowchart LR
+    Base["Base Score<br/>(technical severity)"] --> Temp["× Temporal<br/>(exploit maturity, fix availability)"]
+    Temp --> Env["× Environmental<br/>(asset value, exposure)"]
+    Env --> Ctx["+ Business context<br/>(data sensitivity, compliance)"]
+    Ctx --> Prio{Priority}
+    Prio -->|"≥ 9.0 & exposed"| P1["P1 · patch now"]
+    Prio -->|"7–9"| P2["P2 · this sprint"]
+    Prio -->|"< 7"| P3["P3 · backlog"]
+
+    classDef p1 fill:#fff1f0,stroke:#ff4d4f,color:#a8071a;
+    classDef p2 fill:#fff7e6,stroke:#fa8c16,color:#873800;
+    classDef p3 fill:#f6ffed,stroke:#52c41a,color:#135200;
+    class P1 p1;
+    class P2 p2;
+    class P3 p3;
+```
+
 ## Overview
 
 Risk assessment with CVSS involves:

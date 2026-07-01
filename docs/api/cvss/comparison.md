@@ -2,6 +2,23 @@
 
 The Vector Comparison API provides methods for comparing CVSS vectors, analyzing similarities, and ranking vulnerabilities based on various criteria.
 
+## Comparison Dimensions
+
+Two vectors can be compared at three levels of granularity — from a single boolean to a full per-metric breakdown:
+
+```mermaid
+flowchart TD
+    Pair["Vector A vs Vector B"] --> L1["Equal()<br/>exact metric match → bool"]
+    Pair --> L2["EqualScore() / SameSeverity()<br/>numeric or band match → bool"]
+    Pair --> L3["Diff()<br/>per-metric list of differences"]
+    Pair --> L4["DistanceCalculator<br/>numeric closeness"]
+
+    L3 --> Out["[{Metric: AV, A: N, B: L}, …]"]
+
+    classDef lvl fill:#e6f4ff,stroke:#1677ff,color:#003a8c;
+    class L1,L2,L3,L4 lvl;
+```
+
 ## Overview
 
 The comparison API enables:

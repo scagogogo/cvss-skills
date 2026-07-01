@@ -2,6 +2,39 @@
 
 CVSS Skills 提供了一套完整的 API 来处理 CVSS (通用漏洞评分系统) 向量。本文档涵盖了所有可用的包、类型和函数。
 
+## 包结构
+
+三个核心包各司其职：`parser` 把字符串解析为 `vector` 类型的结构体，`cvss` 在其上进行运算：
+
+```mermaid
+flowchart LR
+    subgraph parser["📦 pkg/parser"]
+        P["Cvss3xParser"]
+        VP["VectorParser（接口）"]
+    end
+    subgraph vector["📦 pkg/vector"]
+        VI["Vector（接口）"]
+        BM["基础 / 时间 /<br/>环境指标"]
+    end
+    subgraph cvss["📦 pkg/cvss"]
+        C3["Cvss3x"]
+        Calc["Calculator"]
+        Dist["DistanceCalculator"]
+    end
+
+    Str["向量字符串"] --> P
+    P -->|产出| C3
+    C3 -->|实现| VI
+    VI --> BM
+    C3 --> Calc
+    C3 --> Dist
+    Calc --> Score(["评分 + 严重性"])
+    Dist --> D(["距离度量"])
+
+    classDef pkg fill:#e6f4ff,stroke:#1677ff,color:#003a8c;
+    class P,VP,VI,BM,C3,Calc,Dist pkg;
+```
+
 ## 核心包
 
 ### 📦 [cvss 包](/zh/api/cvss/)

@@ -2,6 +2,32 @@
 
 `Cvss3xParser` 是专门用于解析 CVSS 3.x 向量字符串的解析器。它提供了灵活的解析选项、详细的错误处理和高性能的解析能力。
 
+## 解析流程
+
+解析器按 `/` 切分字符串，先读版本前缀，再逐个处理 `KEY:VALUE` 指标段。严格模式决定如何对待未知/缺失指标：
+
+```mermaid
+flowchart TD
+    In["CVSS:3.1/AV:N/AC:L/..."] --> Split["按 '/' 切分"]
+    Split --> Prefix{首段是否为<br/>CVSS:3.0 / 3.1?}
+    Prefix -->|否 & 严格| Err1["ParseError：<br/>缺失/非法前缀"]
+    Prefix -->|否 & 宽松| Assume["假定 3.1，继续"]
+    Prefix -->|是| Loop
+    Assume --> Loop
+    Loop["遍历每个 KEY:VALUE"] --> Known{已知指标<br/>且取值合法?}
+    Known -->|否 & 严格| Err2["ParseError：<br/>位置 + 原因"]
+    Known -->|否 & 宽松| Skip["跳过该段"]
+    Known -->|是| Set["在 Cvss3x 上设置指标"]
+    Skip --> Loop
+    Set --> Loop
+    Loop -->|结束| Complete{allowMissing<br/>或 8 个基础指标齐全?}
+    Complete -->|否| Err3["ValidationErrors：<br/>MissingMetrics()"]
+    Complete -->|是| Ok(["*cvss.Cvss3x"])
+
+    classDef err fill:#fff1f0,stroke:#ff4d4f,color:#a8071a;
+    class Err1,Err2,Err3 err;
+```
+
 ## 类型定义
 
 ```go

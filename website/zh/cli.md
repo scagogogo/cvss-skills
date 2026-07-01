@@ -19,6 +19,48 @@ go install github.com/scagogogo/cvss-skills/cmd/cvss-cli@latest
 
 预编译二进制覆盖 **6 系统 × 8 架构** —— 见[下载](/zh/downloads/)。
 
+## 命令地图
+
+30+ 命令可归为六大功能组：
+
+```mermaid
+mindmap
+  root((cvss CLI))
+    评分与评级
+      score
+      severity
+      describe
+      analyze
+    解析与构建
+      parse
+      build
+      validate
+      canonicalize
+    比较
+      diff
+      merge
+      distance
+      equal
+    变换
+      modify
+      strip
+      convert
+      map
+    检视指标
+      get
+      enumerate
+      groups
+      subs
+    批量与 IO
+      json
+      csv
+      batch
+      sort
+      range
+      preset
+      random
+```
+
 ## 命令
 
 | 命令                | 描述                 | 示例                                                                     |
@@ -59,4 +101,19 @@ go install github.com/scagogogo/cvss-skills/cmd/cvss-cli@latest
 
 ```bash
 cvss score "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H" --format json | jq .score
+```
+
+### 用管道组合命令
+
+由于每条命令都是「读入向量、输出 JSON」，命令可以干净地串联，用于批量定级：
+
+```mermaid
+flowchart LR
+    F[("vectors.txt")] --> B["cvss batch"]
+    B -->|"--format json"| S["cvss sort<br/>按评分降序"]
+    S --> J["jq '.[] | select(.score >= 9.0)'"]
+    J --> Out(["仅保留严重漏洞"])
+
+    classDef io fill:#f9f0ff,stroke:#722ed1,color:#391085;
+    class F,Out io;
 ```

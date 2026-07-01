@@ -2,6 +2,38 @@
 
 The `Vector` interface is the unified abstraction for all metrics in CVSS Skills, defining the basic behavior and properties of metrics.
 
+## Type Hierarchy
+
+Every concrete metric (e.g. `AttackVectorNetwork`) implements the same `Vector` interface, so scoring and formatting code treats all metrics uniformly:
+
+```mermaid
+classDiagram
+    class Vector {
+        <<interface>>
+        +GetGroupName() string
+        +GetShortName() string
+        +GetLongName() string
+        +GetShortValue() rune
+        +GetLongValue() string
+        +GetDescription() string
+        +GetScore() float64
+        +String() string
+    }
+    class AttackVectorNetwork
+    class AttackComplexityLow
+    class ScopeChanged
+    class ConfidentialityHigh
+    class ExploitCodeMaturity
+    class ModifiedAttackVector
+
+    Vector <|.. AttackVectorNetwork : Base
+    Vector <|.. AttackComplexityLow : Base
+    Vector <|.. ScopeChanged : Base
+    Vector <|.. ConfidentialityHigh : Base
+    Vector <|.. ExploitCodeMaturity : Temporal
+    Vector <|.. ModifiedAttackVector : Environmental
+```
+
 ## Interface Definition
 
 ```go

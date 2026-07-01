@@ -19,6 +19,48 @@ go install github.com/scagogogo/cvss-skills/cmd/cvss-cli@latest
 
 Pre-built binaries cover **6 operating systems × 8 architectures** — see [Downloads](/downloads/).
 
+## Command Map
+
+The 30+ commands fall into six functional groups:
+
+```mermaid
+mindmap
+  root((cvss CLI))
+    Score & Rate
+      score
+      severity
+      describe
+      analyze
+    Parse & Build
+      parse
+      build
+      validate
+      canonicalize
+    Compare
+      diff
+      merge
+      distance
+      equal
+    Transform
+      modify
+      strip
+      convert
+      map
+    Inspect Metrics
+      get
+      enumerate
+      groups
+      subs
+    Batch & I/O
+      json
+      csv
+      batch
+      sort
+      range
+      preset
+      random
+```
+
 ## Commands
 
 | Command             | Description                  | Example                                                                  |
@@ -59,4 +101,19 @@ Every command accepts `--format json` for machine-readable output — ideal for 
 
 ```bash
 cvss score "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H" --format json | jq .score
+```
+
+### Composing commands in a pipeline
+
+Because every command reads a vector and writes JSON, commands chain cleanly for batch triage:
+
+```mermaid
+flowchart LR
+    F[("vectors.txt")] --> B["cvss batch"]
+    B -->|"--format json"| S["cvss sort<br/>by score desc"]
+    S --> J["jq '.[] | select(.score >= 9.0)'"]
+    J --> Out(["Critical vulns only"])
+
+    classDef io fill:#f9f0ff,stroke:#722ed1,color:#391085;
+    class F,Out io;
 ```

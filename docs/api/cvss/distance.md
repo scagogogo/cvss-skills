@@ -2,6 +2,30 @@
 
 The `DistanceCalculator` is used to calculate the distance between two CVSS vectors. It supports multiple distance algorithms and can be used for vector similarity analysis and clustering.
 
+## How Distances Are Computed
+
+Both vectors are projected into a numeric feature space (each metric → its score weight), then a chosen metric collapses the two feature vectors into a single number:
+
+```mermaid
+flowchart LR
+    V1["Vector A"] --> F1["feature vector<br/>[AV, AC, PR, …]"]
+    V2["Vector B"] --> F2["feature vector<br/>[AV, AC, PR, …]"]
+    F1 --> M{metric}
+    F2 --> M
+    M --> E["Euclidean<br/>√Σ(aᵢ−bᵢ)²"]
+    M --> Man["Manhattan<br/>Σ|aᵢ−bᵢ|"]
+    M --> Ch["Chebyshev<br/>max|aᵢ−bᵢ|"]
+    M --> Cos["Cosine<br/>A·B / |A||B|"]
+    M --> Jac["Jaccard<br/>|A∩B| / |A∪B|"]
+
+    classDef dist fill:#f9f0ff,stroke:#722ed1,color:#391085;
+    class E,Man,Ch,Cos,Jac dist;
+```
+
+::: tip Distance vs similarity
+Euclidean / Manhattan / Chebyshev return **distances** (0 = identical, larger = more different). Cosine / Jaccard return **similarities** (1 = identical, 0 = disjoint). Pick per use case: clustering favors distances, deduplication favors similarities.
+:::
+
 ## Interface Definition
 
 ```go

@@ -2,6 +2,20 @@
 
 欢迎使用 CVSS Skills！本指南将在 5 分钟内帮你上手这个强大的 CVSS 解析和计算库。
 
+## 三步心智模型
+
+几乎每个程序都遵循同样的三步：**解析 → 计算 → 解读**。
+
+```mermaid
+flowchart LR
+    A["1 · 解析<br/>NewCvss3xParser().Parse()"] --> B["2 · 计算<br/>NewCalculator().Calculate()"]
+    B --> C["3 · 解读<br/>GetSeverityRating(score)"]
+    C --> R(["9.8 → Critical"])
+
+    classDef step fill:#e6f4ff,stroke:#1677ff,color:#003a8c;
+    class A,B,C step;
+```
+
 ## 安装
 
 使用 Go modules 安装 CVSS Skills：

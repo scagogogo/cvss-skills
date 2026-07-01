@@ -2,6 +2,30 @@
 
 Pre-built binaries are published with every [GitHub Release](https://github.com/scagogogo/cvss-skills/releases). They cover **6 operating systems across many architectures** (30+ packages total), built by GoReleaser via GitHub Actions.
 
+## How Releases Are Built
+
+A pushed version tag triggers the entire release pipeline automatically — no manual uploads:
+
+```mermaid
+flowchart LR
+    Tag(["git tag v0.1.0<br/>git push --tags"]) --> GA["GitHub Actions<br/>release.yml"]
+    GA --> GR["GoReleaser"]
+    GR --> X1["cross-compile<br/>6 OS × multi-arch"]
+    GR --> X2["nfpms<br/>deb · rpm · apk"]
+    GR --> X3["scoops<br/>Windows bucket"]
+    X1 --> Sum["checksums.txt<br/>SHA256"]
+    X1 --> Rel[("GitHub Release<br/>30+ assets")]
+    X2 --> Rel
+    X3 --> Rel
+    Sum --> Rel
+    Rel --> DL(["curl / go install /<br/>package manager"])
+
+    classDef trigger fill:#e6f4ff,stroke:#1677ff,color:#003a8c;
+    classDef out fill:#f6ffed,stroke:#52c41a,color:#135200;
+    class Tag trigger;
+    class Rel,DL out;
+```
+
 ## One-Line Install (Linux / macOS)
 
 Auto-detects your OS and architecture:

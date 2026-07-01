@@ -2,6 +2,55 @@
 
 `Calculator` 是 CVSS Skills 中用于计算 CVSS 评分的核心组件。它提供了完整的 CVSS 3.x 评分计算功能，包括基础评分、时间评分和环境评分。
 
+## `Calculate()` 如何选择评分
+
+`Calculate()` 会检查向量包含哪些指标组，返回可用的最具体评分 —— 环境 > 时间 > 基础：
+
+```mermaid
+flowchart TD
+    Start(["Calculate()"]) --> Q1{含环境指标?}
+    Q1 -->|是| Env["CalculateEnvironmentalScore()"]
+    Q1 -->|否| Q2{含时间指标?}
+    Q2 -->|是| Temp["CalculateTemporalScore()"]
+    Q2 -->|否| Base["CalculateBaseScore()"]
+    Env --> R(["最终评分 0.0–10.0"])
+    Temp --> R
+    Base --> R
+
+    classDef pick fill:#f6ffed,stroke:#52c41a,color:#135200;
+    class Env,Temp,Base pick;
+```
+
+## 基础评分公式（CVSS v3.1）
+
+基础评分由两个子分 —— 影响子分（Impact）与可利用性子分（Exploitability）—— 组合而成，组合方式取决于影响范围 `S` 是否变化：
+
+```mermaid
+flowchart TD
+    subgraph Inputs["基础指标"]
+        AV & AC & PR & UI & S & C & I & A
+    end
+    C & I & A --> ISC["ISC_Base = 1 − (1−C)(1−I)(1−A)"]
+    S --> Scope{Scope 是否变化?}
+    ISC --> Scope
+    Scope -->|未变| ImpU["Impact = 6.42 × ISC"]
+    Scope -->|已变| ImpC["Impact = 7.52×(ISC−0.029)<br/>− 3.25×(ISC−0.02)^15"]
+    AV & AC & PR & UI --> Expl["Exploitability =<br/>8.22 × AV × AC × PR × UI"]
+    ImpU --> Comb{组合}
+    ImpC --> Comb
+    Expl --> Comb
+    Comb -->|Impact ≤ 0| Zero["0.0"]
+    Comb -->|未变| RU["roundup(min(Impact+Expl, 10))"]
+    Comb -->|已变| RC["roundup(min(1.08×(Impact+Expl), 10))"]
+
+    classDef out fill:#fff1f0,stroke:#ff4d4f,color:#a8071a;
+    class Zero,RU,RC out;
+```
+
+::: tip 版本差异
+`PR` 与 `UI` 的取值权重在 v3.0 与 v3.1 之间不同（例如 `UI:R` 在 v3.0 为 0.56，v3.1 为 0.62）。计算器具备版本感知能力，会根据解析出的 `CVSS:3.0` / `CVSS:3.1` 前缀自动套用正确的权重表。
+:::
+
 ## 接口定义
 
 ```go

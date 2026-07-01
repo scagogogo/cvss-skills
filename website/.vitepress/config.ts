@@ -1,9 +1,11 @@
 import { defineConfig } from 'vitepress'
+import { withMermaid } from 'vitepress-plugin-mermaid'
 
 // CVSS Skills 官网配置
 // 部署在 GitHub Pages 项目站点根路径: https://scagogogo.github.io/cvss-skills/
 // API 深度文档部署在 /docs 子路径，由 docs/.vitepress 独立构建
-export default defineConfig({
+// withMermaid 包裹以支持 ```mermaid 代码块渲染流程图/时序图/类图等
+export default withMermaid(defineConfig({
   lang: 'en-US',
   title: 'CVSS Skills',
   titleTemplate: false,
@@ -67,7 +69,15 @@ export default defineConfig({
       copyright: 'Copyright © 2024-2026 CVSS Skills',
     },
   },
-})
+
+  // Mermaid 全局配置：跟随 VitePress 明暗主题
+  mermaid: {
+    theme: 'default',
+  },
+  mermaidPlugin: {
+    class: 'mermaid-diagram',
+  },
+}))
 
 function nav() {
   return [

@@ -2,6 +2,53 @@
 
 This guide covers comprehensive error handling patterns, error types, and best practices for robust CVSS Skills applications.
 
+## Error Taxonomy
+
+All errors implement the `CVSSError` interface and carry an `ErrorType`, so a single `switch` can route handling by category:
+
+```mermaid
+flowchart TD
+    E["CVSSError (interface)"] --> T{Type()}
+    T --> V["ErrorTypeValidation<br/>missing/illegal metric"]
+    T --> P["ErrorTypeParsing<br/>malformed vector string"]
+    T --> C["ErrorTypeCalculation<br/>score computation failed"]
+    T --> Cfg["ErrorTypeConfiguration"]
+    T --> N["ErrorTypeNetwork"]
+    T --> To["ErrorTypeTimeout"]
+    T --> I["ErrorTypeInternal"]
+
+    V --> Act1["fix vector / report<br/>MissingMetrics()"]
+    P --> Act2["show position + reason"]
+    C --> Act3["retry / log & abort"]
+
+    classDef err fill:#fff1f0,stroke:#ff4d4f,color:#a8071a;
+    class V,P,C,Cfg,N,To,I err;
+```
+
+## Recommended Handling Flow
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant App
+    participant Parser
+    participant Calc as Calculator
+    App->>Parser: Parse(vector)
+    alt parse fails
+        Parser-->>App: ParseError (position)
+        App->>App: log + return 400
+    else parse ok
+        Parser-->>App: *Cvss3x
+        App->>Calc: Calculate()
+        alt validation fails
+            Calc-->>App: ValidationErrors
+            App->>App: report MissingMetrics()
+        else ok
+            Calc-->>App: score, severity
+        end
+    end
+```
+
 ## Overview
 
 CVSS Skills provides structured error handling with:

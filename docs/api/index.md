@@ -4,7 +4,36 @@ CVSS Skills provides a complete set of Go language APIs for parsing, calculating
 
 ## Package Structure
 
-CVSS Skills contains three main packages:
+CVSS Skills contains three main packages. `parser` turns strings into `vector`-typed structs, and `cvss` operates on them:
+
+```mermaid
+flowchart LR
+    subgraph parser["📦 pkg/parser"]
+        P["Cvss3xParser"]
+        VP["VectorParser (interface)"]
+    end
+    subgraph vector["📦 pkg/vector"]
+        VI["Vector (interface)"]
+        BM["Base / Temporal /<br/>Environmental metrics"]
+    end
+    subgraph cvss["📦 pkg/cvss"]
+        C3["Cvss3x"]
+        Calc["Calculator"]
+        Dist["DistanceCalculator"]
+    end
+
+    Str["vector string"] --> P
+    P -->|produces| C3
+    C3 -->|implements| VI
+    VI --> BM
+    C3 --> Calc
+    C3 --> Dist
+    Calc --> Score(["score + severity"])
+    Dist --> D(["distance metrics"])
+
+    classDef pkg fill:#e6f4ff,stroke:#1677ff,color:#003a8c;
+    class P,VP,VI,BM,C3,Calc,Dist pkg;
+```
 
 ### 📦 [cvss](/api/cvss/)
 Core package containing CVSS data structures, score calculators, and distance calculation functionality.

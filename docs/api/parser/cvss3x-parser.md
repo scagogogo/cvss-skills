@@ -2,6 +2,32 @@
 
 `Cvss3xParser` is a specialized parser for parsing CVSS 3.x vector strings. It provides flexible parsing options, detailed error handling, and high-performance parsing capabilities for both CVSS 3.0 and 3.1 formats.
 
+## Parsing Flow
+
+Parsing splits the string on `/`, reads the version prefix, then walks each `KEY:VALUE` metric segment. Strict mode controls how unknown/missing metrics are treated:
+
+```mermaid
+flowchart TD
+    In["CVSS:3.1/AV:N/AC:L/..."] --> Split["split on '/'"]
+    Split --> Prefix{First segment<br/>= CVSS:3.0 / 3.1?}
+    Prefix -->|No & strict| Err1["ParseError:<br/>missing/invalid prefix"]
+    Prefix -->|No & relaxed| Assume["assume 3.1, continue"]
+    Prefix -->|Yes| Loop
+    Assume --> Loop
+    Loop["for each KEY:VALUE"] --> Known{Known metric<br/>& legal value?}
+    Known -->|No & strict| Err2["ParseError:<br/>position + reason"]
+    Known -->|No & relaxed| Skip["skip segment"]
+    Known -->|Yes| Set["set metric on Cvss3x"]
+    Skip --> Loop
+    Set --> Loop
+    Loop -->|done| Complete{allowMissing<br/>or all 8 base set?}
+    Complete -->|No| Err3["ValidationErrors:<br/>MissingMetrics()"]
+    Complete -->|Yes| Ok(["*cvss.Cvss3x"])
+
+    classDef err fill:#fff1f0,stroke:#ff4d4f,color:#a8071a;
+    class Err1,Err2,Err3 err;
+```
+
 ## Type Definition
 
 ```go
