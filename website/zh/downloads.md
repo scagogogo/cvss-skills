@@ -64,7 +64,7 @@ sudo mv cvss /usr/local/bin/
 | `x86_64`   | `amd64`  | `x86_64`（Linux/macOS）、`amd64`（FreeBSD） |
 | `aarch64`  | `arm64`  | `aarch64`（Linux）、`arm64`（macOS） |
 | `i386`     | `386`    | `i686` / `i386`           |
-| `armv6/v7` | `arm`    | `armv6l` / `armv7l`       |
+| `armv5/v6/v7` | `arm`    | `armv5l` / `armv6l` / `armv7l`       |
 
 ## 通过 Go 安装
 
