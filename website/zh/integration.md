@@ -57,7 +57,7 @@ sequenceDiagram
     participant Core as pkg/cvss + pkg/parser
     User->>Agent: “给 CVSS:3.1/AV:N/... 评分”
     Agent->>CLI: cvss score "<向量>" --format json
-    CLI->>Core: parser.ParseAndScore(向量)
+    CLI->>Core: parser.ParseString → NewCalculator → Calculate
     Core->>Core: 解析 → 校验 → 计算
     Core-->>CLI: score, severity, err
     CLI-->>Agent: {"score":9.8,"severity":"Critical"}

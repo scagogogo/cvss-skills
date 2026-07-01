@@ -39,7 +39,7 @@ sequenceDiagram
     participant Core as pkg/cvss + pkg/parser
     User->>Agent: "score CVSS:3.1/AV:N/..."
     Agent->>CLI: cvss score "<vector>" --format json
-    CLI->>Core: parser.ParseAndScore(vector)
+    CLI->>Core: parser.ParseString → NewCalculator → Calculate
     Core->>Core: parse → validate → calculate
     Core-->>CLI: score, severity, err
     CLI-->>Agent: {"score":9.8,"severity":"Critical"}
