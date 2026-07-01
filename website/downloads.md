@@ -123,13 +123,16 @@ Replace `<version>` with a tag (e.g. `0.1.0`) or use `latest`.
 
 ### BSD (freebsd / netbsd / openbsd)
 
-Each BSD supports: `x86_64`, `aarch64`, `i386`, `armv5`, `armv6`, `armv7`. Example:
+All three BSDs ship the same six architectures. The table below shows the FreeBSD names — swap `freebsd` for `netbsd` or `openbsd` to get the other two.
 
-```bash
-cvss-skills_latest_freebsd_x86_64.tar.gz
-cvss-skills_latest_netbsd_aarch64.tar.gz
-cvss-skills_latest_openbsd_armv7.tar.gz
-```
+| Arch    | Download                                     |
+| ------- | -------------------------------------------- |
+| x86_64  | `cvss-skills_latest_freebsd_x86_64.tar.gz`   |
+| aarch64 | `cvss-skills_latest_freebsd_aarch64.tar.gz`  |
+| i386    | `cvss-skills_latest_freebsd_i386.tar.gz`     |
+| armv5   | `cvss-skills_latest_freebsd_armv5.tar.gz`    |
+| armv6   | `cvss-skills_latest_freebsd_armv6.tar.gz`    |
+| armv7   | `cvss-skills_latest_freebsd_armv7.tar.gz`    |
 
 ## Full URL Template
 

@@ -123,13 +123,16 @@ make build
 
 ### BSD (freebsd / netbsd / openbsd)
 
-各 BSD 支持：`x86_64`、`aarch64`、`i386`、`armv5`、`armv6`、`armv7`。示例：
+三个 BSD 提供完全相同的六种架构。下表以 FreeBSD 命名为例 —— 把 `freebsd` 换成 `netbsd` 或 `openbsd` 即得另外两个。
 
-```bash
-cvss-skills_latest_freebsd_x86_64.tar.gz
-cvss-skills_latest_netbsd_aarch64.tar.gz
-cvss-skills_latest_openbsd_armv7.tar.gz
-```
+| 架构    | 下载                                         |
+| ------- | -------------------------------------------- |
+| x86_64  | `cvss-skills_latest_freebsd_x86_64.tar.gz`   |
+| aarch64 | `cvss-skills_latest_freebsd_aarch64.tar.gz`  |
+| i386    | `cvss-skills_latest_freebsd_i386.tar.gz`     |
+| armv5   | `cvss-skills_latest_freebsd_armv5.tar.gz`    |
+| armv6   | `cvss-skills_latest_freebsd_armv6.tar.gz`    |
+| armv7   | `cvss-skills_latest_freebsd_armv7.tar.gz`    |
 
 ## 完整 URL 模板
 
