@@ -208,7 +208,8 @@ go get github.com/scagogogo/cvss-skills@latest
 ```bash [CLI (curl)]
 os=$(uname -s | tr '[:upper:]' '[:lower:]'); arch=$(uname -m)
 case "$arch" in arm64) arch=aarch64 ;; amd64) arch=x86_64 ;; esac
-curl -sL "https://github.com/scagogogo/cvss-skills/releases/latest/download/cvss-skills_${os}_${arch}.tar.gz" | tar xz
+ver=$(curl -sL https://api.github.com/repos/scagogogo/cvss-skills/releases/latest | sed -nE 's/.*"tag_name":\s*"v?([^"]+)".*/\1/p')
+curl -sL "https://github.com/scagogogo/cvss-skills/releases/download/v${ver}/cvss-skills_${ver}_${os}_${arch}.tar.gz" | tar xz
 sudo mv cvss /usr/local/bin/
 ```
 

@@ -165,10 +165,11 @@ func main() {
 ### 3. CLI — Pre-built Binary or `go install`
 
 ```bash
-# Install a pre-built binary (auto-detects OS/arch)
+# Install a pre-built binary (auto-detects OS/arch, resolves latest version)
 os=$(uname -s | tr '[:upper:]' '[:lower:]'); arch=$(uname -m)
 case "$arch" in arm64) arch=aarch64 ;; amd64) arch=x86_64 ;; esac
-curl -sL "https://github.com/scagogogo/cvss-skills/releases/latest/download/cvss-skills_${os}_${arch}.tar.gz" | tar xz
+ver=$(curl -sL https://api.github.com/repos/scagogogo/cvss-skills/releases/latest | sed -nE 's/.*"tag_name":\s*"v?([^"]+)".*/\1/p')
+curl -sL "https://github.com/scagogogo/cvss-skills/releases/download/v${ver}/cvss-skills_${ver}_${os}_${arch}.tar.gz" | tar xz
 sudo mv cvss /usr/local/bin/
 
 # Or install with Go
@@ -193,10 +194,10 @@ Every [release](https://github.com/scagogogo/cvss-skills/releases/latest) ships 
 cvss-skills_<version>_<os>_<arch>[v<arm>].<tar.gz|zip>
 ```
 
-**URL template** (use `latest` or a tag like `0.1.0`):
+**URL template** (replace `<version>`, e.g. `0.1.0`):
 
 ```
-https://github.com/scagogogo/cvss-skills/releases/latest/download/cvss-skills_<os>_<arch>.<ext>
+https://github.com/scagogogo/cvss-skills/releases/download/v<version>/cvss-skills_<version>_<os>_<arch>.<ext>
 ```
 
 | OS | Architectures |

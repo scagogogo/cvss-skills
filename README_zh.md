@@ -185,10 +185,11 @@ func main() {
 ### 3. CLI — 30+ 命令
 
 ```bash
-# 从 GitHub Release 安装（自动识别系统/架构）
+# 从 GitHub Release 安装（自动识别系统/架构，解析最新版本）
 os=$(uname -s | tr '[:upper:]' '[:lower:]'); arch=$(uname -m)
 case "$arch" in arm64) arch=aarch64 ;; amd64) arch=x86_64 ;; esac
-curl -sL "https://github.com/scagogogo/cvss-skills/releases/latest/download/cvss-skills_${os}_${arch}.tar.gz" | tar xz
+ver=$(curl -sL https://api.github.com/repos/scagogogo/cvss-skills/releases/latest | sed -nE 's/.*"tag_name":\s*"v?([^"]+)".*/\1/p')
+curl -sL "https://github.com/scagogogo/cvss-skills/releases/download/v${ver}/cvss-skills_${ver}_${os}_${arch}.tar.gz" | tar xz
 sudo mv cvss /usr/local/bin/
 
 # 或使用 Go 安装
@@ -213,10 +214,10 @@ cvss score "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
 cvss-skills_<版本>_<系统>_<架构>[v<arm>].<tar.gz|zip>
 ```
 
-**URL 模板**（用 `latest` 或标签如 `0.1.0`）：
+**URL 模板**（替换 `<版本>`，如 `0.1.0`）：
 
 ```
-https://github.com/scagogogo/cvss-skills/releases/latest/download/cvss-skills_<系统>_<架构>.<扩展名>
+https://github.com/scagogogo/cvss-skills/releases/download/v<版本>/cvss-skills_<版本>_<系统>_<架构>.<扩展名>
 ```
 
 | 系统 | 架构 |
