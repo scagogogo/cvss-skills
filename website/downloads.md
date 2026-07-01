@@ -110,9 +110,11 @@ Replace `<version>` with a tag (e.g. `0.1.0`) — see [One-Line Install](#one-li
 | ppc64le   | `cvss-skills_<version>_linux_ppc64le.tar.gz`                                                                            |
 | s390x     | `cvss-skills_<version>_linux_s390x.tar.gz`                                                                              |
 | riscv64   | `cvss-skills_<version>_linux_riscv64.tar.gz`                                                                            |
-| mips64le  | `cvss-skills_<version>_linux_mips64le.tar.gz` ^1^                                                                       |
+| mips64le  | `cvss-skills_<version>_linux_mips64le.tar.gz` †                                                                        |
 
-[^1]: `mips64le` is configured in `.goreleaser.yml` and builds locally, but was not published in the v0.1.0 release. If the asset 404s, build it from source: `GOOS=linux GOARCH=mips64le go build -o cvss ./cmd/cvss-cli/`.
+::: details † About mips64le
+`mips64le` is configured in `.goreleaser.yml` and builds locally (`GOOS=linux GOARCH=mips64le go build -o cvss ./cmd/cvss-cli/`), but was **not published** in the v0.1.0 release. If the asset 404s, build it from source with the command above.
+:::
 
 ### macOS (darwin)
 

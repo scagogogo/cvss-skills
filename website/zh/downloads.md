@@ -110,9 +110,11 @@ make build
 | ppc64le  | `cvss-skills_<版本>_linux_ppc64le.tar.gz`                                                                               |
 | s390x    | `cvss-skills_<版本>_linux_s390x.tar.gz`                                                                                 |
 | riscv64  | `cvss-skills_<版本>_linux_riscv64.tar.gz`                                                                               |
-| mips64le | `cvss-skills_<版本>_linux_mips64le.tar.gz` ^1^                                                                          |
+| mips64le | `cvss-skills_<版本>_linux_mips64le.tar.gz` †                                                                          |
 
-[^1]: `mips64le` 已在 `.goreleaser.yml` 中配置且本地可构建，但 v0.1.0 发布时未上传。若该资产 404，可从源码构建：`GOOS=linux GOARCH=mips64le go build -o cvss ./cmd/cvss-cli/`。
+::: details † 关于 mips64le
+`mips64le` 已在 `.goreleaser.yml` 中配置且本地可构建（`GOOS=linux GOARCH=mips64le go build -o cvss ./cmd/cvss-cli/`），但 v0.1.0 发布时**未上传**。若该资产 404，请用上述命令从源码构建。
+:::
 
 ### macOS (darwin)
 
