@@ -94,7 +94,7 @@ The canonical pipeline: a raw vector string is parsed into a typed struct, valid
 ```mermaid
 flowchart LR
     A["CVSS:3.1/AV:N/...<br/>vector string"] --> B{Parse}
-    B -->|syntax error| E1["ParseError"]
+    B -->|syntax error| E1["error<br/>(invalid magic head,<br/>malformed vector, …)"]
     B -->|ok| C["Cvss3x struct"]
     C --> D{Validate}
     D -->|missing/invalid metric| E2["ValidationErrors"]

@@ -94,7 +94,7 @@ flowchart TB
 ```mermaid
 flowchart LR
     A["CVSS:3.1/AV:N/...<br/>向量字符串"] --> B{解析}
-    B -->|语法错误| E1["ParseError"]
+    B -->|语法错误| E1["error<br/>（非法头部、<br/>畸形向量等）"]
     B -->|成功| C["Cvss3x 结构体"]
     C --> D{校验}
     D -->|指标缺失/非法| E2["ValidationErrors"]
