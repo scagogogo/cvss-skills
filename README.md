@@ -367,7 +367,7 @@ cv.SameSeverity(other)  // severity-based comparison
 | `cvss csv` | CSV read/write (subcommands) | `cvss csv read input.csv` |
 | `cvss batch` | Batch score/validate (subcommands) | `cvss batch score vectors.txt` |
 | `cvss severity` | Severity rating from a score | `cvss severity 9.8` |
-| `cvss sort` | Sort vectors by score | `cvss sort file.csv` |
+| `cvss sort` | Sort vectors by score | `cvss sort vectors.txt` |
 | `cvss canonicalize` | Canonicalize vector format | `cvss canonicalize "CVSS:3.1/..."` |
 | `cvss convert` | Convert between versions | `cvss convert "CVSS:3.0/..." --to 3.1` |
 | `cvss enumerate` | List a metric's valid values | `cvss enumerate --metric AV` |

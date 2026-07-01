@@ -387,7 +387,7 @@ cv.SameSeverity(other)       // 基于严重性等级的比较
 | `cvss csv` | CSV 读写（子命令） | `cvss csv read input.csv` |
 | `cvss batch` | 批量评分/校验（子命令） | `cvss batch score vectors.txt` |
 | `cvss severity` | 由分数得严重性等级 | `cvss severity 9.8` |
-| `cvss sort` | 按评分排序向量 | `cvss sort file.csv` |
+| `cvss sort` | 按评分排序向量 | `cvss sort vectors.txt` |
 | `cvss canonicalize` | 规范化向量格式 | `cvss canonicalize "CVSS:3.1/..."` |
 | `cvss convert` | 版本转换 | `cvss convert "CVSS:3.0/..." --to 3.1` |
 | `cvss enumerate` | 列出某指标的合法取值 | `cvss enumerate --metric AV` |
