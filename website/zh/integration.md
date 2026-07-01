@@ -66,19 +66,21 @@ sequenceDiagram
 
 ## 1. Claude Code Skills
 
-一条命令在 Claude Code 中启用 **9 个 CVSS 技能**：
+把本仓库加为 skill 源后，Claude Code 即可按名称调用 **9 个 CVSS 技能**：
 
-| 技能                | 描述                                |
+| 技能               | 描述                                |
 | ------------------- | ----------------------------------- |
-| `/cvss-parse`       | 解析 CVSS v3.0/v3.1 向量字符串      |
-| `/cvss-score`       | 计算基础/时间/环境评分              |
-| `/cvss-validate`    | 校验向量完整性与正确性              |
-| `/cvss-construct`   | 用 Builder API 构建向量             |
-| `/cvss-compare`     | Diff、合并与距离计算                |
-| `/cvss-metrics`     | 枚举与查看指标定义                  |
-| `/cvss-serialize`   | JSON/文本序列化与反序列化           |
-| `/cvss-advanced`    | 敏感性分析、分数范围、预设          |
-| `/cvss-install`     | 安装 CLI 工具与 Go SDK 依赖         |
+| `cvss-parse`        | 解析 CVSS v3.0/v3.1 向量字符串      |
+| `cvss-score`        | 计算基础/时间/环境评分              |
+| `cvss-validate`     | 校验向量完整性与正确性              |
+| `cvss-construct`    | 用 Builder API 构建向量             |
+| `cvss-compare`      | Diff、合并与距离计算                |
+| `cvss-metrics`      | 枚举与查看指标定义                  |
+| `cvss-serialize`    | JSON/文本序列化与反序列化           |
+| `cvss-advanced`     | 敏感性分析、分数范围、预设          |
+| `cvss-install`      | 安装 CLI 工具与 Go SDK 依赖         |
+
+每个技能是 `.claude/skills/` 下的一个 markdown 指导文件，告诉 Claude 应运行哪条 `cvss` CLI 命令、如何解读输出 —— 因此你只需用自然语言提问（如「给这个向量评分：…」），Claude 会自动选用正确的技能。
 
 ::: details 手动安装
 添加到项目的 `.claude/settings.json` 或 `~/.claude/settings.json`：

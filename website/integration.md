@@ -66,19 +66,21 @@ All four share the same scoring core, so results are identical across surfaces �
 
 ## 1. Claude Code Skills
 
-One command enables **9 CVSS skills** inside Claude Code:
+Once the repo is added as a skill source, Claude Code can invoke **9 CVSS skills** by name:
 
 | Skill               | Description                                  |
 | ------------------- | -------------------------------------------- |
-| `/cvss-parse`       | Parse CVSS v3.0/v3.1 vector strings          |
-| `/cvss-score`       | Calculate base/temporal/environmental scores |
-| `/cvss-validate`    | Validate vector completeness and correctness |
-| `/cvss-construct`   | Build vectors with the Builder API           |
-| `/cvss-compare`     | Diff, merge, and distance calculations       |
-| `/cvss-metrics`     | Enumerate and inspect metric definitions     |
-| `/cvss-serialize`   | JSON/text serialization and deserialization  |
-| `/cvss-advanced`    | Sensitivity analysis, score ranges, presets |
-| `/cvss-install`     | Install CLI tool and Go SDK dependency       |
+| `cvss-parse`        | Parse CVSS v3.0/v3.1 vector strings          |
+| `cvss-score`        | Calculate base/temporal/environmental scores |
+| `cvss-validate`     | Validate vector completeness and correctness |
+| `cvss-construct`    | Build vectors with the Builder API           |
+| `cvss-compare`      | Diff, merge, and distance calculations       |
+| `cvss-metrics`      | Enumerate and inspect metric definitions     |
+| `cvss-serialize`    | JSON/text serialization and deserialization  |
+| `cvss-advanced`     | Sensitivity analysis, score ranges, presets |
+| `cvss-install`      | Install CLI tool and Go SDK dependency       |
+
+Each skill is a markdown instruction file under `.claude/skills/` that tells Claude which `cvss` CLI command to run and how to interpret its output — so ask in natural language ("score this vector: …") and Claude picks the right skill automatically.
 
 ::: details Manual installation
 Add to your project's `.claude/settings.json` or `~/.claude/settings.json`:
