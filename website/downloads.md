@@ -67,6 +67,10 @@ The archive names use the following canonical arch labels. If you know your plat
 go install github.com/scagogogo/cvss-skills/cmd/cvss-cli@latest
 ```
 
+::: tip Requires Go ≥ 1.18 and `$GOBIN` on your `PATH`
+`go install` drops the `cvss-cli` binary into `$(go env GOBIN)` (or `$(go env GOPATH)/bin` if `GOBIN` is unset). Add that directory to your `PATH` if `cvss` isn't found afterward. Note the installed binary is named `cvss-cli`; symlink or rename it to `cvss` to match the examples: `ln -s "$(go env GOPATH)/bin/cvss-cli" /usr/local/bin/cvss`.
+:::
+
 ## Build from Source
 
 ```bash

@@ -67,6 +67,10 @@ sudo mv cvss /usr/local/bin/
 go install github.com/scagogogo/cvss-skills/cmd/cvss-cli@latest
 ```
 
+::: tip 需要 Go ≥ 1.18，且 `$GOBIN` 在 `PATH` 中
+`go install` 会把 `cvss-cli` 二进制放到 `$(go env GOBIN)`（未设置 `GOBIN` 时为 `$(go env GOPATH)/bin`）。若之后找不到 `cvss`，请把该目录加入 `PATH`。注意通过此方式安装的二进制名为 `cvss-cli`（预编译归档里则是 `cvss`）；可软链接或改名以匹配文档示例：`ln -s "$(go env GOPATH)/bin/cvss-cli" /usr/local/bin/cvss`。
+:::
+
 ## 从源码构建
 
 ```bash
