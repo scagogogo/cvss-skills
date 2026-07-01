@@ -189,6 +189,10 @@ flowchart LR
     class Cr crit;
 ```
 
+::: tip v3.0 与 v3.1 —— 同一向量评分可能不同
+上面的区间边界在两个版本间完全一致，但底层公式不同。CVSS v3.1 引入了明确定义的 **roundup（向上取整）** 函数，并重新调整了若干权重（例如 `UI:R` 在 v3.1 为 0.62、v3.0 为 0.56）。工具包会读取 `CVSS:3.0` / `CVSS:3.1` 前缀并自动套用对应公式 —— 因此请始终为向量保留版本前缀。
+:::
+
 ## 快速开始
 
 ::: code-group
@@ -219,3 +223,10 @@ go install github.com/scagogogo/cvss-skills/cmd/cvss-cli@latest
 cvss score "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
 # 输出: 9.8 (Critical)
 ```
+
+## 下一步
+
+- [集成方式](/zh/integration/) —— 对比 Skills、Go SDK、CLI 与 MCP，附决策树
+- [CLI 参考](/zh/cli/) —— 全部 30+ 命令及示例
+- [下载](/zh/downloads/) —— 各系统/架构的预编译二进制，含校验和验证
+- [API 文档](/docs/zh/api/) —— 完整的 Go SDK 参考

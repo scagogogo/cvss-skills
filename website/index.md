@@ -189,6 +189,10 @@ flowchart LR
     class Cr crit;
 ```
 
+::: tip v3.0 vs v3.1 — the score can differ for the same vector
+The band boundaries above are identical across versions, but the underlying formulas are not. CVSS v3.1 introduced a defined **roundup** function and re-weighted a few values (e.g. `UI:R` = 0.62 in v3.1 vs 0.56 in v3.0). The toolkit reads the `CVSS:3.0` / `CVSS:3.1` prefix and applies the matching formula automatically — so always keep the version prefix on your vectors.
+:::
+
 ## Quick Start
 
 ::: code-group
@@ -219,3 +223,10 @@ go install github.com/scagogogo/cvss-skills/cmd/cvss-cli@latest
 cvss score "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
 # Output: 9.8 (Critical)
 ```
+
+## Next Steps
+
+- [Integration Methods](/integration/) — compare Skills, Go SDK, CLI, and MCP, with a decision tree
+- [CLI Reference](/cli/) — all 30+ commands with examples
+- [Downloads](/downloads/) — pre-built binaries for every OS/arch, with checksum verification
+- [API Docs](/docs/api/) — the complete Go SDK reference
