@@ -145,7 +145,6 @@ import (
     "fmt"
     "log"
 
-    "github.com/scagogogo/cvss-skills/pkg/cvss"
     "github.com/scagogogo/cvss-skills/pkg/parser"
 )
 
