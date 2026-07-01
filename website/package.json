@@ -1,28 +1,15 @@
 {
-  "name": "website",
-  "private": true,
-  "version": "0.0.0",
+  "name": "cvss-skills-website",
+  "version": "1.0.0",
   "type": "module",
+  "private": true,
+  "description": "CVSS Skills official website — built with VitePress (pure Markdown)",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "oxlint",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@ant-design/icons": "^6.3.1",
-    "antd": "^6.4.5",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7",
-    "react-router-dom": "^7.18.0"
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview"
   },
   "devDependencies": {
-    "@types/node": "^24.13.2",
-    "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.2",
-    "oxlint": "^1.69.0",
-    "typescript": "~6.0.2",
-    "vite": "^8.1.0"
+    "vitepress": "^1.6.3"
   }
 }

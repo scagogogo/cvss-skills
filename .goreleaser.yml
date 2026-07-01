@@ -29,10 +29,13 @@ builds:
       - ppc64le
       - s390x
       - riscv64
+      - mips64le
     goarm:
       - "5"
       - "6"
       - "7"
+    gomips:
+      - hardfloat
     ignore:
       # Windows on ARM is not well supported before Go 1.21
       - goos: windows
@@ -43,6 +46,8 @@ builds:
         goarch: s390x
       - goos: windows
         goarch: ppc64le
+      - goos: windows
+        goarch: mips64le
       - goos: darwin
         goarch: "386"
       - goos: darwin
@@ -53,6 +58,8 @@ builds:
         goarch: ppc64le
       - goos: darwin
         goarch: riscv64
+      - goos: darwin
+        goarch: mips64le
       # BSD limited arch support
       - goos: freebsd
         goarch: s390x
@@ -60,18 +67,24 @@ builds:
         goarch: ppc64le
       - goos: freebsd
         goarch: riscv64
+      - goos: freebsd
+        goarch: mips64le
       - goos: netbsd
         goarch: s390x
       - goos: netbsd
         goarch: ppc64le
       - goos: netbsd
         goarch: riscv64
+      - goos: netbsd
+        goarch: mips64le
       - goos: openbsd
         goarch: s390x
       - goos: openbsd
         goarch: ppc64le
       - goos: openbsd
         goarch: riscv64
+      - goos: openbsd
+        goarch: mips64le
 
 archives:
   - id: cvss-cli-archive
@@ -92,6 +105,42 @@ archives:
     files:
       - LICENSE
       - README.md
+
+# Windows Scoop manifest — published to a scoop bucket repo so users can
+# `scoop bucket add ... && scoop install cvss`. Disabled by default until a
+# dedicated scoop bucket repo exists; uncomment and point at the repo to enable.
+scoops:
+  - repository:
+      owner: scagogogo
+      name: scoop-bucket
+    directory: .
+    homepage: https://github.com/scagogogo/cvss-skills
+    description: Professional CVSS v3.0/v3.1 toolkit CLI
+    license: MIT
+    skip_upload: auto
+
+# Linux native packages (.deb / .rpm / .apk) for direct system installs.
+nfpms:
+  - id: cvss-cli-nfpms
+    package_name: cvss
+    builds:
+      - cvss-cli
+    file_name_template: >-
+      {{ .PackageName }}_
+      {{- .Version }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "arm64" }}aarch64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+    homepage: https://github.com/scagogogo/cvss-skills
+    description: Professional CVSS v3.0/v3.1 toolkit CLI — parse, score, validate, compare & build vulnerability vectors.
+    maintainer: scagogogo <noreply@github.com>
+    license: MIT
+    formats:
+      - deb
+      - rpm
+      - apk
+    bindir: /usr/bin
 
 checksum:
   name_template: "checksums.txt"

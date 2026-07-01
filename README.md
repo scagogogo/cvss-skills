@@ -4,44 +4,53 @@
 
 **Professional CVSS v3.0 / v3.1 Toolkit — Parse, Score, Validate, Compare & Build Vulnerability Vectors**
 
-[![Go Tests and Examples](https://github.com/scagogogo/cvss/actions/workflows/go-test.yml/badge.svg)](https://github.com/scagogogo/cvss/actions/workflows/go-test.yml)
-[![Go Report Card](https://goreportcard.com/badge/github.com/scagogogo/cvss)](https://goreportcard.com/report/github.com/scagogogo/cvss)
+[![CI](https://github.com/scagogogo/cvss-skills/actions/workflows/ci.yml/badge.svg)](https://github.com/scagogogo/cvss-skills/actions/workflows/ci.yml)
+[![Release](https://github.com/scagogogo/cvss-skills/actions/workflows/release.yml/badge.svg)](https://github.com/scagogogo/cvss-skills/actions/workflows/release.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/scagogogo/cvss-skills)](https://goreportcard.com/report/github.com/scagogogo/cvss-skills)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub Release](https://img.shields.io/github/v/release/scagogogo/cvss-skills)](https://github.com/scagogogo/cvss-skills/releases/latest)
 
 **Languages**: English | [简体中文](README_zh.md)
 
 </div>
 
+> **For AI agents**: This README is structured for machine consumption. Jump to [Integration Methods](#-integration-methods) for install commands, [CLI Commands](#-cli-commands) for the command surface, and [Pre-built Binaries](#-pre-built-binaries) for exact download URLs per OS/arch. The website at <https://scagogogo.github.io/cvss-skills/> mirrors this content.
+
 ---
 
-## What Problem Does This Solve?
+## 🤖 Overview
 
-CVSS (Common Vulnerability Scoring System) is the industry standard for rating vulnerability severity, but working with CVSS vectors programmatically is painful:
+**CVSS Skills** is a single, well-tested toolkit for the Common Vulnerability Scoring System (CVSS) v3.0 / v3.1. It solves the painful parts of working with CVSS vectors programmatically: error-prone parsing, version-specific scoring formulas, manual comparison, and scattered validation.
 
-- **Parsing is error-prone** — vector strings like `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H` need careful handling of versions, metrics, and values
-- **Scoring is complex** — base, temporal, and environmental scores involve different formulas with version-specific quirks (e.g., `UI:R` = 0.56 in v3.0 vs 0.62 in v3.1)
-- **Comparison is manual** — diffing, merging, and measuring distance between vectors requires understanding all metric interactions
-- **Validation is scattered** — checking completeness, finding missing metrics, and reporting per-metric errors is tedious
-- **No unified tooling** — security teams juggle spreadsheets, web calculators, and custom scripts
+It is delivered through **4 integration methods**:
 
-**CVSS Skills** solves all of this with a single, well-tested toolkit available through **4 integration methods**:
-
-| | Integration | Best For |
-|---|---|---|
-| 🤖 | **Skills** (Claude Code) | Interactive analysis, natural language queries |
-| 📦 | **Go SDK** | Building security tools and automation in Go |
-| 💻 | **CLI** | Scripting, batch processing, quick lookups |
-| 🔌 | **MCP** | AI agent integration via Model Context Protocol |
+| | Integration | Best For | Install |
+|---|---|---|---|
+| 🤖 | **Skills** (Claude Code) | Interactive analysis, natural language | `claude mcp add --scope user cvss-skills -- https://github.com/scagogogo/cvss-skills` |
+| 📦 | **Go SDK** | Building security tools in Go | `go get github.com/scagogogo/cvss-skills@latest` |
+| 💻 | **CLI** | Scripting, batch processing | see [Pre-built Binaries](#-pre-built-binaries) |
+| 🔌 | **MCP** | AI agent integration | add this repo as an MCP server |
 
 ![Integration Methods](docs/images/integration-methods.png)
 
+**Repository facts**
+
+| | |
+|---|---|
+| Module path | `github.com/scagogogo/cvss-skills` |
+| Language | Go (≥ 1.18) |
+| License | MIT |
+| CLI binary name | `cvss` |
+| CLI entry point | `cmd/cvss-cli/` |
+| Release artifacts | 30+ packages (6 OS × multi-arch) via [GoReleaser](.goreleaser.yml) |
+| Latest release | [![GitHub Release](https://img.shields.io/github/v/release/scagogogo/cvss-skills)](https://github.com/scagogogo/cvss-skills/releases/latest) |
+| Website | <https://scagogogo.github.io/cvss-skills/> |
+
 ---
 
-## Feature Map
+## ✨ Feature Map
 
 ![Feature Map](docs/images/feature-map.png)
-
-### Key Capabilities
 
 | Category | Features |
 |----------|----------|
@@ -55,7 +64,7 @@ CVSS (Common Vulnerability Scoring System) is the industry standard for rating v
 
 ---
 
-## Quick Start
+## 🚀 Quick Start
 
 ### 1. Skills (Claude Code) — One Command
 
@@ -63,19 +72,7 @@ CVSS (Common Vulnerability Scoring System) is the industry standard for rating v
 claude mcp add --scope user cvss-skills -- https://github.com/scagogogo/cvss-skills
 ```
 
-This enables **9 CVSS skills** inside Claude Code:
-
-| Skill | Description |
-|-------|-------------|
-| `/cvss-parse` | Parse CVSS v3.0/v3.1 vector strings |
-| `/cvss-score` | Calculate base/temporal/environmental scores |
-| `/cvss-validate` | Validate vector completeness and correctness |
-| `/cvss-construct` | Build vectors with the Builder API |
-| `/cvss-compare` | Diff, merge, and distance calculations |
-| `/cvss-metrics` | Enumerate and inspect metric definitions |
-| `/cvss-serialize` | JSON/text serialization and deserialization |
-| `/cvss-advanced` | Sensitivity analysis, score ranges, presets |
-| `/cvss-install` | Install CLI tool and Go SDK dependency |
+This enables **9 CVSS skills** inside Claude Code: `/cvss-parse`, `/cvss-score`, `/cvss-validate`, `/cvss-construct`, `/cvss-compare`, `/cvss-metrics`, `/cvss-serialize`, `/cvss-advanced`, `/cvss-install`.
 
 <details>
 <summary>Manual installation</summary>
@@ -125,12 +122,12 @@ func main() {
 }
 ```
 
-### 3. CLI — 30+ Commands
+### 3. CLI — Pre-built Binary or `go install`
 
 ```bash
-# Install from GitHub Release
+# Install a pre-built binary (auto-detects OS/arch)
 curl -sL https://github.com/scagogogo/cvss-skills/releases/latest/download/cvss-skills_$(uname -s | tr A-Z a-z)_$(uname -m).tar.gz | tar xz
-mv cvss /usr/local/bin/
+sudo mv cvss /usr/local/bin/
 
 # Or install with Go
 go install github.com/scagogogo/cvss-skills/cmd/cvss-cli@latest
@@ -146,7 +143,46 @@ Connect this repository as an MCP server from any MCP-compatible client to use C
 
 ---
 
-## CVSS Vector Structure
+## 📦 Pre-built Binaries
+
+Every [release](https://github.com/scagogogo/cvss-skills/releases/latest) ships **30+ packages** built by GoReleaser via GitHub Actions. Archive naming:
+
+```
+cvss-skills_<version>_<os>_<arch>[v<arm>].<tar.gz|zip>
+```
+
+**URL template** (use `latest` or a tag like `0.1.0`):
+
+```
+https://github.com/scagogogo/cvss-skills/releases/latest/download/cvss-skills_<os>_<arch>.<ext>
+```
+
+| OS | Architectures |
+|---|---|
+| **linux** | `x86_64`, `aarch64`, `i386`, `armv5`, `armv6`, `armv7`, `ppc64le`, `s390x`, `riscv64`, `mips64le` |
+| **darwin** | `x86_64`, `aarch64` |
+| **windows** | `x86_64`, `aarch64`, `i386` (`.zip`) |
+| **freebsd** | `x86_64`, `aarch64`, `i386`, `armv5`, `armv6`, `armv7` |
+| **netbsd** | `x86_64`, `aarch64`, `i386`, `armv5`, `armv6`, `armv7` |
+| **openbsd** | `x86_64`, `aarch64`, `i386`, `armv5`, `armv6`, `armv7` |
+
+Each release also ships `checksums.txt` (SHA256). Full matrix and verification steps: see the [Downloads page](https://scagogogo.github.io/cvss-skills/downloads/).
+
+<details>
+<summary>Build from source</summary>
+
+```bash
+git clone https://github.com/scagogogo/cvss-skills.git
+cd cvss-skills
+go build -o cvss ./cmd/cvss-cli/
+# or: make build
+```
+
+</details>
+
+---
+
+## 🧮 CVSS Vector Structure
 
 ![Vector Structure](docs/images/vector-structure.png)
 
@@ -160,7 +196,7 @@ A CVSS vector consists of up to **3 layers** of metrics:
 
 ---
 
-## Severity Scale
+## 🎚️ Severity Scale
 
 ![Severity Gauge](docs/images/severity-gauge.png)
 
@@ -174,7 +210,7 @@ A CVSS vector consists of up to **3 layers** of metrics:
 
 ---
 
-## Go SDK Examples
+## 📚 Go SDK Examples
 
 ### Parse and Calculate
 
@@ -257,7 +293,9 @@ cv.SameSeverity(other)  // severity-based comparison
 
 ---
 
-## CLI Commands
+## 💻 CLI Commands
+
+30+ commands. All support `--format json` for structured output. Run `cvss --help` for the full list.
 
 | Command | Description | Example |
 |---------|-------------|---------|
@@ -289,28 +327,28 @@ cv.SameSeverity(other)  // severity-based comparison
 | `cvss strip` | Strip temporal/env metrics | `cvss strip "CVSS:3.1/..."` |
 | `cvss subs` | Show metric substitutions | `cvss subs` |
 
-All commands support `--format json` for structured output. Run `cvss --help` for the full list.
+---
+
+## 📖 Documentation
+
+Website: **<https://scagogogo.github.io/cvss-skills/>**
+
+- [Integration Methods](https://scagogogo.github.io/cvss-skills/integration/) — compare the 4 ways to use CVSS Skills
+- [CLI Reference](https://scagogogo.github.io/cvss-skills/cli/) — all 30+ commands
+- [Downloads](https://scagogogo.github.io/cvss-skills/downloads/) — pre-built binary matrix
+- [API Reference](https://scagogogo.github.io/cvss-skills/docs/api/) — complete Go SDK API docs
+- [Examples & Tutorials](https://scagogogo.github.io/cvss-skills/docs/examples/) — practical usage
+- [Quick Start Guide](https://scagogogo.github.io/cvss-skills/docs/api/getting-started) — get started in 5 minutes
+- [Chinese Documentation](https://scagogogo.github.io/cvss-skills/zh/) — 简体中文
 
 ---
 
-## Documentation
-
-**[Complete Documentation Website](https://scagogogo.github.io/cvss/)**
-
-- [API Reference](https://scagogogo.github.io/cvss/api/) — Complete API documentation
-- [Examples & Tutorials](https://scagogogo.github.io/cvss/examples/) — Practical usage examples
-- [Quick Start Guide](https://scagogogo.github.io/cvss/api/getting-started) — Get started in 5 minutes
-- [Chinese Documentation](https://scagogogo.github.io/cvss/zh/) — Full Chinese docs
-
----
-
-## Contributing
+## 🤝 Contributing
 
 We welcome contributions, issue reports, and suggestions!
 
-- [GitHub Issues](https://github.com/scagogogo/cvss/issues) — Report issues or suggestions
-- [Contributing Guide](https://scagogogo.github.io/cvss/contributing) — How to contribute code
-- [Development Docs](https://scagogogo.github.io/cvss/development) — Development environment setup
+- [GitHub Issues](https://github.com/scagogogo/cvss-skills/issues) — report issues or suggestions
+- [Contributing Guide](https://scagogogo.github.io/cvss-skills/docs/CONTRIBUTING) — how to contribute code
 
 ## License
 

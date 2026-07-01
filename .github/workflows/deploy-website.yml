@@ -20,6 +20,7 @@ permissions:
   pages: write
   id-token: write
 
+# Allow one concurrent deployment, do not cancel in-progress runs.
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -43,7 +44,7 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      # Build the React website (root path)
+      # Build the VitePress marketing website (root path /)
       - name: Install website dependencies
         run: cd website && npm ci
 
@@ -57,13 +58,13 @@ jobs:
       - name: Build API docs
         run: cd docs && npm run docs:build
 
-      # Merge both into a single deployment directory
+      # Merge both into a single deployment directory:
+      #   /        <- website (VitePress marketing site, base /cvss-skills/)
+      #   /docs    <- docs    (VitePress API reference, base /cvss-skills/docs/)
       - name: Assemble deployment
         run: |
           mkdir -p deploy
-          # React website goes to root
-          cp -r website/dist/* deploy/
-          # VitePress API docs go to /docs subpath
+          cp -r website/.vitepress/dist/* deploy/
           cp -r docs/.vitepress/dist deploy/docs
 
       - name: Upload artifact

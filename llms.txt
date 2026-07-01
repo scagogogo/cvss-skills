@@ -1,0 +1,59 @@
+# CVSS Skills
+
+> Professional CVSS v3.0 / v3.1 toolkit — parse, score, validate, compare & build vulnerability vectors.
+
+CVSS Skills is a single, well-tested Go toolkit for the Common Vulnerability Scoring System (CVSS) v3.0 / v3.1. It is delivered through 4 integration methods: Claude Code Skills, Go SDK, CLI, and MCP.
+
+## Install
+
+Skills (Claude Code):
+```
+claude mcp add --scope user cvss-skills -- https://github.com/scagogogo/cvss-skills
+```
+
+Go SDK:
+```
+go get github.com/scagogogo/cvss-skills@latest
+```
+
+CLI (pre-built binary, auto-detects OS/arch):
+```
+curl -sL https://github.com/scagogogo/cvss-skills/releases/latest/download/cvss-skills_$(uname -s | tr A-Z a-z)_$(uname -m).tar.gz | tar xz
+sudo mv cvss /usr/local/bin/
+```
+
+CLI (go install):
+```
+go install github.com/scagogogo/cvss-skills/cmd/cvss-cli@latest
+```
+
+## CLI surface
+
+30+ commands: score, parse, validate, build, describe, diff, merge, distance, analyze, range, preset, random, json, csv, batch, severity, sort, canonicalize, convert, enumerate, equal, get, groups, map, modify, strip, subs. All accept `--format json`.
+
+## Pre-built binaries
+
+30+ packages (6 OS, multi-arch) per release. URL template:
+```
+https://github.com/scagogogo/cvss-skills/releases/latest/download/cvss-skills_<os>_<arch>.<ext>
+```
+OSes: linux, darwin, windows, freebsd, netbsd, openbsd. See README "Pre-built Binaries" for the full arch matrix.
+
+## Repository facts
+
+- Module: github.com/scagogogo/cvss-skills
+- Language: Go (>= 1.18)
+- License: MIT
+- CLI binary: cvss (entry: cmd/cvss-cli/)
+- CI: GitHub Actions (.github/workflows/ci.yml)
+- Release: GoReleaser (.goreleaser.yml) on tag push
+
+## Links
+
+- Website: https://scagogogo.github.io/cvss-skills/
+- API Docs: https://scagogogo.github.io/cvss-skills/docs/api/
+- Downloads: https://scagogogo.github.io/cvss-skills/downloads/
+- GitHub: https://github.com/scagogogo/cvss-skills
+- Releases: https://github.com/scagogogo/cvss-skills/releases/latest
+- CVSS v3.1 spec: https://www.first.org/cvss/v3.1/specification-document
+- CVSS v3.0 spec: https://www.first.org/cvss/v3.0/specification-document
