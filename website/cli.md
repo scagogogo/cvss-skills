@@ -27,6 +27,10 @@ go install github.com/scagogogo/cvss-skills/cmd/cvss-cli@latest
 
 Pre-built binaries cover **6 operating systems** (33 archive packages) — see [Downloads](/downloads/).
 
+::: tip `go install` produces `cvss-cli`, not `cvss`
+The curl method installs a binary named `cvss` (matching the examples below). `go install` produces `cvss-cli` — symlink it to match: `ln -s "$(go env GOPATH)/bin/cvss-cli" /usr/local/bin/cvss`. See [Downloads](/downloads/#install-via-go) for details.
+:::
+
 ## Command Map
 
 The 30+ commands fall into six functional groups:

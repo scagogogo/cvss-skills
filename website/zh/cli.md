@@ -27,6 +27,10 @@ go install github.com/scagogogo/cvss-skills/cmd/cvss-cli@latest
 
 预编译二进制覆盖 **6 个操作系统**（共 33 个归档包）—— 见[下载](/zh/downloads/)。
 
+::: tip `go install` 产出的是 `cvss-cli`，不是 `cvss`
+curl 方式安装的二进制名为 `cvss`（与下方示例一致）。`go install` 产出的二进制名为 `cvss-cli` —— 软链接以匹配示例：`ln -s "$(go env GOPATH)/bin/cvss-cli" /usr/local/bin/cvss`。详见[下载](/zh/downloads/#通过-go-安装)。
+:::
+
 ## 命令地图
 
 30+ 命令可归为六大功能组：
