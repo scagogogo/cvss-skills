@@ -16,12 +16,12 @@ flowchart LR
     Tag(["git tag v0.1.0<br/>git push --tags"]) --> GA["GitHub Actions<br/>release.yml"]
     GA --> GR["GoReleaser"]
     GR --> X1["cross-compile<br/>6 OS × multi-arch"]
-    GR --> X2["nfpms<br/>deb · rpm · apk"]
-    GR --> X3["scoops<br/>Windows bucket"]
+    GR --> X2["nfpms<br/>deb · rpm · apk<br/>(configured)"]
+    GR --> X3["scoops<br/>Windows bucket<br/>(disabled)"]
     X1 --> Sum["checksums.txt<br/>SHA256"]
-    X1 --> Rel[("GitHub Release<br/>30+ assets")]
-    X2 --> Rel
-    X3 --> Rel
+    X1 --> Rel[("GitHub Release<br/>33 archives")]
+    X2 -.->|"not in v0.1.0"| Rel
+    X3 -.->|"skip_upload"| Rel
     Sum --> Rel
     Rel --> DL(["curl / go install /<br/>package manager"])
 
@@ -109,7 +109,9 @@ Replace `<version>` with a tag (e.g. `0.1.0`) — see [One-Line Install](#one-li
 | ppc64le   | `cvss-skills_<version>_linux_ppc64le.tar.gz`                                                                            |
 | s390x     | `cvss-skills_<version>_linux_s390x.tar.gz`                                                                              |
 | riscv64   | `cvss-skills_<version>_linux_riscv64.tar.gz`                                                                            |
-| mips64le  | `cvss-skills_<version>_linux_mips64le.tar.gz`                                                                           |
+| mips64le  | `cvss-skills_<version>_linux_mips64le.tar.gz` ^1^                                                                       |
+
+[^1]: `mips64le` is configured in `.goreleaser.yml` and builds locally, but was not published in the v0.1.0 release. If the asset 404s, build it from source: `GOOS=linux GOARCH=mips64le go build -o cvss ./cmd/cvss-cli/`.
 
 ### macOS (darwin)
 

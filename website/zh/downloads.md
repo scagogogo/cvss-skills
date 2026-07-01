@@ -16,12 +16,12 @@ flowchart LR
     Tag(["git tag v0.1.0<br/>git push --tags"]) --> GA["GitHub Actions<br/>release.yml"]
     GA --> GR["GoReleaser"]
     GR --> X1["交叉编译<br/>6 系统 × 多架构"]
-    GR --> X2["nfpms<br/>deb · rpm · apk"]
-    GR --> X3["scoops<br/>Windows bucket"]
+    GR --> X2["nfpms<br/>deb · rpm · apk<br/>（已配置）"]
+    GR --> X3["scoops<br/>Windows bucket<br/>（已禁用）"]
     X1 --> Sum["checksums.txt<br/>SHA256"]
-    X1 --> Rel[("GitHub Release<br/>30+ 产物")]
-    X2 --> Rel
-    X3 --> Rel
+    X1 --> Rel[("GitHub Release<br/>33 个归档")]
+    X2 -.->|"v0.1.0 未包含"| Rel
+    X3 -.->|"skip_upload"| Rel
     Sum --> Rel
     Rel --> DL(["curl / go install /<br/>包管理器"])
 
@@ -109,7 +109,9 @@ make build
 | ppc64le  | `cvss-skills_<版本>_linux_ppc64le.tar.gz`                                                                               |
 | s390x    | `cvss-skills_<版本>_linux_s390x.tar.gz`                                                                                 |
 | riscv64  | `cvss-skills_<版本>_linux_riscv64.tar.gz`                                                                               |
-| mips64le | `cvss-skills_<版本>_linux_mips64le.tar.gz`                                                                              |
+| mips64le | `cvss-skills_<版本>_linux_mips64le.tar.gz` ^1^                                                                          |
+
+[^1]: `mips64le` 已在 `.goreleaser.yml` 中配置且本地可构建，但 v0.1.0 发布时未上传。若该资产 404，可从源码构建：`GOOS=linux GOARCH=mips64le go build -o cvss ./cmd/cvss-cli/`。
 
 ### macOS (darwin)
 
