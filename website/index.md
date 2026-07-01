@@ -36,7 +36,7 @@ features:
     details: Diff, merge, and distance metrics (Euclidean, Manhattan, Hamming, Jaccard) with environment-aware variants.
   - icon: 💻
     title: 30+ CLI Commands
-    details: Scriptable CLI with JSON output for every command. Pre-built binaries for 6 OS × 8 architectures.
+    details: Scriptable CLI with JSON output for every command. Pre-built binaries for 6 operating systems (33 archive packages).
     link: /cli/
     linkText: Browse commands →
   - icon: 📦

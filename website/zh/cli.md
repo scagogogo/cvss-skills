@@ -24,7 +24,7 @@ go install github.com/scagogogo/cvss-skills/cmd/cvss-cli@latest
 
 :::
 
-预编译二进制覆盖 **6 系统 × 8 架构** —— 见[下载](/zh/downloads/)。
+预编译二进制覆盖 **6 个操作系统**（共 33 个归档包）—— 见[下载](/zh/downloads/)。
 
 ## 命令地图
 

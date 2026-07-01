@@ -36,7 +36,7 @@ features:
     details: Diff、合并与距离度量（欧氏、曼哈顿、汉明、Jaccard），含环境感知变体。
   - icon: 💻
     title: 30+ CLI 命令
-    details: 可脚本化的 CLI，每条命令均支持 JSON 输出。预编译二进制覆盖 6 系统 × 8 架构。
+    details: 可脚本化的 CLI，每条命令均支持 JSON 输出。预编译二进制覆盖 6 个操作系统（共 33 个归档包）。
     link: /zh/cli/
     linkText: 浏览命令 →
   - icon: 📦

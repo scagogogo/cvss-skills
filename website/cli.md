@@ -24,7 +24,7 @@ go install github.com/scagogogo/cvss-skills/cmd/cvss-cli@latest
 
 :::
 
-Pre-built binaries cover **6 operating systems × 8 architectures** — see [Downloads](/downloads/).
+Pre-built binaries cover **6 operating systems** (33 archive packages) — see [Downloads](/downloads/).
 
 ## Command Map
 
