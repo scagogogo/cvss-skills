@@ -69,6 +69,7 @@ mindmap
       batch
       sort
       range
+      extract
       preset
       random
 ```
@@ -92,6 +93,7 @@ mindmap
 | `cvss json`         | JSON serialization           | `cvss json "CVSS:3.1/..."`                                             |
 | `cvss csv`          | CSV read/write (subcommands) | `cvss csv read input.csv`                                              |
 | `cvss batch`        | Batch score/validate (subcmd)| `cvss batch score vectors.txt`                                         |
+| `cvss extract`      | Extract CVSS from reports    | `cvss extract report.json --format json`                               |
 | `cvss severity`     | Severity rating from a score | `cvss severity 9.8`                                                    |
 | `cvss sort`         | Sort vectors by score        | `cvss sort vectors.txt`                                                |
 | `cvss canonicalize` | Canonicalize vector format   | `cvss canonicalize "CVSS:3.1/..."`                                     |

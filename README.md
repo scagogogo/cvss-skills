@@ -173,7 +173,7 @@ mindmap
 claude mcp add --scope user cvss-skills -- https://github.com/scagogogo/cvss-skills
 ```
 
-This enables **9 CVSS skills** inside Claude Code — each a markdown instruction file under `.claude/skills/` that tells Claude which `cvss` CLI command to run: `cvss-parse`, `cvss-score`, `cvss-validate`, `cvss-construct`, `cvss-compare`, `cvss-metrics`, `cvss-serialize`, `cvss-advanced`, `cvss-install`. Ask in natural language ("score this vector: …") and Claude picks the right skill automatically.
+This enables **10 CVSS skills** inside Claude Code — each a markdown instruction file under `.claude/skills/` that tells Claude which `cvss` CLI command to run: `cvss-parse`, `cvss-score`, `cvss-validate`, `cvss-construct`, `cvss-compare`, `cvss-metrics`, `cvss-serialize`, `cvss-advanced`, `cvss-extract`, `cvss-install`. Ask in natural language ("score this vector: …" or "extract CVSS from this Trivy report") and Claude picks the right skill automatically.
 
 <details>
 <summary>Manual installation</summary>
@@ -473,6 +473,7 @@ cv.SameSeverity(other)  // severity-based comparison
 | `cvss json` | JSON serialization | `cvss json "CVSS:3.1/..."` |
 | `cvss csv` | CSV read/write (subcommands) | `cvss csv read input.csv` |
 | `cvss batch` | Batch score/validate (subcommands) | `cvss batch score vectors.txt` |
+| `cvss extract` | Extract CVSS from Trivy-compatible reports | `cvss extract report.json --format json` |
 | `cvss severity` | Severity rating from a score | `cvss severity 9.8` |
 | `cvss sort` | Sort vectors by score | `cvss sort vectors.txt` |
 | `cvss canonicalize` | Canonicalize vector format | `cvss canonicalize "CVSS:3.1/..."` |

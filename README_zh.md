@@ -173,7 +173,7 @@ mindmap
 claude mcp add --scope user cvss-skills -- https://github.com/scagogogo/cvss-skills
 ```
 
-启用 **9 个 CVSS 技能** —— 每个是 `.claude/skills/` 下的一个 markdown 指导文件，告诉 Claude 应运行哪条 `cvss` CLI 命令：`cvss-parse`、`cvss-score`、`cvss-validate`、`cvss-construct`、`cvss-compare`、`cvss-metrics`、`cvss-serialize`、`cvss-advanced`、`cvss-install`。用自然语言提问（如「score this vector: …」），Claude 会自动选用正确的技能。
+启用 **10 个 CVSS 技能** —— 每个是 `.claude/skills/` 下的一个 markdown 指导文件，告诉 Claude 应运行哪条 `cvss` CLI 命令：`cvss-parse`、`cvss-score`、`cvss-validate`、`cvss-construct`、`cvss-compare`、`cvss-metrics`、`cvss-serialize`、`cvss-advanced`、`cvss-extract`、`cvss-install`。用自然语言提问（如「score this vector: …」或「extract CVSS from this Trivy report」），Claude 会自动选用正确的技能。
 
 <details>
 <summary>手动安装</summary>
@@ -473,6 +473,7 @@ cv.SameSeverity(other)  // severity-based comparison
 | `cvss json` | JSON 序列化 | `cvss json "CVSS:3.1/..."` |
 | `cvss csv` | CSV 读写（子命令） | `cvss csv read input.csv` |
 | `cvss batch` | 批量评分/校验（子命令） | `cvss batch score vectors.txt` |
+| `cvss extract` | 从漏洞报告提取 CVSS 及来源 | `cvss extract report.json --format json` |
 | `cvss severity` | 由分数得严重性等级 | `cvss severity 9.8` |
 | `cvss sort` | 按评分排序向量 | `cvss sort vectors.txt` |
 | `cvss canonicalize` | 规范化向量格式 | `cvss canonicalize "CVSS:3.1/..."` |

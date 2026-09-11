@@ -16,7 +16,7 @@ This document guides AI agents (Claude Code, LLMs, etc.) on how to use the CVSS 
 
 ## Claude Code Skills
 
-9 built-in skills under `.claude/skills/`:
+10 built-in skills under `.claude/skills/`:
 
 | Skill | Purpose | CLI Commands |
 |-------|---------|--------------|
@@ -28,6 +28,7 @@ This document guides AI agents (Claude Code, LLMs, etc.) on how to use the CVSS 
 | `cvss-serialize` | JSON, XML, CSV, map output | `cvss json`, `cvss csv`, `cvss map` |
 | `cvss-metrics` | Metric values & scores reference | `cvss enumerate`, `cvss get`, `cvss groups` |
 | `cvss-advanced` | Analysis, batch, version convert | `cvss analyze`, `cvss range`, `cvss convert`, `cvss batch` |
+| `cvss-extract` | Extract CVSS from vulnerability reports | `cvss extract` |
 | `cvss-install` | Installation instructions | — |
 
 ### Usage in Claude Code
@@ -66,6 +67,9 @@ cvss distance "CVSS:3.1/..." "CVSS:3.1/..."
 # Batch processing
 cvss batch score vectors.txt --format json
 cvss sort vectors.txt
+
+# Extract scores from a Trivy-compatible vulnerability report
+cvss extract trivy-report.json --format json
 ```
 
 ## Go SDK Quick Reference
@@ -157,6 +161,7 @@ flowchart LR
 | Compare two vectors | CLI: `cvss diff` or Skill: `cvss-compare` |
 | Build a vector | CLI: `cvss build` or Skill: `cvss-construct` |
 | Understand a metric | Website: `/metrics/<metric-name>` |
+| Extract CVSS from a report | CLI: `cvss extract` or Skill: `cvss-extract` |
 | Learn scoring formula | Website: `/concepts/scoring` |
 | Go API details | Website: `/sdk/<package>` or `/docs/api/` |
 | Install CLI | Website: `/downloads/` or Skill: `cvss-install` |

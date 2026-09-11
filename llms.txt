@@ -29,7 +29,7 @@ go install github.com/scagogogo/cvss-skills/cmd/cvss-cli@latest
 
 ## CLI surface
 
-30+ commands: score, parse, validate, build, describe, diff, merge, distance, analyze, range, preset, random, json, csv, batch, severity, sort, canonicalize, convert, enumerate, equal, get, groups, map, modify, strip, subs. All accept `--format json`.
+30+ commands: score, parse, validate, build, describe, diff, merge, distance, analyze, range, preset, random, json, csv, batch, extract, severity, sort, canonicalize, convert, enumerate, equal, get, groups, map, modify, strip, subs. All accept `--format json`; `extract` reads Trivy-compatible vulnerability reports and preserves CVSS source/version/vector provenance.
 
 ## Pre-built binaries
 
