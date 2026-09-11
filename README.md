@@ -24,7 +24,7 @@
 
 ## 🤖 Overview
 
-**CVSS Skills** is a single, well-tested toolkit for the Common Vulnerability Scoring System (CVSS) v3.0 / v3.1. It solves the painful parts of working with CVSS vectors programmatically: error-prone parsing, version-specific scoring formulas, manual comparison, and scattered validation.
+**CVSS Skills** is a single, well-tested toolkit for the Common Vulnerability Scoring System (CVSS). CVSS **v3.0 / v3.1** are fully supported for parsing, validation, and scoring; CVSS **v4.0** parsing, validation, and serialization are available, with the normative MacroVector scoring being integrated. It solves the painful parts of working with CVSS vectors programmatically: error-prone parsing, version-specific scoring formulas, manual comparison, and scattered validation.
 
 It is delivered through **4 integration methods**:
 
