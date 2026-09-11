@@ -57,3 +57,12 @@ func TestParseRelaxed_v30(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, 0, result.MinorVersion)
 }
+
+func TestParserCanBeReused(t *testing.T) {
+	p := NewCvss3xParser("CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H")
+	first, err := p.Parse()
+	assert.NoError(t, err)
+	second, err := p.Parse()
+	assert.NoError(t, err)
+	assert.Equal(t, first.String(), second.String())
+}

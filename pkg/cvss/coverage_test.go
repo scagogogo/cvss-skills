@@ -3,6 +3,7 @@ package cvss
 import (
 	"bytes"
 	"database/sql/driver"
+	"encoding/json"
 	"encoding/xml"
 	"errors"
 	"sort"
@@ -474,6 +475,23 @@ func TestCvss3x_UnmarshalJSON_Invalid(t *testing.T) {
 	var cv Cvss3x
 	err := cv.UnmarshalJSON([]byte(`"not-a-vector"`))
 	assert.Error(t, err)
+}
+
+func TestCvss3x_UnmarshalJSON_RejectsNonString(t *testing.T) {
+	for _, input := range []string{`123`, `true`, `{}`, `[]`} {
+		var cv Cvss3x
+		err := cv.UnmarshalJSON([]byte(input))
+		assert.Error(t, err, input)
+	}
+}
+
+func TestCvss3x_MarshalJSON_IsValidJSON(t *testing.T) {
+	cv := &Cvss3x{MajorVersion: 3, MinorVersion: 1}
+	data, err := cv.MarshalJSON()
+	require.NoError(t, err)
+	var decoded string
+	require.NoError(t, json.Unmarshal(data, &decoded))
+	assert.Equal(t, cv.String(), decoded)
 }
 
 // ==================== cvss3x_base.go: Check branches ====================

@@ -45,7 +45,11 @@ func NewCvss3xParser(cvss3xStr string) *Cvss3xParser {
 }
 
 func (x *Cvss3xParser) Parse() (*cvss.Cvss3x, error) {
+	// Parser 可安全重复调用：每次从原始字符串的起点重新开始，避免上一次
+	// 解析留下的游标和重复键状态污染本次结果。
+	x.i = 0
 	x.cvss3x = cvss.NewCvss3x()
+	x.parsedKeys = make(map[string]bool)
 
 	// 读取魔术头CVSS
 	if err := x.readMagicHead(); err != nil {

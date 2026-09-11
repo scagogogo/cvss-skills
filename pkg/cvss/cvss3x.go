@@ -1,6 +1,7 @@
 package cvss
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
 )
@@ -102,20 +103,21 @@ func (x *Cvss3x) MarshalJSON() ([]byte, error) {
 	if x == nil {
 		return []byte("null"), nil
 	}
-	// 使用向量字符串作为 JSON 表示
-	return []byte(`"` + x.String() + `"`), nil
+	// 使用标准 JSON 编码器，确保字符串始终合法并正确处理转义。
+	return json.Marshal(x.String())
 }
 
 // UnmarshalJSON 实现 json.Unmarshaler 接口
 // 从向量字符串反序列化为 Cvss3x
 func (x *Cvss3x) UnmarshalJSON(data []byte) error {
-	s := string(data)
-	if s == "null" || s == `""` {
+	var s *string
+	if err := json.Unmarshal(data, &s); err != nil {
+		return fmt.Errorf("failed to unmarshal Cvss3x: vector string must be a JSON string or null: %w", err)
+	}
+	if s == nil || *s == "" {
 		return nil
 	}
-	// 去掉引号
-	s = strings.Trim(s, `"`)
-	parsed, err := fromVectorString(s)
+	parsed, err := fromVectorString(*s)
 	if err != nil {
 		return fmt.Errorf("failed to unmarshal Cvss3x: %w", err)
 	}
