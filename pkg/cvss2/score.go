@@ -101,8 +101,11 @@ func baseImpactExploitability(c, i, a, av, ac, au float64) (impact, exploit floa
 }
 
 func baseScore(impact, exploit float64) float64 {
-	base := (0.6*impact + 0.4*exploit - 1.5) * fImpact(impact)
-	return math.Max(0, math.Min(10, roundToOne(base)))
+	return math.Max(0, math.Min(10, roundToOne(rawBaseScore(impact, exploit))))
+}
+
+func rawBaseScore(impact, exploit float64) float64 {
+	return (0.6*impact + 0.4*exploit - 1.5) * fImpact(impact)
 }
 
 // Score returns the CVSS v2.0 Base score.
@@ -138,10 +141,15 @@ func (v *Vector) Calculate() (*Scores, error) {
 		i := v.effective("I", "MI") * v.scalar("IR")
 		a := v.effective("A", "MA") * v.scalar("AR")
 		eImpact, eExploit := baseImpactExploitability(c, i, a, v.effective("AV", "MAV"), v.effective("AC", "MAC"), v.effective("Au", "MAu"))
+		if eImpact > 10 {
+			eImpact = 10
+		}
+		// adjusted base is the ROUNDED environmental base; then temporal scales
+		// the rounded value and rounds again.
 		adjBase := baseScore(eImpact, eExploit)
-		adjTemporal := adjBase * v.scalar("E") * v.scalar("RL") * v.scalar("RC")
-		env := (adjTemporal + (10-adjTemporal)*v.scalar("CDP")) * v.scalar("TD")
-		out.EnvironmentalScore = math.Max(0, math.Min(10, roundToOne(env)))
+		adjTemporal := roundToOne(adjBase * v.scalar("E") * v.scalar("RL") * v.scalar("RC"))
+		env := roundToOne((adjTemporal + (10-adjTemporal)*v.scalar("CDP")) * v.scalar("TD"))
+		out.EnvironmentalScore = math.Max(0, math.Min(10, env))
 	} else {
 		out.EnvironmentalScore = out.TemporalScore
 	}

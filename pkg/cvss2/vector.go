@@ -223,11 +223,11 @@ var acScore = map[string]float64{"H": 0.35, "M": 0.61, "L": 0.71}
 var auScore = map[string]float64{"M": 0.45, "S": 0.56, "N": 0.704}
 var cioScore = map[string]float64{"N": 0.0, "P": 0.275, "C": 0.660}
 var eScore = map[string]float64{"U": 0.85, "POC": 0.90, "F": 0.95, "H": 1.0, "ND": 1.0}
-var rlScore = map[string]float64{"OF": 0.87, "TF": 0.89, "W": 0.95, "U": 1.0, "ND": 1.0}
+var rlScore = map[string]float64{"OF": 0.87, "TF": 0.90, "W": 0.95, "U": 1.0, "ND": 1.0}
 var rcScore = map[string]float64{"UC": 0.90, "UR": 0.95, "C": 1.0, "ND": 1.0}
 var cdpScore = map[string]float64{"N": 0.0, "L": 0.1, "LM": 0.3, "MH": 0.4, "H": 0.5, "ND": 0.0}
 var tdScore = map[string]float64{"N": 0.0, "L": 0.25, "M": 0.75, "H": 1.0, "ND": 1.0}
-var reqScore = map[string]float64{"L": 0.5, "M": 1.0, "H": 1.5, "ND": 1.0}
+var reqScore = map[string]float64{"L": 0.5, "M": 1.0, "H": 1.51, "ND": 1.0}
 
 func fImpact(impact float64) float64 {
 	if impact == 0 {
@@ -236,5 +236,8 @@ func fImpact(impact float64) float64 {
 	return 1.176
 }
 
-// roundToOne rounds to one decimal place using CVSS v2 semantics.
-func roundToOne(x float64) float64 { return math.Round(x*10) / 10 }
+// roundToOne rounds to one decimal place using CVSS v2's half-up semantics.
+// The small epsilon keeps decimal half-way values stable across binary floats.
+func roundToOne(x float64) float64 {
+	return math.Floor(x*10+0.5+1e-9) / 10
+}

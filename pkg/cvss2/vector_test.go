@@ -50,6 +50,38 @@ func TestTemporalAndEnvironmental(t *testing.T) {
 	}
 }
 
+// TestScoreMatchesReference pins scores validated against the Red Hat cvss
+// reference implementation, exercising the v2 requirements (H=1.51), the
+// RL:TF=0.90 temporal constant, and the half-up environmental rounding.
+func TestScoreMatchesReference(t *testing.T) {
+	cases := []struct {
+		vector string
+		base   float64
+		temp   float64
+		env    float64
+	}{
+		{"AV:L/AC:H/Au:M/C:C/I:P/A:N", 4.4, 4.4, 4.4},
+		{"AV:L/AC:H/Au:N/C:C/I:C/A:N/E:H/RL:W/RC:UC", 5.6, 4.8, 4.8},
+		{"AV:A/AC:H/Au:M/C:P/I:N/A:P/E:F/RL:OF/RC:C/CDP:MH/TD:N/CR:M/IR:L/AR:H", 2.7, 2.2, 0.0},
+		{"AV:A/AC:M/Au:S/C:P/I:N/A:N/E:POC/RL:TF/RC:UC/CDP:N/TD:H/CR:H/IR:H/AR:L", 2.3, 1.7, 2.5},
+		{"AV:L/AC:H/Au:M/C:P/I:N/A:P/E:POC/RL:TF/RC:UC/CDP:L/TD:L/CR:M/IR:H/AR:H", 2.3, 1.7, 0.8},
+	}
+	for _, c := range cases {
+		v, err := Parse(c.vector)
+		if err != nil {
+			t.Fatalf("%s: %v", c.vector, err)
+		}
+		s, err := v.Calculate()
+		if err != nil {
+			t.Fatalf("%s: %v", c.vector, err)
+		}
+		if s.BaseScore != c.base || s.TemporalScore != c.temp || s.EnvironmentalScore != c.env {
+			t.Errorf("%s: got (%.1f, %.1f, %.1f), want (%.1f, %.1f, %.1f)",
+				c.vector, s.BaseScore, s.TemporalScore, s.EnvironmentalScore, c.base, c.temp, c.env)
+		}
+	}
+}
+
 func TestValidationAndJSON(t *testing.T) {
 	_, err := Parse("AV:N/AC:L/Au:N/C:P/I:P")
 	if !errors.Is(err, ErrMissingMetric) {
